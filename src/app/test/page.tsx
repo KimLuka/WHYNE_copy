@@ -41,6 +41,9 @@ export default function Test() {
       <Button type="button" size="small" color="white">
         로그인
       </Button>
+      <Button type="button" size="small" color="secondary">
+        취소
+      </Button>
     </>
   );
 }

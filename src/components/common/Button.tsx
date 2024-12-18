@@ -1,43 +1,41 @@
 import React, { ButtonHTMLAttributes, ReactNode } from "react";
 import classNames from "classnames";
 
-interface ButtonProp extends ButtonHTMLAttributes<HTMLButtonElement> {
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
   addClassName?: string | string[];
-  handleClick?: () => void;
   disabled?: boolean;
   size: "small" | "medium" | "large";
-  color: "primary" | "white";
+  color: "primary" | "white" | "secondary";
   type: "button" | "submit" | "reset";
 }
 
 export default function Button({
   children,
   addClassName,
-  handleClick,
   disabled = false,
   type = "button",
   size = "large",
   color = "primary",
   ...rest
-}: ButtonProp) {
+}: ButtonProps) {
   const sizeClasses = {
-    large: "w-auto desktop:h-[5rem] tablet:h-[4.8rem] tablet:rounded-[1.6rem] ",
-    medium:
-      "w-auto tablet:h-[5rem] mobile:h-[4.8rem] tablet:rounded-[1.6rem] mobile:rounded-[1.2rem]",
+    large: "w-auto desktop:h-[5rem] tablet:h-[4.8rem]",
+    medium: "w-auto tablet:h-[5rem] mobile:h-[4.8rem]",
     small: "w-auto rounded-[1.2rem] tablet:h-[4.2rem] mobile:h-[4rem]",
-  };
+  }[size];
 
   const colorClasses = {
     primary: "bg-primary hover:bg-[#7b52f1] text-white",
     white:
       "bg-white hover:bg-[#e1d7f4] text-gray-800 border-solid border-[0.1rem] border-gray-300",
-  };
+    secondary: "bg-secondary hover:bg-[#e1d7f4] text-primary",
+  }[color];
 
   const buttonClass = classNames(
     "rounded transition-all duration-300 ease-in-out cursor-pointer",
-    sizeClasses[size],
-    colorClasses[color],
+    sizeClasses,
+    colorClasses,
     Array.isArray(addClassName) ? addClassName.join(" ") : addClassName,
     {
       "opacity-50 cursor-not-allowed": disabled,
@@ -46,13 +44,7 @@ export default function Button({
 
   return (
     <>
-      <button
-        type={type}
-        className={buttonClass}
-        onClick={handleClick}
-        disabled={disabled}
-        {...rest}
-      >
+      <button type={type} className={buttonClass} disabled={disabled} {...rest}>
         {children}
       </button>
     </>

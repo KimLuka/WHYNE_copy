@@ -474,8 +474,9 @@ template {
     --color-secondary: #f1edfc;
     --white: #ffffff;
     --black: #101318;
-    --red: #f74747; 
-    
+    --red: #f74747;
+    --primary-gradient: #d842db;
+
     /*font-weight*/
     --regular: 400;
     --medium: 500;
@@ -491,9 +492,8 @@ template {
   html[data-theme="gray"] {
     --color-100: #f2f4f8;
     --color-300: #cfdbea;
-    --color-500: #040404;
+    --color-500: #9facbd;
     --color-800: #2d3034;
-
   }
   html {
     /* 브라우저 폰트 사이즈 16px * 0.625 = 10px */
@@ -529,10 +529,34 @@ template {
   align-items: center
   */
   }
+  .flex-column {
+    @apply flex flex-col items-center;
+  }
+  .card-container {
+    @apply bg-white rounded-[1.6rem];
+  }
 }
 
 @layer utilities {
   .nav-container {
     @apply bg-black rounded-[1.6rem] w-auto gap-[1rem] sticky top-0 z-20;
+  }
+  .card-top {
+    @apply desktop:w-[23.2rem] desktop:h-[18.5rem] desktop:pt-[2.4rem] desktop:px-[3rem] tablet:w-[13.9rem] tablet:h-[11.1rem] tablet:pt-[1.4rem] tablet:px-[1.8rem] mobile:w-[20.8rem] h-[16.6rem] mobile:pt-[2.1rem] mobile:px-[2.7rem];
+  }
+  .home-section-container {
+    @apply bg-gradient-to-b from-[#ebeef4] from-100% to-[#ebeef4] to-0% rounded-[1.6rem] overflow-hidden border-solid border-[0.1rem] border-[#e0e6ee] tablet:flex justify-between tablet:w-[64rem] tablet:h-[32rem] mobile:w-[34.4rem] mobile:h-[42.4rem];
+  }
+  .home-section-h2 {
+    @apply text-gray-800 font-bold tablet:text-[2.2rem]/[3.2rem] mobile:text-[1.8rem]/[2.6rem];
+  }
+  .home-section-sub {
+    @apply text-gray-500 font-regular text-[1.2rem]/[1.6rem];
+  }
+  .visible-tablet {
+    @apply mobile:hidden tablet:flow-root;
+  }
+  .visible-mobile {
+    @apply tablet:hidden;
   }
 }
