@@ -28,25 +28,28 @@ export default function DropDownMenu({ onEdit, onDelete }: DropDownMenuProps) {
     setIsOpen(!isOpen);
   }
 
+  function handleMenuClick(callback?: () => void) {
+    if (callback) callback();
+    setIsOpen(false);
+  }
+
   return (
     <div ref={menuRef} className="relative inline-block">
       <button onClick={toggleDropDown}>
-        <Image src={MenuIcon} alt="메뉴 버튼" width={26} height={26} />
+        <Image src={MenuIcon} alt="메뉴 버튼" width={26} />
       </button>
 
       {isOpen && (
         <div className="absolute items-center right-0 mt-[0.8rem] w-[12.6rem] h-[10.4rem] border-solid border-[0.1rem] border-gray-300 rounded-[1.6rem] flex flex-col">
           <button
-            onClick={onEdit}
-            className="w-[12.6rem] h-[5.2rem] text-[1.6rem] font-medium leading-[2.6rem] items-center text-gray-800 
-            hover:bg-[#f1edfc]  hover:text-primary hover:rounded-[1.2rem] hover:w-[11.8rem] hover:h-[4.6rem] hover:m-[0.3rem_0.4rem]"
+            onClick={() => handleMenuClick(onEdit)}
+            className="w-[12.6rem] h-[5.2rem] text-[1.6rem] font-medium leading-[2.6rem] items-center dropdown-menu-button"
           >
             수정하기
           </button>
           <button
-            onClick={onDelete}
-            className="w-[12.6rem] h-[5.2rem] text-[1.6rem] font-medium leading-[2.6rem] items-center text-gray-800         
-            hover:bg-[#f1edfc] hover:text-primary hover:rounded-[1.2rem] hover:w-[11.8rem] hover:h-[4.6rem] hover:m-[0.3rem_0.4rem]"
+            onClick={() => handleMenuClick(onDelete)}
+            className="w-[12.6rem] h-[5.2rem] text-[1.6rem] font-medium leading-[2.6rem] items-center dropdown-menu-button"
           >
             삭제하기
           </button>

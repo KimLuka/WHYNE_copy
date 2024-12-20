@@ -535,6 +535,9 @@ template {
   .card-container {
     @apply bg-white rounded-[1.6rem];
   }
+  .dropdown-menu-button {
+    @apply text-gray-800 hover:bg-[#f1edfc] hover:text-primary hover:rounded-[1.2rem] hover:w-[11.8rem] hover:h-[4.6rem] hover:m-[0.3rem_0.4rem];
+  }
 }
 
 @layer utilities {
