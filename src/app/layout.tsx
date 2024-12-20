@@ -14,7 +14,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body>
+      <body className="max-w-full">
         <LandingNav />
         {children}
       </body>

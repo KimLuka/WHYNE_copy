@@ -23,7 +23,7 @@ export default {
       },
     },
     screens: {
-      desktop: "1920px",
+      desktop: "1024px",
       // => @media (min-width: 1920px) { ... }
 
       tablet: "744px",

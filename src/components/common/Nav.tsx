@@ -31,7 +31,7 @@ export default function Nav() {
   };
 
   return (
-    <header className="nav-container flex-between tablet:py-[1.1rem] mobile:py-[1.5rem] tablet:px-[6rem] mobile:px-[2rem] tablet:h-[7rem] mobile:h-[5rem] ">
+    <header className="nav-container flex-between tablet:py-[1.1rem] mobile:py-[1.5rem] tablet:px-[6rem] mobile:px-[2rem] tablet:h-[7rem] mobile:h-[5rem] tablet:my-[2.4rem] mobile:my-[1.6rem] mx-auto">
       <nav className="w-full flex-between">
         <Link href="/">
           <Image width={52} height={15} src={logo} alt="와인 로고" />
@@ -47,8 +47,8 @@ export default function Nav() {
                 alt="프로필 이미지"
                 layout="responsive"
                 objectFit="contain"
-                width={45}
-                height={45}
+                width={1}
+                height={1}
                 className="object-cover"
               />
             </button>
