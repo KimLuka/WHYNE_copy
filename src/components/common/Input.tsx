@@ -1,32 +1,42 @@
-import { InputHTMLAttributes } from "react";
+import { InputHTMLAttributes } from 'react';
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
-  isErrored?: boolean;
+  error?: string;
 }
 
 export default function Input({
     className,
-    isErrored = false,
+    error, 
     ...props
   }: Props) {
     const classCombined = `
-  w-full
-  h-[2.625rem] 
-  px-[2rem]
-  rounded-[1.1rem]
-  text-[1.2rem] font-regular
-  text-gray-800 
-  focus:border-primary
-  focus:outline-none
-  placeholder:text-gray-500 
-  tablet:h-[4.8rem]
-  tablet:rounded-[1.6rem] 
-  tablet:text-[1.4rem]
-  desktop:text-[1.6rem]
-  ${isErrored ? "border-[0.1rem] border-red" : "border-[0.1rem] border-gray-300"}
- // border 속성을 하나로 합침
-  ${className ? ` ${className}` : ""}
-  `;
+      w-full
+      min-h-[4rem] 
+      px-[2rem]
+      border-[0.1rem]
+      rounded-[1.1rem]
+      text-[1.2rem] 
+      font-regular
+      text-gray-800 
+      focus:border-primary
+      focus:outline-none
+      placeholder:text-gray-500 
+      desktop:text-[1.4rem]
+      ${error ? 'border-red' : 'border-gray-300'}
+      ${className || ''}
+    `.trim();
   
-    return <input className={classCombined} {...props} />;
+    return (
+      <div>
+        <input 
+          className={classCombined} 
+          {...props} 
+        />
+        {error && (
+          <p className='text-red text-[1rem] mt-[0.5rem]'>
+            {error}
+          </p>
+        )}
+      </div>
+    );
   }

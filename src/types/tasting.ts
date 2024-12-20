@@ -1,4 +1,5 @@
 export enum WineType {
+    None = "",
     Red = "RED",
     White = "WHITE",
     Sparkling = "SPARKLING",
