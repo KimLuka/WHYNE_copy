@@ -1,11 +1,9 @@
-"use client"; // useState 훅 사용 위해 클라이언트 컴포넌트로 명시(멘토님이 말씀주신 서버 클라이언트 제약사항?)
+"use client";
 
 import { useState } from "react";
-// import { validationRules } from "./rules";
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string;
-  // rules?: typeof validationRules.rules;
   minLengthRule?: number;
   maxLengthRule?: number;
   validationRule?: string;
@@ -13,12 +11,14 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   minLengthErrorMessage?: string;
   maxLengthErrorMessage?: string;
   validationMessage?: string;
+  comparePassword?: string;
+  onSignUpInfoChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export default function InputItem({
   label,
   id,
-  // rules,
+  name,
   minLengthRule,
   maxLengthRule,
   validationRule,
@@ -27,46 +27,13 @@ export default function InputItem({
   maxLengthErrorMessage = "최대 글자 수 기준보다 많습니다.",
   validationMessage = "입력값이 유효하지 않습니다.",
   required,
+  value,
+  onSignUpInfoChange,
+  comparePassword,
   ...props
 }: InputProps) {
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-
-  // const handleEmptyInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const value = e.target.value;
-  //   if (required && !value) {
-  //     setError(true);
-  //     setErrorMessage(rules?.messages.empty || "필수 입력입니다.");
-  //   } else {
-  //     setError(false);
-  //     setErrorMessage("");
-  //   }
-  // };
-
-  // const handleValidation = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const value = e.target.value;
-  //   if (rules?.minLength && value.length < rules.minLength) {
-  //     setError(true);
-  //     setErrorMessage(
-  //       rules.messages.minLength || "최소 글자 수 기준보다 짧습니다.",
-  //     );
-  //     return;
-  //   }
-  //   if (rules?.regex && !new RegExp(rules.regex).test(value)) {
-  //     setError(true);
-  //     setErrorMessage(rules.messages.invalid || "유효하지 않은 값입니다.");
-  //     return;
-  //   }
-  //   if (rules?.maxLength && value.length < rules.maxLength) {
-  //     setError(true);
-  //     setErrorMessage(
-  //       rules.messages.maxLength || "최대 글자 수 기준보다 깁니다.",
-  //     );
-  //     return;
-  //   }
-  //   setError(false);
-  //   setErrorMessage("");
-  // };
 
   const handleEmptyInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -75,10 +42,17 @@ export default function InputItem({
       setErrorMessage(emptyErrorMessage);
       return;
     }
+    handleValidation(e);
   };
 
   const handleValidation = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
+
+    if (comparePassword && value !== comparePassword) {
+      setError(true);
+      setErrorMessage(validationMessage);
+      return;
+    }
 
     if (minLengthRule && value.length < minLengthRule) {
       setError(true);
@@ -87,7 +61,6 @@ export default function InputItem({
     }
 
     if (validationRule) {
-      // validationRule?: RegExp; 로 하면 const regex 안 해도 되지만, 서버 컴포넌트에서 클라이언트 컴포넌트로 해당 객체는 전달 불가
       const regex = new RegExp(validationRule);
       if (!regex.test(value)) {
         setError(true);
@@ -119,11 +92,16 @@ export default function InputItem({
       </label>
       <input
         id={id}
+        name={name}
         className={`placeholder-gray-500 text-[1.6rem] border border-gray-300 rounded-[1.6rem] w-[40rem] h-[4.8rem] pl-[2rem]
         ${error ? "border-red" : "border-gray-300"}`}
         onKeyDown={handlePreventSpace}
         onBlur={handleEmptyInput}
-        onChange={handleValidation}
+        onChange={(e) => {
+          handleValidation(e);
+          onSignUpInfoChange?.(e);
+        }}
+        value={value}
         {...props}
       />
       {error && <span className="text-red">{errorMessage}</span>}

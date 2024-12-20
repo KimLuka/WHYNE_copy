@@ -2,3 +2,14 @@
 GET https://winereview-api.vercel.app/10-2/wines?limit=5 HTTP/1.1
 Content-Type: application/json
 
+###
+
+POST https://winereview-api.vercel.app/10-4/auth/signUp
+Content-Type: application/json
+
+  {
+     "email": "wine@whyne.com",
+     "nickname": "NapaVally",
+     "password": "12341234a",
+     "passwordConfirmation": "12341234a"
+   }

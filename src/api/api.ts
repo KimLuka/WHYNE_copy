@@ -5,6 +5,8 @@ const instance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_URL,
 });
 
+export default instance;
+
 // 요청 인터셉터
 axios.interceptors.request.use(
   function (config) {
