@@ -37,6 +37,10 @@ axios.interceptors.response.use(
 // 요청 파라미터 및 응답 타입 정의
 type RequestParam = { wineId?: number }; // wineId는 선택적 파라미터
 type GetWinesResponse = { title: string; desc: string }; // 응답 구조에 맞게 수정
+type LoginRequest = { email: string; password: string };
+type LoginResponse = { token: string; user: { id: number; name: string } };
+type RefreshTokenRequest = { refreshToken: string };
+type RefreshTokenResponse = { token: string; expiresIn: number };
 
 // 와인 정보 가져오기 함수
 export const getWines = async (params: RequestParam) => {
@@ -47,5 +51,30 @@ export const getWines = async (params: RequestParam) => {
   } catch (error) {
     console.error("와인 정보 가져오기 오류:", error);
     throw error; // 오류를 다시 던져서 호출한 곳에서 처리하게끔
+  }
+};
+
+// POST요청 로그인 함수
+export const loginUser = async (data: LoginRequest) => {
+  try {
+    const response = await instance.post<LoginResponse>("/auth/signIn", data);
+    return response;
+  } catch (error) {
+    console.error("로그인 오류", error);
+    throw error;
+  }
+};
+
+// 토큰 갱신 함수
+export const refreshToken = async (data: RefreshTokenRequest) => {
+  try {
+    const response = await instance.post<RefreshTokenResponse>(
+      "/auth/refresh-token",
+      data,
+    );
+    return response;
+  } catch (error) {
+    console.error("토큰 갱신 오류", error);
+    throw error;
   }
 };
