@@ -1,50 +1,59 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import Modal from '@/components/common/Modal-container';
+import { useState } from "react";
+import Modal from "@/components/common/modal-container";
+import Button from "@/components/common/Button";
 
-export default function ModalTestPage() {
-  const [isOpen, setIsOpen] = useState(false);
+export default function DeleteReviewModal() {
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
-  const handleOpen = () => {
-    console.log('Opening modal');
-    setIsOpen(true);
+  const handleOpenDeleteModal = () => {
+    setIsDeleteModalOpen(true);
   };
 
-  const handleClose = () => {
-    console.log('Closing modal');
-    setIsOpen(false);
+  const handleCloseDeleteModal = () => {
+    setIsDeleteModalOpen(false);
   };
-
-  console.log('Current isOpen state:', isOpen);
 
   return (
-    <div className='p-[0.8rem] bg-white text-[1rem]'>
-      <button 
-        onClick={handleOpen}
-        className='px-[1rem] py-[0.5rem] bg-primary text-white rounded hover:opacity-80 text-[1rem]'
+    <div>
+      <Button
+        type="button"
+        size="small"
+        color="white"
+        onClick={handleOpenDeleteModal}
       >
-        모달 열기
-      </button>
-      <Modal
-        isOpen={isOpen}
-        onClose={handleClose}
-      >
-        <div className='bg-white p-[1.6rem] rounded-lg min-w-[20rem] text-[1rem]'>
-          <h2 className='text-[1.2rem] font-bold mb-[1.2rem] text-black'>정말 삭제하시겠습니까?</h2>
-          <div className='flex gap-[0.8rem]'>
-            <button 
-              onClick={handleClose}
-              className='flex-1 px-[1rem] py-[0.7rem] border border-gray-200 text-gray-700 rounded hover:opacity-80 text-[1rem]'
-            >
-              취소
-            </button>
-            <button 
-              onClick={handleClose}
-              className='flex-1 px-[1rem] py-[0.7rem] bg-primary text-white rounded hover:opacity-80 text-[1rem]'
-            >
-              삭제하기
-            </button>
+        삭제하기
+      </Button>
+
+      <Modal isOpen={isDeleteModalOpen} onClose={handleCloseDeleteModal}>
+        <div className="rounded-[1.6rem] border border-solid border-light-gray-300 bg-light-white px-[1.6rem] pb-[2.4rem] pt-[3.2rem]">
+          <div className="flex w-[32.1rem] flex-col items-center gap-[4rem]">
+            <h1 className="text-xl-20px-bold text-light-gray-800">
+              정말 삭제하시겠습니까?
+            </h1>
+            <div className="flex w-full justify-between">
+              <div className="h-[5.4rem] w-[15.6rem]">
+                <Button
+                  type="button"
+                  size="small"
+                  color="white"
+                  onClick={handleCloseDeleteModal}
+                >
+                  취소
+                </Button>
+              </div>
+              <div className="h-[5.4rem] w-[15.6rem]">
+                <Button
+                  type="button"
+                  size="small"
+                  color="primary"
+                  onClick={() => {}}
+                >
+                  삭제
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
       </Modal>

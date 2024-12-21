@@ -17,8 +17,8 @@
     "next": "15.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "whyne": "file:",
     "react-hook-form": "^7.54.1",
+    "whyne": "file:",
     "zod": "^3.24.1"
   },
   "devDependencies": {

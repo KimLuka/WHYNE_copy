@@ -1,9 +1,9 @@
-// app/test/page.tsx
 "use client";
 
 import { useState } from "react";
-import Modal from "@/components/common/Modal-container";
-import AddWine from "@/components/Modal-add-wine";
+import Modal from "@/components/common/modal-container";
+import AddWine from "@/components/modal-add-wine";
+import DropDownMenu from "@/components/common/dropdown-menu";
 
 export default function TestPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -12,18 +12,36 @@ export default function TestPage() {
     setIsModalOpen(false);
   };
 
-  return (
-    <div className="flex h-screen items-center justify-center">
-      <button 
-        onClick={() => setIsModalOpen(true)}
-        className="rounded-xl bg-primary px-6 py-3 text-white hover:bg-[#7b52f1] transition-colors"
-      >
-        와인 등록하기
-      </button>
+  const handleEdit = () => {
+    console.log("수정하기");
+  };
 
-      <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
-        <AddWine onClose={handleCloseModal} />
-      </Modal>
+  const handleDelete = () => {
+    console.log("삭제하기");
+  };
+
+  return (
+    <div
+      className="flex flex-col items-center justify-center h-screen"
+      style={{ gap: "3.2rem" }}
+    >
+      <div>
+        <button
+          onClick={() => setIsModalOpen(true)}
+          className="rounded-[1.6rem] bg-primary px-[2.4rem] py-[1.2rem] text-[1.6rem] text-white hover:bg-[#7b52f1] transition-colors"
+        >
+          와인 등록하기
+        </button>
+
+        <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
+          <AddWine onClose={handleCloseModal} />
+        </Modal>
+      </div>
+
+      <div className="flex items-center" style={{ gap: "1.6rem" }}>
+        <h1 className="text-[1.6rem]">드롭다운 메뉴 테스트</h1>
+        <DropDownMenu onEdit={handleEdit} onDelete={handleDelete} />
+      </div>
     </div>
   );
 }
