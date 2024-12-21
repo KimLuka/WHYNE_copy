@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import MyReviewCard from "./MyReviewCard";
-import MyWineCard from "./MyWineCard";
+import MyReviewCard from "./my-review-card";
+import MyWineCard from "./my-wine-card";
 import "@/../public/images/placeholder1.png";
 
 const reviews = [

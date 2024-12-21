@@ -1,5 +1,5 @@
 import Image from "next/image";
-import DropDownMenu from "../common/DropDownMenu";
+import DropDownMenu from "../common/dropdown-menu";
 import StarFill from "../../../public/icons/star_fill.svg";
 // import StarEmpty from "../../../public/icons/star.svg";
 

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import DropDownMenu from "../common/DropDownMenu";
+import DropDownMenu from "../common/dropdown-menu";
 
 interface Wine {
   id: number;
