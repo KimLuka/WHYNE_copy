@@ -17,7 +17,7 @@ export default function SignUp() {
               src="/icons/black_large_logo.svg"
               alt="WHYNE 로고"
               width={104}
-              height={0}
+              height={30}
               className="block mx-auto"
             />
           </Link>
