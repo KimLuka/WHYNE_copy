@@ -1,93 +1,88 @@
 "use client";
 
-import { useState } from "react";
-import MyReviewCard from "./my-review-card";
-import MyWineCard from "./my-wine-card";
+import { useEffect, useState } from "react";
+import MyReviewCard, { Review } from "./my-review-card";
+import MyWineCard, { Wine } from "./my-wine-card";
 import "@/../public/images/placeholder1.png";
-
-const reviews = [
-  {
-    id: 1,
-    rating: 5.0,
-    createdAt: "2024-12-19T03:46:36.139Z",
-    name: "This Wine is Amazing",
-    content: "Highly recommend this wine for dinner parties.",
-  },
-  {
-    id: 2,
-    rating: 4.5,
-    createdAt: "2024-12-17T12:34:00.000Z",
-    name: "Decent Quality Wine",
-    content: "Good flavor, but slightly overpriced in my opinion.",
-  },
-  {
-    id: 3,
-    rating: 4.8,
-    createdAt: "2024-12-16T08:45:12.000Z",
-    name: "Smooth and Elegant",
-    content: "Perfect for a relaxing evening.",
-  },
-  {
-    id: 4,
-    rating: 5.0,
-    createdAt: "2024-12-18T14:46:36.139Z",
-    name: "This Wine is Amazing",
-    content: "Highly recommend this wine for dinner parties.",
-  },
-  {
-    id: 5,
-    rating: 4.5,
-    createdAt: "2024-12-17T12:34:00.000Z",
-    name: "Decent Quality Wine",
-    content: "Good flavor, but slightly overpriced in my opinion.",
-  },
-  {
-    id: 6,
-    rating: 4.8,
-    createdAt: "2024-12-16T08:45:12.000Z",
-    name: "Smooth and Elegant",
-    content: "Perfect for a relaxing evening.",
-  },
-];
-
-const wines = [
-  {
-    id: 1,
-    name: "Sentinel Cabernet Sauvignon 2016",
-    region: "Western Cape, South Africa",
-    image:
-      "https://cdn.discordapp.com/attachments/1275867779723034707/1319138863234420866/wine_image.png?ex=6764df4d&is=67638dcd&hm=3b9b74ebfa5bb12cb818c821c31800c950a1cfdad7fb1bb259bf0b5bae33b4aa&",
-    price: "64,990",
-  },
-  {
-    id: 2,
-    name: "Chateau Margaux 2018",
-    region: "Bordeaux, France",
-    image:
-      "https://cdn.discordapp.com/attachments/1275867779723034707/1319138863234420866/wine_image.png?ex=6764df4d&is=67638dcd&hm=3b9b74ebfa5bb12cb818c821c31800c950a1cfdad7fb1bb259bf0b5bae33b4aa&",
-    price: "320,000",
-  },
-  {
-    id: 3,
-    name: "Silver Oak Cabernet Sauvignon 2019",
-    region: "Napa Valley, USA",
-    image:
-      "https://i.pinimg.com/736x/47/32/2d/47322dba61a25d552f1bd0f9e57cddff.jpg",
-    price: "95,000",
-  },
-];
+import api from "@/api/api";
 
 export default function ProfileTab() {
-  const [activeTab, setActiveTab] = useState("reviews");
+  const [activeTab, setActiveTab] = useState<"reviews" | "wines">("reviews");
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [wines, setWines] = useState<Wine[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [totalCount, setTotalCount] = useState(0);
 
-  const itemCount = activeTab === "reviews" ? reviews.length : wines.length;
+  const limit = 20;
+
+  // 리뷰 데이터
+  async function fetchReviews() {
+    try {
+      setIsLoading(true);
+      const response = await api.get("/users/me/reviews", {
+        params: { limit },
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
+      const { list, totalCount } = response.data;
+
+      setReviews(list);
+      setTotalCount(totalCount);
+    } catch (error) {
+      console.error("리뷰 데이터 불러오기 실패", error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  // 와인 데이터
+  async function fetchWines() {
+    try {
+      setIsLoading(true);
+      const response = await api.get("/users/me/wines", {
+        params: { limit },
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
+      const { list, totalCount } = response.data;
+
+      setWines(list);
+      setTotalCount(totalCount);
+    } catch (error) {
+      console.error("와인 데이터 불러오기 실패", error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  // 탭 변경 시 데이터 가져오기
+  useEffect(() => {
+    localStorage.setItem(
+      "token",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDMxLCJ0ZWFtSWQiOiIxMS01Iiwic2NvcGUiOiJhY2Nlc3MiLCJpYXQiOjE3MzQ4MzI3NTcsImV4cCI6MTczNDgzNDU1NywiaXNzIjoic3AtZXBpZ3JhbSJ9.gK6WHSwirVftj06bUoarWHRA-QCO4_NuRm7fK8wrEfM",
+    );
+    if (activeTab === "reviews") {
+      fetchReviews();
+    } else {
+      fetchWines();
+    }
+  }, [activeTab]);
 
   return (
-    <div className="w-[80rem] h-[3.2rem]">
+    <div className="desktop:w-[80rem] desktop:h-[3.2rem] tablet:w-full mobile:w-full">
       <div className="flex justify-between items-center ">
         <div>
           <button
-            className={`w-[9.6rem] h-[3.2rem] text-[2rem] font-semibold leading-[3.2rem] ${activeTab === "reviews" ? "text-gray-800" : "text-gray-500"}`}
+            className={`
+              desktop:w-[9.6rem] desktop:h-[3.2rem] desktop:text-[2rem] desktop:leading-[3.2rem]
+              tablet:w-[9.6rem] tablet:h-[3.2rem] tablet:text-[2rem] tablet:leading-[3.2rem]
+              mobile:w-[8.7em] mobile:h-[2.6rem] mobile:text-[1.8rem] mobile:leading-[2.6rem]
+              
+              font-semibold ${activeTab === "reviews" ? "text-gray-800" : "text-gray-500"}`}
             onClick={() => setActiveTab("reviews")}
           >
             내가 쓴 후기
@@ -100,10 +95,11 @@ export default function ProfileTab() {
           </button>
         </div>
         <p className="font-regular text-[1.4rem] leading-[2.4rem] text-right text-primary">
-          {`총 ${itemCount}개`}
+          {`총 ${totalCount}개`}
         </p>
       </div>
 
+      {isLoading && <div></div>}
       <div>
         {activeTab === "reviews" ? (
           <div className="mt-[2.2rem] space-y-[2rem]">

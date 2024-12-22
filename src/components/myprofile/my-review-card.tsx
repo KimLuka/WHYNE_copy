@@ -24,7 +24,7 @@ function timeAgo(createdAt: string): string {
   }
 }
 
-interface Review {
+export interface Review {
   id: number;
   rating: number;
   createdAt: string;
@@ -34,7 +34,7 @@ interface Review {
 
 export default function MyReviewCard({ review }: { review: Review }) {
   return (
-    <div className="w-[80rem] min-h-[20.2rem] border-solid border-[0.1rem] bg-white rounded-[1.6rem] border-gray-300 p-[2.4rem_4rem]">
+    <div className="desktop:w-[80rem] tablet:w-full min-h-[20.2rem] border-solid border-[0.1rem] bg-white rounded-[1.6rem] border-gray-300 p-[2.4rem_4rem]">
       <div className="flex justify-between items-center">
         <div className="flex items-center">
           <div className="mr-[1.5rem] w-[8rem] h-[4.2rem] rounded-[1.2rem] p-[0.8rem_1.5rem] bg-[#f1edfc] flex items-center">

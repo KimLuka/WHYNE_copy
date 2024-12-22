@@ -1,17 +1,21 @@
 import Image from "next/image";
 import DropDownMenu from "../common/dropdown-menu";
 
-interface Wine {
+export interface Wine {
   id: number;
   name: string;
   region: string;
   image: string;
-  price: string;
+  price: number;
 }
 
 export default function MyWineCard({ wine }: { wine: Wine }) {
+  function formatPrice(price: number): string {
+    return new Intl.NumberFormat("ko-KR").format(price);
+  }
+
   return (
-    <div className="w-[80rem] min-h-[27rem] flex">
+    <div className="desktop:w-[80rem] tablet:w-full min-h-[27rem] flex">
       <div className="mt-[4rem]">
         <div className="relative w-[80rem] h-[22.8rem] border-solid border-[0.1rem] bg-white rounded-[1.6rem] border-gray-300 pl-[4rem] flex items-end">
           <div className="relative w-[7.6rem] h-[27rem] overflow-hidden">
@@ -35,11 +39,11 @@ export default function MyWineCard({ wine }: { wine: Wine }) {
                 </p>
               </div>
               <p className="bg-[#F1EDFC] min-w-[11.4rem] h-[3.7rem] p-[0.55rem_1.5rem] rounded-[1.2rem] gap-[1rem] text-[1.8rem] text-primary font-bold leading-[2.6rem] inline-block">
-                ₩ {wine.price}
+                ₩ {formatPrice(wine.price)}
               </p>
             </div>
             <div className="m-[3rem_4rem]">
-              <DropDownMenu />
+              <DropDownMenu menuIconSize={26} />
             </div>
           </div>
         </div>

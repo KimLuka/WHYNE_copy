@@ -1,5 +1,5 @@
-import Profile from "@/components/myprofile/Profile";
-import ProfileTab from "@/components/myprofile/ProfileTab";
+import Profile from "@/components/myprofile/profile";
+import ProfileTab from "@/components/myprofile/profile-tab";
 
 export default function MyProfilePage() {
   return (

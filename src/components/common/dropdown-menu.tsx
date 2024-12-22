@@ -7,9 +7,14 @@ import MenuIcon from "@/../public/icons/menu.svg";
 interface DropDownMenuProps {
   onEdit?: () => void;
   onDelete?: () => void;
+  menuIconSize?: number;
 }
 
-export default function DropDownMenu({ onEdit, onDelete }: DropDownMenuProps) {
+export default function DropDownMenu({
+  onEdit,
+  onDelete,
+  menuIconSize = 26,
+}: DropDownMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -36,7 +41,7 @@ export default function DropDownMenu({ onEdit, onDelete }: DropDownMenuProps) {
   return (
     <div ref={menuRef} className="relative inline-block">
       <button onClick={toggleDropDown}>
-        <Image src={MenuIcon} alt="메뉴 버튼" width={26} />
+        <Image src={MenuIcon} alt="메뉴 버튼" width={menuIconSize} />
       </button>
 
       {isOpen && (
