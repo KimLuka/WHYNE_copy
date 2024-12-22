@@ -8,6 +8,25 @@ import { useRouter } from "next/navigation";
 import { AxiosError } from "axios";
 import instance from "@/api/api";
 
+interface User {
+  id: number;
+  email: string;
+  nickname: string;
+  teamId: string;
+  updatedAt: string;
+  createdAt: string;
+  image: string | null;
+}
+interface SignUpResponse {
+  accessToken: string;
+  refreshToken: string;
+  user: User;
+}
+
+interface ErrorResponse {
+  message: string;
+}
+
 export default function SignUpForm() {
   const [values, setValues] = useState({
     email: "",
@@ -43,31 +62,39 @@ export default function SignUpForm() {
       return;
     }
 
-    if (values.password !== values.passwordConfirmation) {
-      alert("비밀번호가 일치하지 않습니다.");
-      return;
-    }
-
     const { email, nickname, password, passwordConfirmation } = values;
 
     try {
-      await instance.post("/10-4/auth/signUp", {
+      await instance.post("/auth/signUp", {
         email,
         nickname,
         password,
         passwordConfirmation,
       });
-      await instance.post("/10-4/auth/signIn", {
-        email,
-        password,
-      });
-      router.push("/");
+        
+      const signInResponse = await instance.post<SignUpResponse>(
+        "/auth/signIn",
+        {
+          email,
+          password,
+        },
+      );
+
+      const { accessToken, refreshToken } = signInResponse.data;
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
+
+      router.replace("/");
     } catch (error) {
       const axiosError = error as AxiosError;
       console.error(axiosError.response?.data || axiosError.message);
 
+      const errorData = axiosError.response?.data as ErrorResponse;
+
       alert(
-        "회원가입에 실패했습니다. 입력 정보를 확인해주시고 잠시 후 다시 시도해주세요.",
+        errorData?.message ||
+          axiosError.message ||
+          "회원가입에 실패했습니다. 입력 정보를 확인해주시고 잠시 후 다시 시도해주세요.",
       );
     }
   };
