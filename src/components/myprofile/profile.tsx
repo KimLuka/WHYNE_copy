@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Button from "../common/Button";
 import DefaultProfile from "@/../public/images/profile_white.svg";
-import CameraIcon from "@/../public/icons/photo.svg";
+import CameraIcon from "@/../public/icons/photo_white.svg";
 import { useEffect, useState } from "react";
 import api from "@/api/api";
 
@@ -121,10 +121,6 @@ export default function Profile() {
   }
 
   useEffect(() => {
-    localStorage.setItem(
-      "token",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDMxLCJ0ZWFtSWQiOiIxMS01Iiwic2NvcGUiOiJhY2Nlc3MiLCJpYXQiOjE3MzQ4MzI3NTcsImV4cCI6MTczNDgzNDU1NywiaXNzIjoic3AtZXBpZ3JhbSJ9.gK6WHSwirVftj06bUoarWHRA-QCO4_NuRm7fK8wrEfM",
-    );
     fetchProfile();
   }, []);
 
@@ -151,7 +147,7 @@ export default function Profile() {
             height={164}
             className="desktop:w-[16.4rem] desktop:h-[16.4rem] rounded-full tablet:w-[8rem] tablet:h-[8rem] mobile:w-[6rem] mobile:h-[6rem]"
           />
-          <div className="absolute rounded-full inset-0 bg-primary opacity-0 group-hover:opacity-80 transition-opacity"></div>
+          <div className="absolute rounded-full inset-0 bg-primary opacity-0 group-hover:opacity-30 transition-opacity"></div>
           <div className="absolute opacity-0 group-hover:opacity-100">
             <Image
               src={CameraIcon}

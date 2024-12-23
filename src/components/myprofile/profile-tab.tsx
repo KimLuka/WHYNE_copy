@@ -61,10 +61,6 @@ export default function ProfileTab() {
 
   // 탭 변경 시 데이터 가져오기
   useEffect(() => {
-    localStorage.setItem(
-      "token",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDMxLCJ0ZWFtSWQiOiIxMS01Iiwic2NvcGUiOiJhY2Nlc3MiLCJpYXQiOjE3MzQ4MzI3NTcsImV4cCI6MTczNDgzNDU1NywiaXNzIjoic3AtZXBpZ3JhbSJ9.gK6WHSwirVftj06bUoarWHRA-QCO4_NuRm7fK8wrEfM",
-    );
     if (activeTab === "reviews") {
       fetchReviews();
     } else {

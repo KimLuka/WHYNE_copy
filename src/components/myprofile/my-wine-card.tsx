@@ -1,5 +1,6 @@
 import Image from "next/image";
 import DropDownMenu from "../common/dropdown-menu";
+import MenuIcon from "@/../public/icons/menu.svg";
 
 export interface Wine {
   id: number;
@@ -43,7 +44,13 @@ export default function MyWineCard({ wine }: { wine: Wine }) {
               </p>
             </div>
             <div className="m-[3rem_4rem]">
-              <DropDownMenu menuIconSize={26} />
+              <DropDownMenu>
+                <Image
+                  src={MenuIcon}
+                  alt="메뉴 아이콘"
+                  className="desktop:w-[2.6rem] tablet:w-[2.6rem] mobile:w-[2.4rem] desktop:h-[2.6rem] tablet:h-[2.6rem] mobile:h-[2.4rem]"
+                />
+              </DropDownMenu>
             </div>
           </div>
         </div>

@@ -1,19 +1,17 @@
 "use client";
 
-import Image from "next/image";
-import { useState, useEffect, useRef } from "react";
-import MenuIcon from "@/../public/icons/menu.svg";
+import { useState, useEffect, useRef, ReactNode } from "react";
 
 interface DropDownMenuProps {
   onEdit?: () => void;
   onDelete?: () => void;
-  menuIconSize?: number;
+  children: ReactNode;
 }
 
 export default function DropDownMenu({
   onEdit,
   onDelete,
-  menuIconSize = 26,
+  children,
 }: DropDownMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -40,12 +38,10 @@ export default function DropDownMenu({
 
   return (
     <div ref={menuRef} className="relative inline-block">
-      <button onClick={toggleDropDown}>
-        <Image src={MenuIcon} alt="메뉴 버튼" width={menuIconSize} />
-      </button>
+      <button onClick={toggleDropDown}>{children}</button>
 
       {isOpen && (
-        <div className="absolute items-center right-0 mt-[0.8rem] w-[12.6rem] h-[10.4rem] border-solid border-[0.1rem] border-gray-300 rounded-[1.6rem] flex flex-col">
+        <div className="absolute items-center right-0 mt-[0.8rem] w-[12.6rem] h-[10.4rem] border-solid border-[0.1rem] border-gray-300 rounded-[1.6rem] flex flex-col bg-white">
           <button
             onClick={() => handleMenuClick(onEdit)}
             className="w-[12.6rem] h-[5.2rem] text-[1.6rem] font-medium leading-[2.6rem] items-center dropdown-menu-button"

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import DropDownMenu from "../common/dropdown-menu";
 import StarFill from "../../../public/icons/star_fill.svg";
+import MenuIcon from "@/../public/icons/menu.svg";
 // import StarEmpty from "../../../public/icons/star.svg";
 
 function timeAgo(createdAt: string): string {
@@ -38,7 +39,7 @@ export default function MyReviewCard({ review }: { review: Review }) {
       <div className="flex justify-between items-center">
         <div className="flex items-center">
           <div className="mr-[1.5rem] w-[8rem] h-[4.2rem] rounded-[1.2rem] p-[0.8rem_1.5rem] bg-[#f1edfc] flex items-center">
-            <Image src={StarFill} alt="별점" width={20} height={20} />
+            <Image src={StarFill} alt="별점" className="w-[2rem] h-[2rem]" />
             <p className="text-primary font-bold text-[1.8rem]">
               {review.rating.toFixed(1)}
             </p>
@@ -47,7 +48,13 @@ export default function MyReviewCard({ review }: { review: Review }) {
             {timeAgo(review.createdAt)}
           </p>
         </div>
-        <DropDownMenu />
+        <DropDownMenu>
+          <Image
+            src={MenuIcon}
+            alt="메뉴 아이콘"
+            className="desktop:w-[2.6rem] tablet:w-[2.6rem] mobile:w-[2.4rem] desktop:h-[2.6rem] tablet:h-[2.6rem] mobile:h-[2.4rem]"
+          />
+        </DropDownMenu>
       </div>
       <div className="mt-[2rem]">
         <div className="leading-[2.6rem] text-[1.6rem] font-medium text-gray-500">
