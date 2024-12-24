@@ -90,16 +90,22 @@ export default function InputItem({
     }
   };
   return (
-    <div className="gap-[1rem] flex flex-col">
-      <label htmlFor={id} className="text-[1.6rem] font-medium">
+    <div className="flex flex-col gap-[1rem]">
+      <label
+        htmlFor={id}
+        className="text-[1.6rem] font-medium mobile:text-[1.4rem]"
+      >
         {label}
       </label>
       <input
         id={id}
         name={name}
-        className={`placeholder-gray-500 text-[1.6rem] border border-gray-300 
-          rounded-[1.6rem] w-[40rem] h-[4.8rem] pl-[2rem] focus:border-primary focus:outline-none
-        ${error ? "border-red" : "border-gray-300"}`}
+        className={`placeholder-gray-500 text-[1.6rem] border border-gray-300 rounded-[1.6rem] pl-[2rem]
+          focus:border-primary focus:outline-none
+          desktop:w-[40rem] desktop:h-[4.8rem]
+          tablet:w-[40rem] tablet:h-[4.8rem]
+          mobile:w-[30.3rem] mobile:h-[4.2rem] mobile:text-[1.4rem]
+        ${error ? "border-2" : "border-gray-300"}`}
         onKeyDown={handlePreventSpace}
         onBlur={handleEmptyInput}
         onChange={(e) => {
@@ -109,7 +115,7 @@ export default function InputItem({
         value={value}
         {...props}
       />
-      {error && <span className="text-red">{errorMessage}</span>}
+      {error && <span className="text-primary">{errorMessage}</span>}
     </div>
   );
 }

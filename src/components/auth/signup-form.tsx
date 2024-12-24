@@ -83,7 +83,7 @@ export default function SignUpForm() {
 
   return (
     <div className="flex flex-col gap-[4rem]">
-      <form className="gap-[2.4rem] flex flex-col">
+      <form className="flex flex-col gap-[2.4rem] mobile:gap-[1.6rem]">
         <InputItem
           label="이메일"
           id="email"
@@ -144,7 +144,8 @@ export default function SignUpForm() {
           type="submit"
           size="large"
           color="primary"
-          addClassName="text-[1.6rem] font-bold mt-[0.8rem] rounded-[1.6rem]"
+          addClassName="text-[1.6rem] font-bold mt-[0.8rem] rounded-[1.6rem]
+          mobile:px-[12.7rem] mobile:py-[1.2rem] mobile:text-[1.4rem] mobile:mt-[3.2rem]"
           onClick={handleSignUpButtonClick}
         >
           가입하기
@@ -153,7 +154,7 @@ export default function SignUpForm() {
       <p className="flex gap-[1rem] text-gray-500 text-[1.6rem] mx-auto">
         계정이 이미 있으신가요?
         <Link href="/signin" aria-label="로그인으로 이동">
-          <span className="text-primary text-[1.6rem] font-medium underline">
+          <span className="text-primary text-[1.6rem] font-medium underline mobile:text-[1.4rem]">
             로그인하기
           </span>
         </Link>
