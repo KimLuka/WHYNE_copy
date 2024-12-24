@@ -553,6 +553,12 @@ template {
   .home-section-sub {
     @apply text-gray-500 font-regular text-[1.2rem]/[1.6rem];
   }
+  .slider-range {
+    @apply absolute w-full h-[0.6rem] rounded-[5rem] bg-primary cursor-pointer;
+  }
+  .slider-thumb {
+    @apply bg-white w-[2rem] h-[2rem] rounded-full border-solid border-[0.1rem] border-gray-300 drop-shadow-[0_0.2rem_2rem_0_rgba(0,0,0,0.4)];
+  }
 }
 
 @layer utilities {
@@ -580,5 +586,21 @@ template {
   }
   .price-range::-ms-thumb {
     @apply bg-white w-[2rem] h-[2rem] rounded-full border-solid border-[0.1rem] border-gray-300 drop-shadow-[0_0.2rem_2rem_0_rgba(0,0,0,0.4)];
+  }
+
+  .swiper-wrapper {
+    @apply desktop:gap-[1.6rem] tablet:gap-[1.5rem] mobile:gap-[1rem];
+  }
+  .swiper-button-next {
+    @apply w-[2.4rem] h-[2.4rem] flex items-center justify-center bg-[rgba(255,255,255,0.8)] rounded-[1rem] shadow-[0rem_0.2rem_0.4rem_0rem_rgba(0,0,0,0.2)];
+  }
+  .swiper-button-next:hover {
+    @apply bg-[rgba(241,237,252,0.6)]
+    /* background-color: rgba(0, 0, 0, 0.8);
+    color: #fff; */;
+  }
+
+  .swiper-button-next::after {
+    @apply hidden;
   }
 }

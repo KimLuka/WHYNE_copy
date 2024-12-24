@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "@/styles/globals.css";
-import LandingNav from "@/components/common/Nav";
+import Nav from "@/components/common/Nav";
 
 export const metadata: Metadata = {
   title: "WHYNE",
@@ -15,7 +15,7 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body className="max-w-full">
-        <LandingNav />
+        <Nav />
         {children}
       </body>
     </html>

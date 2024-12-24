@@ -1,10 +1,23 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 
-export default function PriceFilter() {
+interface PriceFilterProps {
+  onChange: (minPrice: number, maxPrice: number) => void; // 가격 범위 변경 시 부모로 전달하는 함수
+}
+
+export default function PriceFilter({ onChange }: PriceFilterProps) {
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(1000000);
+
+  // onChange를 호출하는 핸들러를 useCallback으로 메모화
+  const handleFilterChange = useCallback(() => {
+    onChange(minPrice, maxPrice);
+  }, [minPrice, maxPrice, onChange]);
+
+  useEffect(() => {
+    handleFilterChange(); // 가격 범위를 부모 컴포넌트로 전달
+  }, [handleFilterChange]);
 
   const handleMinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = Math.min(Number(e.target.value), maxPrice - 1000);
@@ -32,6 +45,13 @@ export default function PriceFilter() {
         </label>
       </div>
       <div className="relative h-2 bg-gray-300 rounded-full">
+        <div
+          className="absolute h-2 bg-primary rounded-full"
+          style={{
+            left: `${(minPrice / 1000000) * 100}%`,
+            right: `${100 - (maxPrice / 1000000) * 100}%`,
+          }}
+        />
         <input
           type="range"
           id="minPrice"

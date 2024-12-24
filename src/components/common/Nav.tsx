@@ -31,7 +31,7 @@ export default function Nav() {
   };
 
   return (
-    <header className="nav-container flex-between tablet:py-[1.1rem] mobile:py-[1.5rem] tablet:px-[6rem] mobile:px-[2rem] tablet:h-[7rem] mobile:h-[5rem] tablet:my-[2.4rem] mobile:my-[1.6rem] mx-auto">
+    <header className="nav-container flex-between tablet:py-[1.1rem] mobile:py-[1.5rem] tablet:px-[6rem] mobile:px-[2rem] tablet:h-[7rem] mobile:h-[5rem] tablet:mt-[2.4rem] mobile:mt-[1.6rem] mx-auto">
       <nav className="w-full flex-between">
         <Link href="/">
           <Image width={52} height={15} src={logo} alt="와인 로고" />
