@@ -92,7 +92,7 @@ function StarRating({
   };
 
   return (
-    <div className="inline-flex items-center gap-[0.1rem]">{renderStars()}</div>
+    <div className="inline-flex items-center gap-[0.3rem]">{renderStars()}</div>
   );
 }
 

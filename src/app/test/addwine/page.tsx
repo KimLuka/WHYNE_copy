@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Modal from "@/components/common/modal-container";
-import AddWine from "@/components/modal-add-wine";
+import AddWine from "@/components/common/modal-add-wine";
 import DropDownMenu from "@/components/common/dropdown-menu";
 
 export default function TestPage() {

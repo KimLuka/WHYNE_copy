@@ -6,6 +6,7 @@ import Button from "@/components/common/Button";
 import Input from "@/components/common/input";
 import ImageInput from "@/components/common/image-input";
 import WineTypeDropdown from "@/components/common/wine-type-drop-down";
+import api from "@/api/api";
 
 interface Props {
   onClose: () => void;
@@ -24,9 +25,36 @@ export default function AddWine({ onClose }: Props) {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [touched, setTouched] = useState<Record<string, boolean>>({});
 
+  // 이미지 업로드 함수 추가
+  const uploadImage = async (file: File) => {
+    const token = localStorage.getItem("accessToken"); // ✨ 변경
+    if (!token) throw new Error("인증 토큰이 없습니다."); // ✨ 추가
+
+    const formData = new FormData();
+    formData.append("image", file);
+
+    try {
+      const response = await api.post<{ url: string }>(
+        "/images/upload",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // ✨ 변경
+            "Content-Type": "multipart/form-data",
+          },
+        },
+      );
+      return response.data.url;
+    } catch (error) {
+      console.error("이미지 업로드 실패", error);
+      throw error; // ✨ 변경: 에러를 throw하도록 수정
+    }
+  };
+
+  // 유효성 검사 함수
   const validateField = (
     id: string,
-    value: string | number | WineType | null,
+    value: string | number | WineType | null | File,
   ): string => {
     if (value === null) return "값을 입력해주세요.";
 
@@ -51,7 +79,10 @@ export default function AddWine({ onClose }: Props) {
         return value === WineType.None ? "와인 타입을 선택해주세요." : "";
 
       case "image":
-        return !imageFile ? "이미지를 선택해주세요." : "";
+        if (value instanceof File) {
+          return imageFile ? "" : "이미지를 선택해주세요.";
+        }
+        return "";
 
       default:
         return "";
@@ -132,8 +163,12 @@ export default function AddWine({ onClose }: Props) {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    console.log("폼 제출 시작");
 
-    const allFields = ["name", "price", "region", "type", "image"];
+    const allFields = ["name", "price", "region", "type"]; // image 필드 제외
+    console.log("현재 values:", values);
+    console.log("현재 imageFile:", imageFile);
+
     const allTouched = allFields.reduce(
       (acc, field) => ({
         ...acc,
@@ -143,34 +178,87 @@ export default function AddWine({ onClose }: Props) {
     );
     setTouched(allTouched);
 
-    // 모든 필드 유효성 검사
     const newErrors: Record<string, string> = {};
     allFields.forEach((field) => {
       const value = values[field as keyof NewWineData];
       const errorMessage = validateField(field, value);
+      console.log(`${field} 검증:`, { value, errorMessage });
       if (errorMessage) {
         newErrors[field] = errorMessage;
       }
     });
 
+    // 이미지 파일 별도 검증
+    if (!imageFile) {
+      newErrors.image = "이미지를 선택해주세요.";
+    }
+
+    console.log("검증 결과:", newErrors);
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
+      console.log("검증 통과, API 호출 시도");
       try {
         if (!imageFile) {
-          throw new Error("이미지 파일이 등록되지 않았습니다");
+          console.log("이미지 파일 누락");
+          throw new Error("이미지 파일이 등록되지 않았습니다.");
         }
+
+        const token = localStorage.getItem("accessToken");
+        console.log("실제 토큰 값:", token); // ✨ 추가
+        console.log("토큰 확인:", token ? "존재" : "없음");
+
+        if (!token) {
+          throw new Error("인증 토큰이 없습니다.");
+        }
+
+        // 이미지 업로드
+        console.log("이미지 업로드 시도");
+        const imageUrl = await uploadImage(imageFile);
+        console.log("이미지 업로드 결과:", imageUrl);
+
+        if (!imageUrl) {
+          throw new Error("이미지 업로드에 실패했습니다.");
+        }
+
+        // 와인 데이터 등록
+        console.log("와인 데이터 제출 시도", {
+          name: values.name,
+          region: values.region,
+          price: values.price,
+          type: values.type,
+          image: imageUrl,
+        });
+
+        const response = await api.post(
+          "/wines",
+          {
+            name: values.name,
+            region: values.region,
+            price: values.price,
+            type: values.type,
+            image: imageUrl,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
+
+        console.log("와인 등록 성공:", response);
         onClose();
       } catch (error) {
-        console.error("이미지 업로드 실패:", error);
+        console.error("에러 발생:", error);
         setErrors((prev) => ({
           ...prev,
-          image: "이미지 업로드에 실패했습니다.",
+          global: "와인 등록 중 문제가 발생했습니다.",
         }));
       }
+    } else {
+      console.log("검증 실패로 API 호출 중단");
     }
   };
-
   const isSubmitDisabled =
     !values.name ||
     !values.region ||

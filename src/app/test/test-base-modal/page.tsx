@@ -32,6 +32,7 @@ export default function DeleteReviewModal() {
             <h1 className="text-xl-20px-bold text-light-gray-800">
               정말 삭제하시겠습니까?
             </h1>
+            6
             <div className="flex w-full justify-between">
               <div className="h-[5.4rem] w-[15.6rem]">
                 <Button

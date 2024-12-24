@@ -5,11 +5,10 @@ export enum WineType {
   Sparkling = "SPARKLING",
 }
 
-
 export interface NewWineData {
   name: string;
   region: string;
-  image: string | null;
+  image: string | File; // 수정
   price: number;
   type: WineType;
 }
