@@ -268,16 +268,19 @@ export default function AddWine({ onClose }: Props) {
     Object.keys(errors).length > 0;
 
   return (
-    <div className="w-[35rem] h-[70rem] rounded-[1.5rem] bg-white">
-      <article className="flex flex-col px-[2rem] py-[1.5rem]">
-        <h1 className="text-[1.9rem] font-bold mt-[1rem] mb-[5rem]">
+    <div className="flex flex-col h-full">
+      <article className="flex-1 px-[2.4rem]">
+        <h1 className="text-xl tablet:text-2xl font-bold mt-[2.4rem] mb-[2.4rem] tablet:mb-[3.2rem]">
           와인 등록
         </h1>
 
-        <form className="flex flex-col gap-[2.5rem]" onSubmit={handleSubmit}>
-          <div className="flex flex-col gap-[2.5rem]">
-            <div className="flex flex-col gap-[1.5rem]">
-              <label htmlFor="name" className="text-[1.125rem] font-medium">
+        <form className="flex flex-col h-full" onSubmit={handleSubmit}>
+          <div className="flex-1 flex flex-col gap-[2rem] tablet:gap-[2.4rem]">
+            <div className="flex flex-col gap-[0.8rem] tablet:gap-[1rem]">
+              <label
+                htmlFor="name"
+                className="text-base tablet:text-lg font-medium"
+              >
                 와인 이름
               </label>
               <Input
@@ -286,13 +289,15 @@ export default function AddWine({ onClose }: Props) {
                 onChange={handleWineValueChange}
                 onBlur={() => handleBlur("name")}
                 value={values.name}
-                className="w-full"
                 error={shouldShowError("name") ? errors.name : ""}
               />
             </div>
 
-            <div className="flex flex-col gap-[1rem]">
-              <label htmlFor="price" className="text-[1.125rem] font-medium">
+            <div className="flex flex-col gap-[0.8rem] tablet:gap-[1rem]">
+              <label
+                htmlFor="price"
+                className="text-base tablet:text-lg font-medium"
+              >
                 가격
               </label>
               <Input
@@ -307,8 +312,11 @@ export default function AddWine({ onClose }: Props) {
               />
             </div>
 
-            <div className="flex flex-col gap-[1rem]">
-              <label htmlFor="region" className="text-[1.125rem] font-medium">
+            <div className="flex flex-col gap-[0.8rem] tablet:gap-[1rem]">
+              <label
+                htmlFor="region"
+                className="text-base tablet:text-lg font-medium"
+              >
                 원산지
               </label>
               <Input
@@ -321,8 +329,11 @@ export default function AddWine({ onClose }: Props) {
               />
             </div>
 
-            <div className="flex flex-col gap-[1rem]">
-              <label htmlFor="type" className="text-[1.125rem] font-medium">
+            <div className="flex flex-col gap-[0.8rem] tablet:gap-[1rem]">
+              <label
+                htmlFor="type"
+                className="text-base tablet:text-lg font-medium"
+              >
                 타입
               </label>
               <WineTypeDropdown
@@ -333,8 +344,11 @@ export default function AddWine({ onClose }: Props) {
               />
             </div>
 
-            <div className="flex flex-col gap-[1rem]">
-              <label htmlFor="image" className="text-[1.125rem] font-medium">
+            <div className="flex flex-col gap-[0.8rem] tablet:gap-[1rem]">
+              <label
+                htmlFor="image"
+                className="text-base tablet:text-lg font-medium"
+              >
                 이미지
               </label>
               <ImageInput
@@ -346,13 +360,13 @@ export default function AddWine({ onClose }: Props) {
             </div>
           </div>
 
-          <div className="flex gap-[1rem] mt-[1rem]">
+          <div className="flex gap-[1rem] mt-[2rem] tablet:mt-[2.4rem] sticky bottom-0 bg-white py-[1.6rem]">
             <Button
               size="small"
               color="white"
               type="button"
               onClick={onClose}
-              addClassName="flex-1 text-primary font-bold"
+              addClassName="flex-1 text-primary font-bold min-h-[4rem] text-base tablet:text-lg"
             >
               취소
             </Button>
@@ -361,7 +375,7 @@ export default function AddWine({ onClose }: Props) {
               color="primary"
               type="submit"
               disabled={isSubmitDisabled}
-              addClassName="flex-[2.4] font-bold"
+              addClassName="flex-[2.4] font-bold min-h-[4rem] text-base tablet:text-lg"
             >
               와인 등록하기
             </Button>

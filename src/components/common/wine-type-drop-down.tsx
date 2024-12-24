@@ -95,7 +95,7 @@ const WineTypeDropdown: React.FC<WineTypeDropdownProps> = ({
       </div>
 
       {isOpen && (
-        <div className="absolute items-center right-0 mt-[0.8rem] w-[31rem] h-[15.6rem] border-solid border-[0.1rem] border-gray-300 rounded-[1.4rem] flex flex-col p-[0.4rem] bg-white z-50">
+        <div className="absolute items-center right-0 mt-[0.8rem] w-full h-[15.6rem] border-solid border-[0.1rem] border-gray-300 rounded-[1.4rem] flex flex-col p-[0.4rem] bg-white z-50">
           {options.map((option) => (
             <div
               key={option.value}
