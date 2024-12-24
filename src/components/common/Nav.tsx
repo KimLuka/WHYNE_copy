@@ -1,27 +1,36 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import logo from "../../../public/icons/white_medium_logo.svg";
 import profile from "../../../public/images/example_profile.svg";
+import { useAuth } from "@/context/auth-provider";
 
 export default function Nav() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const router = useRouter();
 
-  useEffect(() => {
-    const token = localStorage.getItem("accessToken");
-    if (token) {
-      setIsLoggedIn(true);
-    }
-  }, []);
+  const { user, logout } = useAuth(false);
+
+  // useEffect(() => {
+  //   const token = localStorage.getItem("accessToken");
+  //   if (token) {
+  //     setIsLoggedIn(true);
+  //   }
+  // }, []);
+
+  // const handleLogout = () => {
+  //   localStorage.removeItem("accessToken");
+  //   setIsLoggedIn(false);
+  //   setShowMenu(false);
+  //   router.push("/");
+  // };
 
   const handleLogout = () => {
-    localStorage.removeItem("accessToken");
-    setIsLoggedIn(false);
+    logout();
     setShowMenu(false);
     router.push("/");
   };
@@ -36,7 +45,7 @@ export default function Nav() {
         <Link href="/">
           <Image width={52} height={15} src={logo} alt="와인 로고" />
         </Link>
-        {isLoggedIn ? (
+        {user ? (
           <div className="relative">
             <button
               onClick={handleProfileClick}

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "@/styles/globals.css";
-import Nav from "@/components/common/Nav";
+import LandingNav from "@/components/common/Nav";
+import { AuthProvider } from "@/context/auth-provider";
 
 export const metadata: Metadata = {
   title: "WHYNE",
@@ -15,8 +16,10 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body className="max-w-full">
-        <Nav />
-        {children}
+        <AuthProvider>
+          <LandingNav />
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );

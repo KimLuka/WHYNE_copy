@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosRequestConfig } from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 
 const instance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_URL,
@@ -23,45 +23,32 @@ instance.interceptors.request.use(
   },
 );
 
-// 응답 인터셉터 추가: 401 Unauthorized 오류 처리
+interface CustomAxiosRequestConfig extends AxiosRequestConfig {
+  _retry?: boolean;
+}
+
 instance.interceptors.response.use(
-  (response) => response,
-  async (error: AxiosError) => {
-    if (error.response?.status === 401) {
-      // 액세스 토큰 만료 시
+  (res) => res,
+  async (error) => {
+    const originalRequest = error.config as CustomAxiosRequestConfig;
+    if (error.response?.status === 401 && !originalRequest._retry) {
       const refreshToken = localStorage.getItem("refreshToken");
-
       if (refreshToken) {
-        try {
-          const refreshResponse = await instance.post("/auth/refresh", {
-            refreshToken,
-          });
-          const newAccessToken = refreshResponse.data.accessToken;
+        const res = await instance.post("/auth/refresh-token", {
+          refreshToken,
+        });
 
-          // 새 액세스 토큰을 로컬 스토리지에 저장
-          localStorage.setItem("accessToken", newAccessToken);
+        const { accessToken } = res.data;
+        localStorage.setItem("accessToken", accessToken);
 
-          // 실패한 요청을 새 액세스 토큰으로 다시 시도
-          const originalConfig = error.config as AxiosRequestConfig;
-          originalConfig.headers = {
-            ...originalConfig.headers,
-            Authorization: `Bearer ${newAccessToken}`,
-          };
-          return instance(originalConfig); // 재시도
-        } catch (refreshError) {
-          // 리프레시 토큰도 만료된 경우 로그아웃 처리
-          console.error("리프레시 토큰 만료", refreshError);
-          localStorage.removeItem("accessToken");
-          localStorage.removeItem("refreshToken");
-          alert("세션이 만료되었습니다. 다시 로그인해주세요.");
-          window.location.href = "/signin";
-        }
-      } else {
-        console.error("리프레시 토큰 없음");
-        alert("세션이 만료되었습니다. 다시 로그인해주세요.");
-        window.location.href = "/signin";
+        // originalRequest.headers['Authorization'] = `Bearer ${accessToken}`;
+        originalRequest._retry = true;
+
+        // 원래의 요청을 새로운 토큰으로 다시 보냄
+        return instance(originalRequest);
       }
     }
+    alert("로그인이 필요합니다.");
 
     return Promise.reject(error);
   },
