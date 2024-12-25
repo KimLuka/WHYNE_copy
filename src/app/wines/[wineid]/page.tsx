@@ -1,5 +1,6 @@
 import DetailWineCard from "@/components/wines/detail/detail-wine-card";
 import DetailReviewCard from "@/components/wines/detail/detail-review-card";
+import RatingDetails from "@/components/wines/detail/rating-details";
 
 export default function WineDetailPage({
   params,
@@ -12,8 +13,9 @@ export default function WineDetailPage({
     <div>
       <div className="flex flex-col justify-center items-center">
         <DetailWineCard id={wineid} />
-        <div className="mr-[34rem] mt-[6rem]">
+        <div className="mx-auto mt-[6rem] flex gap-[6rem]">
           <DetailReviewCard wineid={wineid} />
+          <RatingDetails />
         </div>
       </div>
     </div>

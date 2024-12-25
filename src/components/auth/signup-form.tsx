@@ -36,7 +36,7 @@ export default function SignUpForm() {
     setHasError(hasError);
   };
 
-  const { user, login } = useAuth(false);
+  const { user, login } = useAuth();
 
   const router = useRouter();
 
@@ -115,7 +115,7 @@ export default function SignUpForm() {
           id="password"
           name="password"
           type="password"
-          placeholder="숫자, 영문, 특수문자로 제한"
+          placeholder="숫자, 영문, 특수문자만 입력 가능(8자 이상)"
           emptyErrorMessage="비밀번호는 필수 입력입니다."
           minLengthRule={8}
           validationRule="^([a-z]|[A-Z]|[0-9]|[!@#$%^&*])+$"
@@ -151,7 +151,7 @@ export default function SignUpForm() {
           가입하기
         </Button>
       </form>
-      <p className="flex gap-[1rem] text-gray-500 text-[1.6rem] mx-auto">
+      <p className="flex gap-[1rem] text-gray-500 text-[1.4rem] mx-auto">
         계정이 이미 있으신가요?
         <Link href="/signin" aria-label="로그인으로 이동">
           <span className="text-primary text-[1.6rem] font-medium underline mobile:text-[1.4rem]">

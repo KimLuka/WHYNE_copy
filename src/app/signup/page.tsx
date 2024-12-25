@@ -19,9 +19,9 @@ export default function SignUp() {
       >
         <div
           className="flex flex-col 
-        desktop:gap-[6.4rem] desktop:w-[40rem]
-        tablet:gap-[6.4rem] tablet:w-[40rem]
-        mobile:gap-[5.6rem] mobile:w-[30.3rem]"
+        desktop:gap-[6.4rem] desktop:w-[40rem] desktop:max-h-[64.3rem]
+        tablet:gap-[6.4rem] tablet:w-[40rem] tablet:max-h-[64.3rem]
+        mobile:gap-[5.6rem] mobile:w-[30.3rem] mobile:max-h-[56.9rem]"
         >
           <Link href="/" aria-label="홈으로 이동">
             <Image

@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import api from "@/api/api";
+import { useAuth } from "@/context/auth-provider";
 
 interface Wine {
   id: number;
@@ -20,7 +21,12 @@ export default function DetailWineCard({ id }: DetailWineCardProps) {
   const [wine, setWine] = useState<Wine | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  const { user } = useAuth(true);
+
   useEffect(() => {
+    if (!user) {
+      return;
+    }
     async function fetchWineData() {
       try {
         setIsLoading(true);
@@ -38,7 +44,7 @@ export default function DetailWineCard({ id }: DetailWineCardProps) {
     }
 
     fetchWineData();
-  }, [id]);
+  }, [id, user]);
 
   if (isLoading) {
     return <div></div>;
