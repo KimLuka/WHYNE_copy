@@ -270,16 +270,16 @@ export default function AddWine({ onClose }: Props) {
   return (
     <div className="flex flex-col h-full">
       <article className="flex-1 px-[2.4rem]">
-        <h1 className="text-xl tablet:text-2xl font-bold mt-[2.4rem] mb-[2.4rem] tablet:mb-[3.2rem]">
+        <h1 className="text-[2rem] tablet:text-[2.4rem] font-bold mt-[2.4rem] mb-[3.2rem] tablet:mb-[4rem]">
           와인 등록
         </h1>
 
         <form className="flex flex-col h-full" onSubmit={handleSubmit}>
-          <div className="flex-1 flex flex-col gap-[2rem] tablet:gap-[2.4rem]">
-            <div className="flex flex-col gap-[0.8rem] tablet:gap-[1rem]">
+          <div className="flex-1 flex flex-col gap-[3.2rem] tablet:gap-[2.4rem]">
+            <div className="flex flex-col gap-[1.6rem]">
               <label
                 htmlFor="name"
-                className="text-base tablet:text-lg font-medium"
+                className="text-[1.4rem] tablet:text-[1.6rem] font-medium"
               >
                 와인 이름
               </label>
@@ -293,10 +293,10 @@ export default function AddWine({ onClose }: Props) {
               />
             </div>
 
-            <div className="flex flex-col gap-[0.8rem] tablet:gap-[1rem]">
+            <div className="flex flex-col gap-[1.6rem]">
               <label
                 htmlFor="price"
-                className="text-base tablet:text-lg font-medium"
+                className="text-[1.4rem] tablet:text-[1.6rem] font-medium"
               >
                 가격
               </label>
@@ -312,10 +312,10 @@ export default function AddWine({ onClose }: Props) {
               />
             </div>
 
-            <div className="flex flex-col gap-[0.8rem] tablet:gap-[1rem]">
+            <div className="flex flex-col gap-[1.6rem]">
               <label
                 htmlFor="region"
-                className="text-base tablet:text-lg font-medium"
+                className="text-[1.4rem] tablet:text-[1.6rem] font-medium"
               >
                 원산지
               </label>
@@ -329,10 +329,10 @@ export default function AddWine({ onClose }: Props) {
               />
             </div>
 
-            <div className="flex flex-col gap-[0.8rem] tablet:gap-[1rem]">
+            <div className="flex flex-col gap-[1.6rem]">
               <label
                 htmlFor="type"
-                className="text-base tablet:text-lg font-medium"
+                className="text-[1.4rem] tablet:text-[1.6rem] font-medium"
               >
                 타입
               </label>
@@ -344,12 +344,12 @@ export default function AddWine({ onClose }: Props) {
               />
             </div>
 
-            <div className="flex flex-col gap-[0.8rem] tablet:gap-[1rem]">
+            <div className="flex flex-col gap-[1.6rem]">
               <label
                 htmlFor="image"
-                className="text-base tablet:text-lg font-medium"
+                className="text-[1.4rem] tablet:text-[1.6rem] font-medium"
               >
-                이미지
+                와인 사진
               </label>
               <ImageInput
                 id="image"

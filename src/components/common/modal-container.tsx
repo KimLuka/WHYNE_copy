@@ -54,18 +54,19 @@ function Modal({ isOpen, onClose, children, className = "" }: ModalProps) {
           bg-white 
           w-full
           tablet:max-w-[46rem]
-          h-[90vh]
-          tablet:h-auto
-          tablet:min-h-[50vh]
-          tablet:max-h-[90vh]
+          h-fix
+          max-h-screen
+          
           rounded-t-[2rem] tablet:rounded-[2rem]
           flex flex-col
           overflow-hidden
+          py-[0.4rem] mobile:py-[0.6rem] tablet:py-[0.8rem] // 이렇게 화면 크기별 패딩 추가
+
           ${getAnimationClass()}
           ${className}
         `}
       >
-        <div className="flex flex-col h-full overflow-auto">{children}</div>
+        <div className="flex flex-col overflow-auto">{children}</div>
       </div>
     </div>
   );

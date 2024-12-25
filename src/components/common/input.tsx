@@ -13,8 +13,8 @@ export default function Input({
 }: Props) {
   const classCombined = `
       w-full
-      min-h-[3rem]
-      tablet:min-h-[4rem] 
+      min-h-[4.2rem]
+      tablet:min-h-[4.8rem] 
       px-[1.6rem]
       tablet:px-[2rem]
       border-[0.1rem]
