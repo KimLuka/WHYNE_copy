@@ -31,3 +31,16 @@ Content-Type: application/json
      "password": "12341234a",
      "passwordConfirmation": "12341234a"
    }
+
+
+### 카카오 로그인 테스트
+POST https://winereview-api.vercel.app/11-5/auth/signIn/KAKAO
+Content-Type: application/json
+
+{
+  "redirectUri": "http://localhost:3000/signin",
+  "token": "string"
+}
+
+
+

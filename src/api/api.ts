@@ -125,3 +125,18 @@ export const registerOAuthApp = async (provider: string) => {
     throw error;
   }
 };
+
+// 카카오 로그인 후 토큰 발급 요청 함수
+export const signInWithKakao = async (data: {
+  redirectUri: string;
+  token: string;
+}) => {
+  try {
+    // /auth/signIn/KAKAO 엔드포인트로 POST 요청
+    const response = await instance.post("/auth/signIn/KAKAO", data);
+    return response; // 응답 반환
+  } catch (error) {
+    console.error("카카오 로그인 오류", error);
+    throw error; // 오류를 다시 던져서 호출한 곳에서 처리하게끔
+  }
+};
