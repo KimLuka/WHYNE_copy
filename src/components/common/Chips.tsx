@@ -17,12 +17,26 @@ function Chip({
   onClick,
   isDisabled,
 }: ChipProps): React.ReactElement {
-  const baseClasses =
-    "rounded-[6.25rem] px-[1.5rem] py-[0.75rem] text-sm font-medium border border-solid";
+  const baseClasses = `
+    rounded-full 
+    min-h-[2.875rem] tablet:min-h-[4.6rem]
+    min-w-[4rem] tablet:min-w-[6.4rem]
+    px-[1.125rem]
+    py-[0.625rem]
+    gap-[0.625rem]
+    text-sm
+    font-medium 
+    border 
+    border-solid
+    whitespace-nowrap
+  `;
+
   const selectedClasses = selected
     ? "bg-primary border-primary text-white"
-    : "bg-white text-gray-800 !border-gray-300"; // !border로 우선순위를 높여줍니다
+    : "bg-white text-gray-800 border-gray-300";
+
   const cursorClasses = isDisabled ? "cursor-default" : "cursor-pointer";
+
   const className = `${baseClasses} ${selectedClasses} ${cursorClasses}`;
 
   return (
