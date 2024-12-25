@@ -49,3 +49,15 @@ export async function deleteWine({ id }: { id: number }) {
 
   return response;
 }
+
+export async function deleteReview({ id }: { id: number }) {
+  const response = await instance<{
+    id?: number;
+    message?: string;
+  }>({
+    method: "DELETE", 
+    url: `/reviews/${id}`,
+  });
+ 
+  return response;
+ }
