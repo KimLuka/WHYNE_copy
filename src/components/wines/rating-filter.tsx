@@ -31,16 +31,35 @@ export default function RatingFilter({ onChange }: RatingFilterProps) {
             <label
               key={id}
               htmlFor={id}
-              className="flex items-center gap-[1.2rem] cursor-pointer"
+              className="flex items-center cursor-pointer"
             >
               <input
-                type="radio" // 라디오 버튼으로 변경
+                type="radio"
                 id={id}
-                name="rating" // 같은 그룹으로 설정
-                checked={selectedRating === value} // 선택된 평점과 비교
-                onChange={() => handleSelection(value)} // 평점 선택 시 해당 값 전달
+                name="rating"
+                checked={selectedRating === value}
+                onChange={() => handleSelection(value)}
+                className="appearance-none" // 기본 라디오 버튼 숨김
               />
-              <span className="font-medium text-[1.6rem] text-gray-800">
+              {/* 네모 스타일 버튼 */}
+              <span
+                className={`w-[1.8rem] h-[1.8rem] border-solid border-[0.1rem] rounded-[0.6rem] flex items-center justify-center border-gray-300 ${
+                  selectedRating === value
+                    ? "bg-gray-100 border-primary"
+                    : "bg-gray-100 border-gray-300"
+                }`}
+              >
+                {/* 선택된 경우 내부에 색상 */}
+                {selectedRating === value && (
+                  <span className="w-[1rem] h-[1rem] rounded-[0.3rem] bg-primay" />
+                )}
+              </span>
+              {/* 텍스트 색상 변경 */}
+              <span
+                className={`font-medium text-[1.6rem] ml-[1.2rem] ${
+                  selectedRating === value ? "text-primary" : "text-gray-800"
+                }`}
+              >
                 {label}
               </span>
             </label>

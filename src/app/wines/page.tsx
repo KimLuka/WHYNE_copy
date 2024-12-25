@@ -3,6 +3,7 @@
 import { useState, useCallback, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
+import Image from "next/image";
 import instance from "@/api/api";
 import PriceFilter from "@/components/wines/price-filter";
 import RatingFliter from "@/components/wines/rating-filter";
@@ -12,12 +13,14 @@ import FilterButton from "@/components/wines/filter-button";
 import Search from "@/components/wines/search";
 import RecommendCard from "@/components/wines/recommend-card";
 import EntireCard from "@/components/wines/entire-card";
+import FilterModal from "@/components/wines/modal/filter-modal";
+import ReviewProvider from "@/provider/usereviewmodals";
+import AddReviewModal from "@/components/modal-review/AddReviewModal";
 import arrowRight from "../../../public/icons/right.svg";
 import "swiper/css";
 import "swiper/css/navigation";
-import Image from "next/image";
 
-interface WineProps {
+interface Wine {
   id: number;
   image: string;
   name: string;
@@ -43,20 +46,34 @@ const fetchData = async (url: string, queryParams: string) => {
 };
 
 export default function Wines() {
-  const [recommendList, setRecommendList] = useState<WineProps[]>([]);
-  const [entireList, setEntireList] = useState<WineProps[]>([]); // 필터링된 와인 목록
+  const [recommendList, setRecommendList] = useState<Wine[]>([]);
+  const [entireList, setEntireList] = useState<Wine[]>([]); // 필터링된 와인 목록
   const [filters, setFilters] = useState({
     limit: 5,
     type: "",
     minPrice: 0,
     maxPrice: 500000,
     rating: 0,
-    name: "",
   }); // 필터 상태 관리
+  const [search, setSearch] = useState({ name: "" });
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // 초기화 함수
+  const handleReset = () => {
+    setFilters({
+      limit: 5,
+      type: "",
+      minPrice: 0,
+      maxPrice: 500000,
+      rating: 0,
+    });
+  };
 
   // 필터 값에 따라 쿼리 파라미터 생성
   const createQueryParams = useCallback(() => {
-    const { type, minPrice, maxPrice, rating, name } = filters;
+    const { type, minPrice, maxPrice, rating } = filters;
+    const { name } = search;
     let queryParams = `limit=10`;
 
     if (type) queryParams += `&type=${type}`;
@@ -66,7 +83,7 @@ export default function Wines() {
     if (name) queryParams += `&name=${name}`;
 
     return queryParams;
-  }, [filters]);
+  }, [filters, search]);
 
   // 추천 와인 목록 가져오기
   const fetchRecommendData = useCallback(async () => {
@@ -95,12 +112,15 @@ export default function Wines() {
   // 필터 값이 변경될 때마다 데이터 새로 가져오기
   useEffect(() => {
     fetchEntireData();
+  }, [filters, search, fetchEntireData]);
+
+  useEffect(() => {
     fetchRecommendData();
-  }, [filters, fetchEntireData, fetchRecommendData]);
+  }, [fetchRecommendData]);
 
   // 검색 필터
   const handleInputChange = (name: string) => {
-    setFilters((prev) => ({ ...prev, name }));
+    setSearch((prev) => ({ ...prev, name }));
   };
 
   // 종류별 필터링 함수
@@ -121,6 +141,20 @@ export default function Wines() {
     [],
   );
 
+  const handleModalOpen = () => {
+    setIsModalOpen(!isModalOpen);
+  };
+
+  // 모달 상태를 토글하는 함수
+  const handleModalToggle = () => {
+    setIsModalOpen((prev) => !prev); // 이전 상태를 반전시킴
+  };
+
+  const handleFilterApply = () => {
+    console.log("필터 적용:", filters);
+    handleModalToggle(); // 필터 적용 후 모달 닫기
+  };
+
   return (
     <div className="flex flex-column w-auto max-w-[114rem] my-0 mx-auto">
       <section className="w-full max-w-[114rem] tablet:mt-[2rem] mobile:mt-[1.5rem] tablet:mb-[4rem] mobile:mb-[2.4rem] h-auto rounded-[1.6rem] tablet:p-[3rem] mobile:p-[2rem] bg-gray-100">
@@ -132,7 +166,7 @@ export default function Wines() {
             <Swiper
               modules={[Navigation]}
               slidesPerView="auto" // 기본 슬라이드 수
-              spaceBetween={40}
+              spaceBetween={20}
               centeredSlides={false}
               loop={true}
               navigation={{
@@ -141,10 +175,10 @@ export default function Wines() {
               breakpoints={{
                 // 화면 크기에 따른 슬라이드 수 조정
                 375: {
-                  slidesPerView: 2,
+                  slidesPerView: 3,
                 },
                 744: {
-                  slidesPerView: 3,
+                  slidesPerView: 4,
                 },
                 1024: {
                   slidesPerView: 5,
@@ -175,37 +209,54 @@ export default function Wines() {
       <div className="flex flex-col desktop:items-end tablet:items-center">
         <div className="flex tablet:justify-between desktop:justify-end tablet:gap-[1.6rem] tablet:w-[70.4rem] tablet:flex-row mobile:flex-col">
           <div className="mobile:flex tablet:justify-between tablet:flex-row tablet:gap-[2.4rem] mobile:gap-[2rem] mobile:flex-col-reverse">
-            <FilterButton />
+            <FilterButton onClick={handleModalOpen} />
+            {/* 필터 모달 컴포넌트 */}
+            <FilterModal
+              isOpen={isModalOpen}
+              onToggle={handleModalToggle}
+              filters={filters}
+              onFilterApply={handleFilterApply}
+              onFilterReset={handleReset}
+              onTypeChange={handleTypeChange}
+              onPriceChange={handlePriceChange}
+              onRatingChange={handleRatingChange}
+            />
             <Search onChange={handleInputChange} />
           </div>
-          <div className="desktop:hidden">
-            <Button
-              type="button"
-              size="large"
-              color="primary"
-              addClassName="font-bold text-lg text-center rounded-[1.6rem] py-[1.6rem] px-[17.2rem] flex justify-center items-center"
-              /*와인 등록 모달창 띄우기 */
-            >
-              와인 등록하기
-            </Button>
+          <div className="desktop:hidden tablet:static tablet:mt-0 mobile:sticky mobile:mt-[2.5rem]">
+            <ReviewProvider>
+              <Button
+                type="button"
+                size="large"
+                color="primary"
+                addClassName="font-bold text-lg text-center rounded-[1.6rem] tablet:py-[1.6rem] tablet:px-[6rem] flex justify-center items-center tablet:shadow-none tablet:w-auto mobile:w-[34.3rem] tablet:static tablet:translate-x-0 mobile:fixed mobile:translate-x-1/2 mobile:right-1/2 mobile:bottom-[1.5rem] mobile:p-[1.6rem] mobile:shadow-xl"
+                onClick={handleModalOpen}
+              >
+                와인 등록하기
+              </Button>
+              <AddReviewModal isOpen={isModalOpen} onClick={handleModalOpen} />
+            </ReviewProvider>
           </div>
         </div>
         <div className="desktop:flex desktop:gap-[6rem]">
           <div className="w-[28.4rem] desktop:h-auto desktop:flex desktop:flex-col desktop:gap-[6rem] mobile:hidden">
-            <div className="h-auto w-auto desktop:flex desktop:flex-col gap-[6rem] ">
+            <div className="h-auto w-auto mt-[5.9rem] desktop:flex desktop:flex-col gap-[6rem] ">
               <TypesFilter onChange={handleTypeChange} />
               <PriceFilter onChange={handlePriceChange} />
               <RatingFliter onChange={handleRatingChange} />
             </div>
-            <Button
-              type="button"
-              size="large"
-              color="primary"
-              addClassName="font-bold text-lg text-center rounded-[1.6rem] py-[1.6rem] px-[17.2rem] flex justify-center items-center"
-              /*와인 등록 모달창 띄우기 */
-            >
-              와인 등록하기
-            </Button>
+            <ReviewProvider>
+              <Button
+                type="button"
+                size="large"
+                color="primary"
+                addClassName="font-bold text-lg text-center rounded-[1.6rem] p-[1.6rem] flex justify-center items-center"
+                onClick={handleModalOpen}
+              >
+                와인 등록하기
+              </Button>
+              <AddReviewModal isOpen={isModalOpen} onClick={handleModalOpen} />
+            </ReviewProvider>
           </div>
           {entireList.length > 0 ? (
             <ul>

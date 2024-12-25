@@ -5,29 +5,18 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import logo from "../../../public/icons/white_medium_logo.svg";
-import profile from "../../../public/images/example_profile.svg";
+import profile from "../../../public/images/profile_white.svg";
 import { useAuth } from "@/context/auth-provider";
 
 export default function Nav() {
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const router = useRouter();
 
   const { user, logout } = useAuth(false);
 
-  // useEffect(() => {
-  //   const token = localStorage.getItem("accessToken");
-  //   if (token) {
-  //     setIsLoggedIn(true);
-  //   }
-  // }, []);
-
-  // const handleLogout = () => {
-  //   localStorage.removeItem("accessToken");
-  //   setIsLoggedIn(false);
-  //   setShowMenu(false);
-  //   router.push("/");
-  // };
+  const handleLogoClick = () => {
+    window.location.reload();
+  };
 
   const handleLogout = () => {
     logout();
@@ -42,7 +31,7 @@ export default function Nav() {
   return (
     <header className="nav-container flex-between tablet:py-[1.1rem] mobile:py-[1.5rem] tablet:px-[6rem] mobile:px-[2rem] tablet:h-[7rem] mobile:h-[5rem] tablet:mt-[2.4rem] mobile:mt-[1.6rem] mx-auto">
       <nav className="w-full flex-between">
-        <Link href="/">
+        <Link href="/" onClick={handleLogoClick}>
           <Image width={52} height={15} src={logo} alt="와인 로고" />
         </Link>
         {user ? (
@@ -54,10 +43,9 @@ export default function Nav() {
               <Image
                 src={profile}
                 alt="프로필 이미지"
-                layout="responsive"
                 objectFit="contain"
-                width={1}
-                height={1}
+                width={45}
+                height={45}
                 className="object-cover"
               />
             </button>

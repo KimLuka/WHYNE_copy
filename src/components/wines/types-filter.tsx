@@ -22,7 +22,9 @@ export default function TypesFilter({ onChange }: TypesFilterProps) {
             type="button"
             size="small"
             color="white"
-            addClassName="rounded-[10rem] py-[1rem] px-[1.8rem] flex items-center font-medium text-lg text-gray-800 hover:text-white hover:bg-primary"
+            addClassName={
+              "rounded-[10rem] p-[1.4rem] text-center flex items-center font-medium text-lg focus:bg-primary focus:text-white"
+            }
             onClick={() => handleTypeClick(type)} // 클릭 이벤트
           >
             {type}
