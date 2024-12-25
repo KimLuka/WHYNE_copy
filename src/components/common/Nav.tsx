@@ -15,7 +15,7 @@ export default function Nav() {
   const { user, logout } = useAuth(false);
 
   const handleLogoClick = () => {
-    window.location.reload();
+    location.replace("/");
   };
 
   const handleLogout = () => {

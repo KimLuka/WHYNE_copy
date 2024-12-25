@@ -32,7 +32,12 @@ export default function FilterModal({
 }: Filter) {
   return (
     <>
-      <Modal isOpen={isOpen} onClose={onToggle}>
+      <Modal
+        isOpen={isOpen}
+        onClose={onToggle}
+        className="flex rounded-l-[1.6rem] rounded-r-[1.6rem] tablet:rounded-y-[1.6rem]  mobile:w-[37.5rem] tablet:p-[2.4rem] mobile:gap-[4rem] 
+shadow-filter-modal"
+      >
         <div>
           <div>
             <h2>필터</h2>

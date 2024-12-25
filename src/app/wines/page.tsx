@@ -14,8 +14,8 @@ import Search from "@/components/wines/search";
 import RecommendCard from "@/components/wines/recommend-card";
 import EntireCard from "@/components/wines/entire-card";
 import FilterModal from "@/components/wines/modal/filter-modal";
-import ReviewProvider from "@/provider/usereviewmodals";
-import AddReviewModal from "@/components/modal-review/AddReviewModal";
+import Modal from "@/components/common/modal-container";
+import AddWine from "@/components/common/modal-add-wine";
 import arrowRight from "../../../public/icons/right.svg";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -57,7 +57,9 @@ export default function Wines() {
   }); // 필터 상태 관리
   const [search, setSearch] = useState({ name: "" });
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
+
+  const [isAddWineModalOpen, setIsAddWineModalOpen] = useState(false);
 
   // 초기화 함수
   const handleReset = () => {
@@ -141,13 +143,18 @@ export default function Wines() {
     [],
   );
 
-  const handleModalOpen = () => {
-    setIsModalOpen(!isModalOpen);
+  // 각각의 핸들러 함수도 분리
+  const handleFilterModalOpen = () => {
+    setIsFilterModalOpen(!isFilterModalOpen);
+  };
+
+  const handleAddWineModalOpen = () => {
+    setIsAddWineModalOpen(!isAddWineModalOpen);
   };
 
   // 모달 상태를 토글하는 함수
   const handleModalToggle = () => {
-    setIsModalOpen((prev) => !prev); // 이전 상태를 반전시킴
+    setIsFilterModalOpen((prev) => !prev); // 이전 상태를 반전시킴
   };
 
   const handleFilterApply = () => {
@@ -209,11 +216,11 @@ export default function Wines() {
       <div className="flex flex-col desktop:items-end tablet:items-center">
         <div className="flex tablet:justify-between desktop:justify-end tablet:gap-[1.6rem] tablet:w-[70.4rem] tablet:flex-row mobile:flex-col">
           <div className="mobile:flex tablet:justify-between tablet:flex-row tablet:gap-[2.4rem] mobile:gap-[2rem] mobile:flex-col-reverse">
-            <FilterButton onClick={handleModalOpen} />
+            <FilterButton onClick={handleFilterModalOpen} />
             {/* 필터 모달 컴포넌트 */}
             <FilterModal
-              isOpen={isModalOpen}
-              onToggle={handleModalToggle}
+              isOpen={isFilterModalOpen}
+              onToggle={handleFilterModalOpen}
               filters={filters}
               onFilterApply={handleFilterApply}
               onFilterReset={handleReset}
@@ -224,18 +231,18 @@ export default function Wines() {
             <Search onChange={handleInputChange} />
           </div>
           <div className="desktop:hidden tablet:static tablet:mt-0 mobile:sticky mobile:mt-[2.5rem]">
-            <ReviewProvider>
-              <Button
-                type="button"
-                size="large"
-                color="primary"
-                addClassName="font-bold text-lg text-center rounded-[1.6rem] tablet:py-[1.6rem] tablet:px-[6rem] flex justify-center items-center tablet:shadow-none tablet:w-auto mobile:w-[34.3rem] tablet:static tablet:translate-x-0 mobile:fixed mobile:translate-x-1/2 mobile:right-1/2 mobile:bottom-[1.5rem] mobile:p-[1.6rem] mobile:shadow-xl"
-                onClick={handleModalOpen}
-              >
-                와인 등록하기
-              </Button>
-              <AddReviewModal isOpen={isModalOpen} onClick={handleModalOpen} />
-            </ReviewProvider>
+            <Button
+              type="button"
+              size="large"
+              color="primary"
+              addClassName="font-bold text-lg text-center rounded-[1.6rem] tablet:py-[1.6rem] tablet:px-[6rem] flex justify-center items-center tablet:shadow-none tablet:w-auto mobile:w-[34.3rem] tablet:static tablet:translate-x-0 mobile:fixed mobile:translate-x-1/2 mobile:right-1/2 mobile:bottom-[1.5rem] mobile:p-[1.6rem] mobile:shadow-xl"
+              onClick={handleAddWineModalOpen}
+            >
+              와인 등록하기
+            </Button>
+            <Modal isOpen={isAddWineModalOpen} onClose={handleAddWineModalOpen}>
+              <AddWine onClose={handleAddWineModalOpen} />
+            </Modal>
           </div>
         </div>
         <div className="desktop:flex desktop:gap-[6rem]">
@@ -245,18 +252,18 @@ export default function Wines() {
               <PriceFilter onChange={handlePriceChange} />
               <RatingFliter onChange={handleRatingChange} />
             </div>
-            <ReviewProvider>
-              <Button
-                type="button"
-                size="large"
-                color="primary"
-                addClassName="font-bold text-lg text-center rounded-[1.6rem] p-[1.6rem] flex justify-center items-center"
-                onClick={handleModalOpen}
-              >
-                와인 등록하기
-              </Button>
-              <AddReviewModal isOpen={isModalOpen} onClick={handleModalOpen} />
-            </ReviewProvider>
+            <Button
+              type="button"
+              size="large"
+              color="primary"
+              addClassName="font-bold text-lg text-center rounded-[1.6rem] p-[1.6rem] flex justify-center items-center"
+              onClick={handleAddWineModalOpen}
+            >
+              와인 등록하기
+            </Button>
+            <Modal isOpen={isAddWineModalOpen} onClose={handleAddWineModalOpen}>
+              <AddWine onClose={handleAddWineModalOpen} />
+            </Modal>
           </div>
           {entireList.length > 0 ? (
             <ul>
