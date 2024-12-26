@@ -1,4 +1,4 @@
-/*"use client";
+"use client";
 
 import { useState } from "react";
 import { NewWineData, WineType } from "@/types/tasting";
@@ -385,4 +385,3 @@ export default function AddWine({ onClose }: Props) {
     </div>
   );
 }
-  */
