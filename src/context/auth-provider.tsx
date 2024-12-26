@@ -36,8 +36,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     isPending: true,
   });
 
-  // const pathname = usePathname();
-
   async function getMe() {
     setValues((prevValues) => ({
       ...prevValues,

@@ -15,7 +15,7 @@ export default function WineDetailPage({
         <DetailWineCard id={wineid} />
         <div className="mx-auto mt-[6rem] flex gap-[6rem]">
           <DetailReviewCard wineid={wineid} />
-          <RatingDetails />
+          <RatingDetails id={wineid} />
         </div>
       </div>
     </div>

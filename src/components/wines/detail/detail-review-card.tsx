@@ -65,11 +65,6 @@ export default function DetailReviewCard({ wineid }: DetailReviewCardProps) {
   const [isLoading, setIsLoading] = useState(true);
 
   async function toggleLike(reviewId: number, isLiked: boolean) {
-    // if (!localStorage.getItem("token")) {
-    //   alert("로그인이 필요합니다.");
-    //   return;
-    // }
-
     try {
       if (isLiked) {
         await api.delete(`/reviews/${reviewId}/like`, {
