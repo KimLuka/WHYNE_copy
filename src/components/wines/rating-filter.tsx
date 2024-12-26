@@ -1,12 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, JSX } from "react";
+import { Rating } from "./wine";
 
-interface RatingFilterProps {
-  onChange: (rating: number) => void; // 범위 중 하나의 값을 부모로 전달
+interface RatingApp {
+  onChange: (rating: number) => void;
+  filters: Rating;
+  resetRating: number; // 초기화된 평점 값
 }
 
-export default function RatingFilter({ onChange }: RatingFilterProps) {
+export default function RatingFliter({
+  onChange,
+  filters,
+  resetRating,
+}: RatingApp): JSX.Element {
   const [selectedRating, setSelectedRating] = useState<number | null>(null);
 
   const ratings: { id: string; label: string; value: number }[] = [
@@ -17,13 +24,21 @@ export default function RatingFilter({ onChange }: RatingFilterProps) {
     { id: "littleHigher", label: "3.0 - 3.5", value: 3.5 },
   ];
 
+  useEffect(() => {
+    setSelectedRating(resetRating); // 초기화된 평점으로 설정
+  }, [resetRating]);
+
+  useEffect(() => {
+    setSelectedRating(filters.rating); // filters로 받은 rating 값을 기반으로 초기화
+  }, [filters]);
+
   const handleSelection = (rating: number) => {
-    setSelectedRating(rating); // 선택된 평점 상태 업데이트
-    onChange(rating); // 부모 컴포넌트로 선택된 평점을 전달
+    setSelectedRating(rating);
+    onChange(rating); // 부모 컴포넌트로 선택된 평점 전달
   };
 
   return (
-    <div className="flex flex-col desktop:gap-[1.6rem] mobile:gap-[1rem] w-auto ">
+    <div className="flex flex-col desktop:gap-[1.6rem] mobile:gap-[1rem] w-auto">
       <h3 className="font-bold text-xl text-gray-800">RATING</h3>
       <form>
         <fieldset className="flex flex-col desktop:gap-[1.2rem] mobile:gap-[1rem]">
@@ -39,22 +54,19 @@ export default function RatingFilter({ onChange }: RatingFilterProps) {
                 name="rating"
                 checked={selectedRating === value}
                 onChange={() => handleSelection(value)}
-                className="appearance-none" // 기본 라디오 버튼 숨김
+                className="appearance-none"
               />
-              {/* 네모 스타일 버튼 */}
               <span
                 className={`w-[1.8rem] h-[1.8rem] border-solid border-[0.1rem] rounded-[0.6rem] flex items-center justify-center border-gray-300 ${
                   selectedRating === value
-                    ? "bg-gray-100 border-primary"
+                    ? "bg-gray-100 border-gray-300"
                     : "bg-gray-100 border-gray-300"
                 }`}
               >
-                {/* 선택된 경우 내부에 색상 */}
                 {selectedRating === value && (
-                  <span className="w-[1rem] h-[1rem] rounded-[0.3rem] bg-primay" />
+                  <span className="w-[1rem] h-[1rem] rounded-[0.3rem] bg-primary" />
                 )}
               </span>
-              {/* 텍스트 색상 변경 */}
               <span
                 className={`font-medium text-[1.6rem] desktop:ml-[1.2rem] mobile:ml-[1.5rem] ${
                   selectedRating === value ? "text-primary" : "text-gray-800"

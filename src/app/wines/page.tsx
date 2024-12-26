@@ -19,19 +19,8 @@ import AddWine from "@/components/common/modal-add-wine";
 import arrowRight from "../../../public/icons/right.svg";
 import "swiper/css";
 import "swiper/css/navigation";
-
-interface Wine {
-  id: number;
-  image: string;
-  name: string;
-  region: string;
-  price: number;
-  avgRating: number;
-  reviewCount: number;
-  recentReview?: {
-    content?: string | null;
-  };
-}
+import { Filters } from "@/components/wines/wine";
+import { Wine } from "@/components/wines/wine";
 
 // 와인 목록을 가져오는 함수 (공통화)
 const fetchData = async (url: string, queryParams: string) => {
@@ -48,7 +37,8 @@ const fetchData = async (url: string, queryParams: string) => {
 export default function Wines() {
   const [recommendList, setRecommendList] = useState<Wine[]>([]);
   const [entireList, setEntireList] = useState<Wine[]>([]); // 필터링된 와인 목록
-  const [filters, setFilters] = useState({
+  const [isLoading, setIsLoading] = useState<boolean>(false); // 로딩 상태 추가
+  const [filters, setFilters] = useState<Filters>({
     limit: 5,
     type: "",
     minPrice: 0,
@@ -102,14 +92,24 @@ export default function Wines() {
 
   // 전체 와인 목록 가져오기
   const fetchEntireData = useCallback(async () => {
-    const queryParams = createQueryParams(); // 동적으로 필터 값으로 쿼리 파라미터 생성
+    setIsLoading(true);
+    const queryParams = createQueryParams();
     const data = await fetchData("/wines", queryParams);
+
     if (data && Array.isArray(data.list)) {
-      setEntireList(data.list);
+      // 대소문자 관계없이 검색
+      const filteredData = data.list.filter(
+        (wine: Wine) =>
+          wine.name.toLowerCase().includes(search.name.toLowerCase()), // 대소문자 무시
+      );
+      console.log("filteredData", filteredData);
+      setEntireList(filteredData);
     } else {
       setEntireList([]);
     }
-  }, [createQueryParams]);
+    setIsLoading(false);
+    console.log("대소문자 확인", data.list);
+  }, [createQueryParams, search.name]);
 
   // 필터 값이 변경될 때마다 데이터 새로 가져오기
   useEffect(() => {
@@ -249,8 +249,19 @@ export default function Wines() {
           <div className="w-[28.4rem] desktop:h-auto desktop:flex desktop:flex-col desktop:gap-[6rem] mobile:hidden">
             <div className="h-auto w-auto mt-[5.9rem] desktop:flex desktop:flex-col gap-[6rem] ">
               <TypesFilter onChange={handleTypeChange} />
-              <PriceFilter onChange={handlePriceChange} />
-              <RatingFliter onChange={handleRatingChange} />
+              <PriceFilter
+                onChange={handlePriceChange}
+                filters={{
+                  minPrice: filters.minPrice,
+                  maxPrice: filters.maxPrice,
+                }}
+                resetValues={{ minPrice: 0, maxPrice: 500000 }}
+              />
+              <RatingFliter
+                onChange={handleRatingChange}
+                filters={{ rating: filters.rating }} // filters 객체에서 rating 값만 넘겨줌
+                resetRating={0}
+              />
             </div>
             <Button
               type="button"
@@ -265,7 +276,9 @@ export default function Wines() {
               <AddWine onClose={handleAddWineModalOpen} />
             </Modal>
           </div>
-          {entireList.length > 0 ? (
+          {isLoading ? (
+            <p className="text-gray-600">와인을 준비중입니다...</p> // 로딩 중 문구 표시
+          ) : entireList.length > 0 ? (
             <ul>
               {entireList.map((data) => (
                 <li key={data.id}>
