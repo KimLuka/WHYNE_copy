@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import InfiniteScroll from "../../components/InfiniteScroll/infiniteScroll";
 import axios, { AxiosInstance } from "axios";
+import EntireCard from "@/components/wines/entire-card";
 
 interface Data {
   id: number;
@@ -33,7 +34,8 @@ const MyPage: React.FC = () => {
   const [data, setData] = useState<Data[]>([]); // 데이터 상태
   const [isFetching, setIsFetching] = useState<boolean>(false); // 데이터 로딩 상태
   const [hasMore, setHasMore] = useState<boolean>(true); // 더 이상 로드할 데이터가 있는지 여부
-  const [cursor, setCursor] = useState<number | null>(null); // cursor 타입을 number | null로 변경
+  const [cursor, setCursor] = useState<number | null>(0); // cursor 기본값을 0으로 설정
+  const [initialLoad, setInitialLoad] = useState<boolean>(true); // 첫 번째 로드 상태
 
   const axiosInstance: AxiosInstance = axios.create({
     baseURL: "https://winereview-api.vercel.app/11-5",
@@ -42,6 +44,7 @@ const MyPage: React.FC = () => {
     },
   });
 
+  // 데이터를 불러오는 함수
   const loadData = useCallback(
     async (cursor: number | null) => {
       if (isFetching || !hasMore) {
@@ -51,7 +54,7 @@ const MyPage: React.FC = () => {
       setIsFetching(true);
 
       try {
-        const limit = 1;
+        const limit = 5; // 처음 5개 데이터를 로드하도록 설정
         const url = `/wines?limit=${limit}&cursor=${cursor ?? 0}`; // cursor를 숫자형으로 API에 전달
 
         const response = await axiosInstance.get(url);
@@ -79,16 +82,17 @@ const MyPage: React.FC = () => {
         console.error("Error loading data:", error);
       } finally {
         setIsFetching(false);
+        setInitialLoad(false); // 첫 번째 로딩 후 초기 로딩 상태 false로 변경
       }
     },
     [axiosInstance, isFetching, hasMore], // 의존성 배열
   );
 
   useEffect(() => {
-    if (hasMore) {
+    if (initialLoad) {
       loadData(cursor); // 첫 번째 로딩 시 cursor 값을 전달
     }
-  }, [cursor, loadData, hasMore]);
+  }, [cursor, loadData, hasMore, initialLoad]);
 
   console.log(data); // 데이터를 콘솔에서 확인
 
@@ -101,19 +105,9 @@ const MyPage: React.FC = () => {
         hasMore={hasMore}
         cursor={cursor} // cursor 값 전달
       >
-        <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-          {data.map((item) => (
-            <div
-              key={item.id}
-              style={{
-                border: "1px solid #ccc",
-                padding: "100px",
-                backgroundColor: "#CCCCCC",
-                borderRadius: "5px",
-              }}
-            >
-              <strong>{item.id}</strong>: {item.name}
-            </div>
+        <div className="card-list">
+          {data.map((item: Data) => (
+            <EntireCard key={item.id} data={item} />
           ))}
         </div>
       </InfiniteScroll>
