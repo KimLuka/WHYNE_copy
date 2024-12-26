@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Modal from "@/components/common/modal-container";
 import AddWine from "@/components/common/modal-add-wine";
 import DropDownMenu from "@/components/common/dropdown-menu";
 
@@ -33,15 +32,15 @@ export default function TestPage() {
           와인 등록하기
         </button>
 
-        <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
-          <AddWine onClose={handleCloseModal} />
-        </Modal>
+        <AddWine isOpen={isModalOpen} onClick={handleCloseModal} />
       </div>
 
       <div className="flex items-center" style={{ gap: "1.6rem" }}>
         <h1 className="text-[1.6rem]">드롭다운 메뉴 테스트</h1>
-        <DropDownMenu onEdit={handleEdit} onDelete={handleDelete} />
-      </div>
+        <DropDownMenu onEdit={handleEdit} onDelete={handleDelete}>
+  <button className="w-8 h-8">⋮</button> {/* 또는 원하는 트리거 버튼 */}
+</DropDownMenu>
     </div>
+  </div>
   );
 }
