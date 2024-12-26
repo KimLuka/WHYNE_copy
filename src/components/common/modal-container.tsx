@@ -1,4 +1,5 @@
 "use client";
+
 import { useEffect, useState } from "react";
 
 type ModalProps = {
@@ -43,30 +44,26 @@ function Modal({ isOpen, onClose, children, className = "" }: ModalProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end tablet:items-center tablet:justify-center">
+    <div className="fixed h-auto inset-0 z-50 flex tablet:items-center tablet:justify-center">
       <div
-        className="fixed inset-0 bg-black opacity-50 transition-opacity duration-300"
+        className="fixed flex h-auto inset-0 bg-black opacity-50 transition-opacity duration-300"
         onClick={onClose}
       />
+
       <div
         className={`
+          flex flex-col
           relative z-20
           bg-white 
-          w-full
-          tablet:max-w-[46rem]
-          h-fix
-          max-h-screen
-          
-          rounded-t-[2rem] tablet:rounded-[2rem]
-          flex flex-col
-          overflow-hidden
-          py-[0.4rem] mobile:py-[0.6rem] tablet:py-[0.8rem] // 이렇게 화면 크기별 패딩 추가
-
+          w-auto
+          tablet:h-auto
+          my-0
+          mx-auto
           ${getAnimationClass()}
           ${className}
         `}
       >
-        <div className="flex flex-col overflow-auto">{children}</div>
+        {children}
       </div>
     </div>
   );

@@ -23,10 +23,10 @@ export default function RatingFilter({ onChange }: RatingFilterProps) {
   };
 
   return (
-    <div className="flex flex-col gap-[1.6rem] w-auto">
-      <h3 className="font-bold text-[1.8rem] text-gray-800">RATING</h3>
+    <div className="flex flex-col desktop:gap-[1.6rem] mobile:gap-[1rem] w-auto ">
+      <h3 className="font-bold text-xl text-gray-800">RATING</h3>
       <form>
-        <fieldset className="flex flex-col gap-[1.2rem]">
+        <fieldset className="flex flex-col desktop:gap-[1.2rem] mobile:gap-[1rem]">
           {ratings.map(({ id, label, value }) => (
             <label
               key={id}
@@ -56,7 +56,7 @@ export default function RatingFilter({ onChange }: RatingFilterProps) {
               </span>
               {/* 텍스트 색상 변경 */}
               <span
-                className={`font-medium text-[1.6rem] ml-[1.2rem] ${
+                className={`font-medium text-[1.6rem] desktop:ml-[1.2rem] mobile:ml-[1.5rem] ${
                   selectedRating === value ? "text-primary" : "text-gray-800"
                 }`}
               >
