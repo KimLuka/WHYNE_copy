@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import api from "@/api/api";
+import instance from "@/api/api";
 import { useAuth } from "@/context/auth-provider";
 
 interface Wine {
@@ -30,11 +30,7 @@ export default function DetailWineCard({ id }: DetailWineCardProps) {
     async function fetchWineData() {
       try {
         setIsLoading(true);
-        const response = await api.get<Wine>(`/wines/${id}`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
+        const response = await instance.get<Wine>(`/wines/${id}`);
         setWine(response.data);
       } catch (error) {
         console.error("와인 정보 가져오기 실패", error);
@@ -55,24 +51,23 @@ export default function DetailWineCard({ id }: DetailWineCardProps) {
   }
 
   return (
-    <div className="max-w-[114rem] w-full mx-auto min-h-[30.2rem]">
+    <div className="max-w-[114rem] w-full desktop:min-h-[30.2rem] desktop:mx-auto tablet:min-h-[30.2rem] tablet:mx-[2rem] mobile:min-h-[20.9rem] mobile:mx-[1.6rem]">
       {wine ? (
-        <div className="mt-[4rem]">
-          <div className="relative min-h-[26rem] border-solid border-[0.1rem] bg-white rounded-[1.6rem] border-gray-300 pl-[10rem] flex items-end">
-            <div className="relative w-[5.8rem] h-[20.9rem] overflow-hidden">
-              <Image
-                src={wine.image}
-                alt="와인사진"
-                layout="fill"
-                objectFit="cover"
-                objectPosition="bottom"
-                className="absolute w-[5.8rem] h-[20.9rem]"
-              />
+        <div className="desktop:mt-[4rem] tablet:mt-[4rem] mobile:mt-[2rem]">
+          <div
+            className="relative border-solid border-[0.1rem] bg-white rounded-[1.6rem] border-gray-300 pl-[10rem] flex items-end
+          desktop:min-h-[26rem] desktop:mx-auto tablet:h-[26rem] tablet:mx-[2rem] mobile:min-h-[19rem] mobile:mx-[1.6rem]
+          "
+          >
+            <div className="absolute">
+              <div className="relative desktop:min-w-[5.8rem] desktop:h-[20.9rem] tablet:min-w-[8.4rem] tablet:h-[30.2rem] mobile:min-w-[5.8rem] mobile:h-[20.9rem]">
+                <Image src={wine.image} alt="와인사진" layout="fill" />
+              </div>
             </div>
-            <div className="w-[72rem] flex justify-between items-start ml-[8.6rem]">
+            <div className="w-[72rem] flex items-start desktop:ml-[14.4rem] tablet:ml-[6rem] mobile:ml-[2rem]">
               <div className="m-[3rem_0_3rem_0rem]">
                 <div className="mb-[2rem]">
-                  <p className="break-words max-w-[30rem] text-[3rem] font-semibold leading-[3.58rem] text-gray-800 mb-[2rem]">
+                  <p className="break-words max-w-[50rem] text-[3rem] font-semibold leading-[3.58rem] text-gray-800 mb-[2rem]">
                     {wine.name}
                   </p>
                   <p className="text-[1.6rem] font-regular leading-[2.6rem] text-gray-500">

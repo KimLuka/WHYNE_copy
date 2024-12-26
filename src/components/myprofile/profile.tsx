@@ -5,7 +5,7 @@ import Button from "../common/Button";
 import DefaultProfile from "@/../public/images/profile_white.svg";
 import CameraIcon from "@/../public/icons/photo_white.svg";
 import { useEffect, useState } from "react";
-import api from "@/api/api";
+import instance from "@/api/api";
 
 interface UserProfile {
   email: string;
@@ -25,12 +25,12 @@ export default function Profile() {
   async function fetchProfile() {
     try {
       setIsLoading(true);
-      const response = await api.get<UserProfile>("/users/me", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-      setUser(response.data);
+      const response = await instance.get<UserProfile>("/users/me");
+      setUser((prev) => ({
+        ...prev,
+        ...response.data,
+      }));
+      console.log(response.data);
     } catch (error) {
       console.error("프로필 가져오기 실패", error);
     } finally {
@@ -43,17 +43,9 @@ export default function Profile() {
     if (!newNickname.trim()) return;
     try {
       setIsLoading(true);
-      const response = await api.patch<UserProfile>(
-        "/users/me",
-        {
-          nickname: newNickname,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        },
-      );
+      const response = await instance.patch<UserProfile>("/users/me", {
+        nickname: newNickname,
+      });
       setUser((prev) => ({ ...prev, nickname: response.data.nickname }));
       setNewNickname("");
     } catch (error) {
@@ -70,12 +62,11 @@ export default function Profile() {
 
     try {
       setIsLoading(true);
-      const response = await api.post<{ url: string }>(
+      const response = await instance.post<{ url: string }>(
         "/images/upload",
         formData,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
             "content-Type": "multipart/form-data",
           },
         },
@@ -96,15 +87,7 @@ export default function Profile() {
 
     try {
       setIsLoading(true);
-      const response = await api.patch(
-        "/users/me",
-        { image: imageUrl },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        },
-      );
+      const response = await instance.patch("/users/me", { image: imageUrl });
       setUser((prev) => ({ ...prev, image: response.data.image }));
     } catch (error) {
       console.error("프로필 사진 변경 오류", error);

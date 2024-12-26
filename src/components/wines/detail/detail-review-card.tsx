@@ -10,8 +10,12 @@ import DropDownMenu from "@/components/common/dropdown-menu";
 import DetailWineTag, { Aroma, AromaMapping } from "./detail-wine-tag";
 import StarFill from "@/../public/icons/star_fill.svg";
 import { useEffect, useState } from "react";
-import api from "@/api/api";
 import axios from "axios";
+import instance from "@/api/api";
+import RatingDetails from "./rating-details";
+import DetailNoReview from "./detail-no-review";
+import DeleteModal from "@/components/common/modal-delete";
+// import ReviewModal from "@/components/modal-review/modal-review-edit";
 
 interface Review {
   id: number;
@@ -63,21 +67,16 @@ export default function DetailReviewCard({ wineid }: DetailReviewCardProps) {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [isExpand, setIsExpand] = useState<Record<number, boolean>>({});
   const [isLoading, setIsLoading] = useState(true);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  // const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedReviewId, setSelectedReviewId] = useState<number | null>(null);
 
   async function toggleLike(reviewId: number, isLiked: boolean) {
     try {
       if (isLiked) {
-        await api.delete(`/reviews/${reviewId}/like`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
+        await instance.delete(`/reviews/${reviewId}/like`);
       } else {
-        await api.post(`/reviews/${reviewId}/like`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
+        await instance.post(`/reviews/${reviewId}/like`);
       }
 
       setReviews((prev) =>
@@ -100,13 +99,8 @@ export default function DetailReviewCard({ wineid }: DetailReviewCardProps) {
     async function fetchReviews() {
       try {
         setIsLoading(true);
-        const response = await api.get<{ reviews: Review[] }>(
+        const response = await instance.get<{ reviews: Review[] }>(
           `/wines/${wineid}`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          },
         );
         setReviews(response.data.reviews || []);
       } catch (error) {
@@ -130,155 +124,202 @@ export default function DetailReviewCard({ wineid }: DetailReviewCardProps) {
     }));
   }
 
+  function openDeleteModal(reviewId: number) {
+    setSelectedReviewId(reviewId);
+    setIsDeleteModalOpen(true);
+  }
+
+  function closeDeleteModal() {
+    setSelectedReviewId(null);
+    setIsDeleteModalOpen(false);
+  }
+
+  // function openEditModal(review: Review) {
+  //   setSelectedReviewId(review.id);
+  //   setIsEditModalOpen(true);
+  // }
+
   return (
-    <div className="w-[80rem] min-h-[30.2rem]">
-      <p className="font-semibold text-[2rem] text-gray-800 leading-[3.2rem]">
-        리뷰 목록
-      </p>
-      {reviews.map((review) => (
-        <div
-          key={review.id}
-          className="border-solid border-[0.1rem] bg-white rounded-[1.6rem] border-gray-300 p-[3rem_4rem] mt-[2rem]"
-        >
+    <div>
+      {reviews.length > 0 ? (
+        <div className="flex flex-row gap-[6rem]">
           <div>
-            <div className="flex justify-between">
-              <div className="flex flex-row gap-[1.6rem] items-center">
-                <div className="relative w-[6.4rem] h-[6.4rem]">
-                  <Image
-                    src={review.user.image || DefaultProfile}
-                    alt="프로필 사진"
-                    layout="fill"
-                    className="desktop:w-[6.4rem] desktop:h-[6.4rem] border-solid border-gray-300 border-[0.1rem]  rounded-full"
-                  />
-                </div>
-                <div className="flex flex-col gap-[0.4rem]">
-                  <p className="font-semibold text-[1.8rem] leading-[2.6rem] text-gray-800">
-                    {review.user.nickname}
-                  </p>
-                  <p className="font-regular text-[1.6rem] leading-[2.6rem] text-gray-500">
-                    {timeAgo(review.createdAt)}
-                  </p>
-                </div>
-              </div>
-              <div className="flex flex-row gap-[1.8rem]">
-                <button
-                  className="relative desktop:w-[3.8rem] desktop:h-[3.8rem] tablet:w-[3.8rem] tablet:h-[3.8rem] mobile:w-[3.2rem] mobile:h-[3.2rem]"
-                  onClick={() => toggleLike(review.id, review.isLiked || false)}
+            <p className="font-semibold text-[2rem] text-gray-800 leading-[3.2rem]">
+              리뷰 목록
+            </p>
+            <div className="w-[80rem] min-h-[30.2rem]">
+              {reviews.map((review) => (
+                <div
+                  key={review.id}
+                  className="border-solid border-[0.1rem] bg-white rounded-[1.6rem] border-gray-300 p-[3rem_4rem] mt-[2rem]"
                 >
-                  <Image
-                    src={review.isLiked ? LikeFullButton : LikeEmptyButton}
-                    alt="좋아요 버튼"
-                    layout="fill"
-                  />
-                </button>
-
-                <div className=" z-10">
-                  <DropDownMenu>
-                    <div className="relative desktop:w-[3.8rem] desktop:h-[3.8rem] tablet:w-[3.8rem] tablet:h-[3.8rem] mobile:w-[3.2rem] mobile:h-[3.2rem]">
-                      <Image src={MenuIcon} alt="메뉴 아이콘" layout="fill" />
-                    </div>
-                  </DropDownMenu>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="mt-[2rem] flex justify-between">
-            <DetailWineTag
-              aromas={(review.aroma || []).filter((item): item is Aroma =>
-                Object.keys(AromaMapping).includes(item),
-              )}
-            />
-            <div className="w-[8rem] h-[4.2rem] rounded-[1.2rem] p-[0.8rem_1.5rem] bg-[#f1edfc] flex items-center gap-[0.2rem] ">
-              <div className="relative w-[2rem] h-[2rem] z-5">
-                <Image
-                  src={StarFill}
-                  layout="fill"
-                  alt="별점"
-                  className="z-5"
-                />
-              </div>
-              <p className="text-primary font-bold text-[1.8rem]">
-                {review.rating.toFixed(1)}
-              </p>
-            </div>
-          </div>
-
-          <div className="flex justify-center items-center flex-col ">
-            {isExpand[review.id] && (
-              <div className="flex justify-center items-start flex-col ">
-                <div className="mt-[2.4rem] font-regular text-[1.6rem] text-gray-800 leading-[2.6rem]">
-                  {review.content}
-                </div>
-                <div className="mt-[2rem] flex flex-col gap-[1.8rem]">
-                  {[
-                    {
-                      label: "바디감",
-                      min: "가벼워요",
-                      max: "진해요",
-                      value: reviews[0].lightBold,
-                    },
-                    {
-                      label: "타닌",
-                      min: "부드러워요",
-                      max: "떫어요",
-                      value: reviews[0].somoothTannic,
-                    },
-                    {
-                      label: "당도",
-                      min: "드라이해요",
-                      max: "달아요",
-                      value: reviews[0].drySweet,
-                    },
-                    {
-                      label: "산미",
-                      min: "안셔요",
-                      max: "많이셔요",
-                      value: reviews[0].softAcidic,
-                    },
-                  ].map((item, index) => (
-                    <div key={index} className="flex flex-row items-center">
-                      <div className="w-[5.6rem] h-[2.8rem] bg-gray-100 rounded-[0.6rem] p-[0.4rem_0.8rem] items-center justify-center flex  mr-[1.6rem]">
-                        <p className="text-[1.4rem] text-gray-500 font-semibold leading-[2.4rem]">
-                          {item.label}
-                        </p>
-                      </div>
-                      <div className="flex flex-row flex-shrink-0 justify-center items-center">
-                        <p className="w-[7rem] h-[1.9rem] font-medium text-[1.6rem] text-gray-800 mr-[1.55rem]">
-                          {item.min}
-                        </p>
-                        <div className="relative w-[49.1rem] h-[1.6rem] flex items-center">
-                          <div className="absolute w-full h-[0.6rem] bg-gray-100 rounded-[5rem] border-solid border-gray-300 border-[0.1rem]" />
-                          <div
-                            className="absolute w-[1.6rem] h-[1.6rem] bg-primary rounded-full"
-                            style={{
-                              left: `${(Math.min(Math.max(item.value, 0), 10) / 10) * 100}%`,
-                            }}
+                  <div>
+                    <div className="flex justify-between">
+                      <div className="flex flex-row gap-[1.6rem] items-center">
+                        <div className="relative w-[6.4rem] h-[6.4rem]">
+                          <Image
+                            src={review.user.image || DefaultProfile}
+                            alt="프로필 사진"
+                            layout="fill"
+                            className="desktop:w-[6.4rem] desktop:h-[6.4rem] border-solid border-gray-300 border-[0.1rem]  rounded-full"
                           />
                         </div>
-                        <p className="w-[5.6rem] h-[1.9rem] text-right font-medium text-[1.6rem] text-gray-800 ml-[2.5rem]">
-                          {item.max}
-                        </p>
+                        <div className="flex flex-col gap-[0.4rem]">
+                          <p className="font-semibold text-[1.8rem] leading-[2.6rem] text-gray-800">
+                            {review.user.nickname}
+                          </p>
+                          <p className="font-regular text-[1.6rem] leading-[2.6rem] text-gray-500">
+                            {timeAgo(review.createdAt)}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex flex-row gap-[1.8rem]">
+                        <button
+                          className="relative desktop:w-[3.8rem] desktop:h-[3.8rem] tablet:w-[3.8rem] tablet:h-[3.8rem] mobile:w-[3.2rem] mobile:h-[3.2rem]"
+                          onClick={() =>
+                            toggleLike(review.id, review.isLiked || false)
+                          }
+                        >
+                          <Image
+                            src={
+                              review.isLiked ? LikeFullButton : LikeEmptyButton
+                            }
+                            alt="좋아요 버튼"
+                            layout="fill"
+                          />
+                        </button>
+
+                        <div className=" z-10">
+                          <DropDownMenu
+                            onDelete={() => openDeleteModal(review.id)}
+                            // onEdit={() => openEditModal(review)}
+                          >
+                            <div className="relative desktop:w-[3.8rem] desktop:h-[3.8rem] tablet:w-[3.8rem] tablet:h-[3.8rem] mobile:w-[3.2rem] mobile:h-[3.2rem]">
+                              <Image
+                                src={MenuIcon}
+                                alt="메뉴 아이콘"
+                                layout="fill"
+                              />
+                            </div>
+                          </DropDownMenu>
+                        </div>
                       </div>
                     </div>
-                  ))}
-                </div>
-              </div>
-            )}
+                  </div>
+                  <div className="mt-[2rem] flex justify-between">
+                    <DetailWineTag
+                      aromas={(review.aroma || []).filter(
+                        (item): item is Aroma =>
+                          Object.keys(AromaMapping).includes(item),
+                      )}
+                    />
+                    <div className="w-[8rem] h-[4.2rem] rounded-[1.2rem] p-[0.8rem_1.5rem] bg-[#f1edfc] flex items-center gap-[0.2rem] ">
+                      <div className="relative w-[2rem] h-[2rem] z-5">
+                        <Image
+                          src={StarFill}
+                          layout="fill"
+                          alt="별점"
+                          className="z-5"
+                        />
+                      </div>
+                      <p className="text-primary font-bold text-[1.8rem]">
+                        {review.rating.toFixed(1)}
+                      </p>
+                    </div>
+                  </div>
 
-            <div
-              className="cursor-pointer relative w-[3rem] h-[3rem]"
-              onClick={() => toggleExpand(review.id)}
-            >
-              <Image
-                src={MoreButton}
-                alt="펼치기 버튼"
-                layout="fill"
-                className={`${isExpand[review.id] ? "rotate-180 mt-[0.65rem]" : "rotate-0 mt-[1.4rem]"}`}
-              />
+                  <div className="flex justify-center items-center flex-col ">
+                    {isExpand[review.id] && (
+                      <div className="flex justify-center items-start flex-col ">
+                        <div className="mt-[2.4rem] font-regular text-[1.6rem] text-gray-800 leading-[2.6rem]">
+                          {review.content}
+                        </div>
+                        <div className="mt-[2rem] flex flex-col gap-[1.8rem]">
+                          {[
+                            {
+                              label: "바디감",
+                              min: "가벼워요",
+                              max: "진해요",
+                              value: reviews[0].lightBold,
+                            },
+                            {
+                              label: "타닌",
+                              min: "부드러워요",
+                              max: "떫어요",
+                              value: reviews[0].somoothTannic,
+                            },
+                            {
+                              label: "당도",
+                              min: "드라이해요",
+                              max: "달아요",
+                              value: reviews[0].drySweet,
+                            },
+                            {
+                              label: "산미",
+                              min: "안셔요",
+                              max: "많이셔요",
+                              value: reviews[0].softAcidic,
+                            },
+                          ].map((item, index) => (
+                            <div
+                              key={index}
+                              className="flex flex-row items-center"
+                            >
+                              <div className="w-[5.6rem] h-[2.8rem] bg-gray-100 rounded-[0.6rem] p-[0.4rem_0.8rem] items-center justify-center flex  mr-[1.6rem]">
+                                <p className="text-[1.4rem] text-gray-500 font-semibold leading-[2.4rem]">
+                                  {item.label}
+                                </p>
+                              </div>
+                              <div className="flex flex-row flex-shrink-0 justify-center items-center">
+                                <p className="w-[7rem] h-[1.9rem] font-medium text-[1.6rem] text-gray-800 mr-[1.55rem]">
+                                  {item.min}
+                                </p>
+                                <div className="relative w-[49.1rem] h-[1.6rem] flex items-center">
+                                  <div className="absolute w-full h-[0.6rem] bg-gray-100 rounded-[5rem] border-solid border-gray-300 border-[0.1rem]" />
+                                  <div
+                                    className="absolute w-[1.6rem] h-[1.6rem] bg-primary rounded-full"
+                                    style={{
+                                      left: `${(Math.min(Math.max(item.value, 0), 10) / 10) * 100}%`,
+                                    }}
+                                  />
+                                </div>
+                                <p className="w-[5.6rem] h-[1.9rem] text-right font-medium text-[1.6rem] text-gray-800 ml-[2.5rem]">
+                                  {item.max}
+                                </p>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    <div
+                      className="cursor-pointer relative w-[3rem] h-[3rem]"
+                      onClick={() => toggleExpand(review.id)}
+                    >
+                      <Image
+                        src={MoreButton}
+                        alt="펼치기 버튼"
+                        layout="fill"
+                        className={`${isExpand[review.id] ? "rotate-180 mt-[0.65rem]" : "rotate-0 mt-[1.4rem]"}`}
+                      />
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
+          <RatingDetails id={wineid} />
         </div>
-      ))}
+      ) : (
+        <DetailNoReview />
+      )}
+      <DeleteModal
+        isOpen={isDeleteModalOpen}
+        onCancel={closeDeleteModal}
+        id={selectedReviewId!}
+        type="review"
+      />
     </div>
   );
 }

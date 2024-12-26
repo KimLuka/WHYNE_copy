@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import MyReviewCard, { Review } from "./my-review-card";
 import MyWineCard, { Wine } from "./my-wine-card";
 import "@/../public/images/placeholder1.png";
-import api from "@/api/api";
+import instance from "@/api/api";
 
 export default function ProfileTab() {
   const [activeTab, setActiveTab] = useState<"reviews" | "wines">("reviews");
@@ -19,11 +19,8 @@ export default function ProfileTab() {
   async function fetchReviews() {
     try {
       setIsLoading(true);
-      const response = await api.get("/users/me/reviews", {
+      const response = await instance.get("/users/me/reviews", {
         params: { limit },
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
       });
 
       const { list, totalCount } = response.data;
@@ -41,11 +38,8 @@ export default function ProfileTab() {
   async function fetchWines() {
     try {
       setIsLoading(true);
-      const response = await api.get("/users/me/wines", {
+      const response = await instance.get("/users/me/wines", {
         params: { limit },
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
       });
 
       const { list, totalCount } = response.data;

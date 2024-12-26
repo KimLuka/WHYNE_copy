@@ -1,6 +1,8 @@
 import Image from "next/image";
 import DropDownMenu from "../common/dropdown-menu";
 import MenuIcon from "@/../public/icons/menu.svg";
+import DeleteModal from "../common/modal-delete";
+import { useState } from "react";
 
 export interface Wine {
   id: number;
@@ -11,6 +13,19 @@ export interface Wine {
 }
 
 export default function MyWineCard({ wine }: { wine: Wine }) {
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [seletedWineId, setSeletedWineId] = useState<number | null>(null);
+
+  function openDeleteModal() {
+    setSeletedWineId(wine.id);
+    setIsDeleteModalOpen(true);
+  }
+
+  function closeDeleteModal() {
+    setSeletedWineId(null);
+    setIsDeleteModalOpen(false);
+  }
+
   function formatPrice(price: number): string {
     return new Intl.NumberFormat("ko-KR").format(price);
   }
@@ -18,8 +33,8 @@ export default function MyWineCard({ wine }: { wine: Wine }) {
   return (
     <div className="desktop:w-[80rem] tablet:w-full min-h-[27rem] flex">
       <div className="mt-[4rem]">
-        <div className="relative w-[80rem] h-[22.8rem] border-solid border-[0.1rem] bg-white rounded-[1.6rem] border-gray-300 pl-[4rem] flex items-end">
-          <div className="relative w-[7.6rem] h-[27rem] overflow-hidden">
+        <div className="relative w-[80rem] h-[22.8rem] border-solid border-[0.1rem] bg-white rounded-[1.6rem] border-gray-300 pl-[4rem] flex">
+          <div className="relative w-[7.6rem] h-[27rem] overflow-hidden self-end">
             <Image
               src={wine.image}
               alt="와인사진"
@@ -32,7 +47,7 @@ export default function MyWineCard({ wine }: { wine: Wine }) {
           <div className="w-[72rem] flex justify-between ">
             <div className="m-[3rem_0_3rem_4rem]">
               <div className="mb-[2rem]">
-                <p className="break-words max-w-[30rem] text-[3rem] font-semibold leading-[3.58rem] text-gray-800 mb-[2rem]">
+                <p className="break-words max-w-[50rem] text-[3rem] font-semibold leading-[3.58rem] text-gray-800 mb-[2rem]">
                   {wine.name}
                 </p>
                 <p className="text-[1.6rem] font-regular leading-[2.6rem] text-gray-500">
@@ -44,7 +59,7 @@ export default function MyWineCard({ wine }: { wine: Wine }) {
               </p>
             </div>
             <div className="m-[3rem_4rem]">
-              <DropDownMenu>
+              <DropDownMenu onDelete={openDeleteModal}>
                 <Image
                   src={MenuIcon}
                   alt="메뉴 아이콘"
@@ -55,6 +70,12 @@ export default function MyWineCard({ wine }: { wine: Wine }) {
           </div>
         </div>
       </div>
+      <DeleteModal
+        isOpen={isDeleteModalOpen}
+        onCancel={closeDeleteModal}
+        id={seletedWineId!}
+        type="wine"
+      />
     </div>
   );
 }
