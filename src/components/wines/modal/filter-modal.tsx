@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PriceFilter from "../price-filter";
 import RatingFilter from "../rating-filter";
 import TypesFilter from "../types-filter";
@@ -8,50 +8,67 @@ import Button from "@/components/common/Button";
 import Modal from "@/components/common/modal-container";
 import Image from "next/image";
 import XButton from "../../../../public/icons/x_button.svg";
-import { Filters } from "../wine";
 
 interface Filter {
   isOpen: boolean;
   onToggle: () => void;
-  onFilterApply: () => void;
+  onFilterApply: (filters: {
+    type: string;
+    price: { minPrice: number; maxPrice: number };
+    rating: number;
+  }) => void;
   onFilterReset: () => void;
   onTypeChange: (type: string) => void;
   onPriceChange: (minPrice: number, maxPrice: number) => void;
   onRatingChange: (rating: number) => void;
-  filters: Filters;
+  initialPrice?: { minPrice: number; maxPrice: number };
+  initialRating?: number;
 }
 
 export default function FilterModal({
   isOpen,
   onToggle,
   onFilterApply,
-  onFilterReset,
   onTypeChange,
   onPriceChange,
   onRatingChange,
-  filters,
+  initialPrice = { minPrice: 0, maxPrice: 500000 },
+  initialRating = 0,
 }: Filter) {
-  const [resetPrice, setResetPrice] = useState<{
-    minPrice: number;
-    maxPrice: number;
-  }>({
-    minPrice: filters.minPrice ?? 0, // filters에서 minPrice가 있으면 사용, 없으면 0
-    maxPrice: filters.maxPrice ?? 500000, // filters에서 maxPrice가 있으면 사용, 없으면 500000
-  });
+  const [type, setType] = useState<string>("");
+  const [price, setPrice] = useState<{ minPrice: number; maxPrice: number }>(
+    initialPrice,
+  );
+  const [rating, setRating] = useState<number>(initialRating);
 
-  const [resetRating, setResetRating] = useState<number>(filters.rating || 0);
-
+  // 필터 초기화
   const handleReset = () => {
-    setResetPrice({ minPrice: 0, maxPrice: 500000 });
-    setResetRating(0);
-    onFilterReset(); // 필터 초기화
+    setPrice(initialPrice);
+    setRating(initialRating);
   };
+
+  // 필터 적용
+  const handleApply = () => {
+    const filters = {
+      type,
+      price,
+      rating,
+    };
+    onFilterApply(filters); // 필터 값 부모로 전달
+  };
+
+  useEffect(() => {
+    // 값 변경 시, 부모 컴포넌트로 전달하는 콜백 실행
+    onTypeChange(type);
+    onPriceChange(price.minPrice, price.maxPrice);
+    onRatingChange(rating);
+  }, [type, price, rating, onTypeChange, onPriceChange, onRatingChange]);
 
   return (
     <Modal
       isOpen={isOpen}
       onClose={onToggle}
-      className="tablet:mt-0 mobile:mt-[8rem] mobile:mb-0 rounded-t-[1.6rem] tablet:rounded-[1.6rem]  mobile:w-[37.5rem] mobile:p-[2.4rem]"
+      className="tablet:mt-0 mobile:mt-[8rem] mobile:mb-0 rounded-t-[1.6rem] tablet:rounded-[1.6rem] mobile:w-[37.5rem] mobile:p-[2.4rem]"
     >
       <div className="flex flex-col h-full mobile:gap-[4rem]">
         <div className="flex flex-col mobile:gap-[3.2rem]">
@@ -62,20 +79,14 @@ export default function FilterModal({
             </button>
           </div>
           <div className="flex flex-col gap-[3.2rem]">
-            <TypesFilter onChange={onTypeChange} />
+            <TypesFilter onChange={setType} />
             <PriceFilter
-              onChange={onPriceChange}
-              filters={{
-                minPrice: filters.minPrice,
-                maxPrice: filters.maxPrice,
-              }}
-              resetValues={resetPrice}
+              onChange={(minPrice, maxPrice) =>
+                setPrice({ minPrice, maxPrice })
+              }
+              resetValues={initialPrice}
             />
-            <RatingFilter
-              onChange={onRatingChange}
-              filters={{ rating: filters.rating }}
-              resetRating={resetRating}
-            />
+            <RatingFilter onChange={setRating} resetRating={initialRating} />
           </div>
         </div>
         <div className="flex justify-between gap-[1rem]">
@@ -92,8 +103,8 @@ export default function FilterModal({
             size="large"
             color="primary"
             type="submit"
-            onClick={onFilterApply}
-            addClassName="w-[23rem] h-[5.5rem] rounded-[1.2rem] font-bold text-lg flex items-center justify-center"
+            onClick={handleApply} // 필터 적용
+            addClassName="w-[21rem] h-[5.4rem] py-[1rem] px-[1.6rem] font-bold text-bold text-lg"
           >
             필터 적용하기
           </Button>

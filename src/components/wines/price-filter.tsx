@@ -1,52 +1,41 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
-import { Price } from "./wine";
+import { useState, useCallback } from "react";
 
 interface PriceApp {
   onChange: (minPrice: number, maxPrice: number) => void; // 가격 범위 변경 시 부모로 전달하는 함수
-  filters: Price;
   resetValues?: { minPrice: number; maxPrice: number }; // 초기화 값은 옵셔널로 설정
 }
 
-export default function PriceFilter({
-  onChange,
-  filters,
-  resetValues,
-}: PriceApp) {
-  const [minPrice, setMinPrice] = useState(filters.minPrice); // 초기값을 filters의 minPrice로 설정
-  const [maxPrice, setMaxPrice] = useState(filters.maxPrice); // 초기값을 filters의 maxPrice로 설정
+export default function PriceFilter({ onChange, resetValues }: PriceApp) {
+  const [minPrice, setMinPrice] = useState(resetValues?.minPrice || 0);
+  const [maxPrice, setMaxPrice] = useState(resetValues?.maxPrice || 500000);
 
-  // 가격 범위 변경을 부모에게 전달하는 함수
-  const handleFilterChange = useCallback(() => {
+  // 가격 범위가 변경될 때만 부모에게 전달하는 함수
+  const handlePriceChange = useCallback(() => {
     onChange(minPrice, maxPrice);
-    console.log("가격 범위 변경", onChange);
   }, [minPrice, maxPrice, onChange]);
 
-  useEffect(() => {
-    handleFilterChange(); // 가격 범위를 부모 컴포넌트로 전달
-    console.log("handleFilter", handleFilterChange);
-  }, [minPrice, maxPrice, handleFilterChange]);
-
-  // resetValues가 변경되면 가격 초기화, 제일 마지막에 찍히는 값
-  useEffect(() => {
-    if (resetValues) {
-      setMinPrice(resetValues.minPrice); // 초기화된 minPrice로 설정
-      setMaxPrice(resetValues.maxPrice); // 초기화된 maxPrice로 설정
-      console.log("초기화", resetValues);
-    }
-  }, [resetValues]);
+  // // 초기화 값이 변경될 때마다 상태를 업데이트하고 부모로 전달
+  // if (
+  //   resetValues &&
+  //   (resetValues.minPrice !== minPrice || resetValues.maxPrice !== maxPrice)
+  // ) {
+  //   setMinPrice(resetValues?.minPrice || 0);
+  //   setMaxPrice(resetValues?.maxPrice || 500000);
+  //   handlePriceChange(); // 초기화된 상태를 부모에게 전달
+  // }
 
   const handleMinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = Math.min(Number(e.target.value), maxPrice - 1000); // 최소값은 최대값보다 작아야 함
+    const value = Math.min(Number(e.target.value), maxPrice - 1000);
     setMinPrice(value);
-    handleFilterChange(); // 부모로 값 전달
+    handlePriceChange();
   };
 
   const handleMaxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = Math.max(Number(e.target.value), minPrice + 1000); // 최대값은 최소값보다 커야 함
+    const value = Math.max(Number(e.target.value), minPrice + 1000);
     setMaxPrice(value);
-    handleFilterChange(); // 부모로 값 전달
+    handlePriceChange();
   };
 
   return (

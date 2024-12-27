@@ -1,14 +1,23 @@
 import Button from "../common/Button";
 
-interface TypesFilterProps {
-  onChange: (type: string) => void; // 선택된 타입을 전달하는 콜백
+interface WineSort {
+  id: "RED" | "WHITE" | "SPARKLING";
+  value: "RED" | "WHITE" | "SPARKLING";
 }
 
-export default function TypesFilter({ onChange }: TypesFilterProps) {
-  const wineTypes = ["RED", "WHITE", "SPARKLING"];
+interface TypesFilter {
+  onChange: (type: "RED" | "WHITE" | "SPARKLING") => void;
+}
+
+export default function TypesFilter({ onChange }: TypesFilter) {
+  const wineTypes: WineSort[] = [
+    { id: "RED", value: "RED" },
+    { id: "WHITE", value: "WHITE" },
+    { id: "SPARKLING", value: "SPARKLING" },
+  ];
 
   // 타입 클릭 핸들러
-  const handleTypeClick = (type: string) => {
+  const handleTypeClick = (type: "RED" | "WHITE" | "SPARKLING") => {
     onChange(type); // 부모 컴포넌트로 선택된 타입 전달
   };
 
@@ -18,18 +27,18 @@ export default function TypesFilter({ onChange }: TypesFilterProps) {
         WINE TYPES
       </h3>
       <div className="flex desktop:gap-[1.5rem] mobile:gap-[1rem]">
-        {wineTypes.map((type) => (
+        {wineTypes.map((wineSort) => (
           <Button
-            key={type}
+            key={wineSort.id}
             type="button"
             size="small"
             color="white"
             addClassName={
               "rounded-[10rem] p-[1.4rem] text-center flex items-center font-medium text-lg focus:bg-primary focus:text-white"
             }
-            onClick={() => handleTypeClick(type)} // 클릭 이벤트
+            onClick={() => handleTypeClick(wineSort.id)}
           >
-            {type}
+            {wineSort.value}
           </Button>
         ))}
       </div>

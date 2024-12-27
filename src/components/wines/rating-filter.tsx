@@ -1,20 +1,19 @@
 "use client";
 
-import { useState, useEffect, JSX } from "react";
-import { Rating } from "./wine";
+import { useState, useEffect } from "react";
 
 interface RatingApp {
   onChange: (rating: number) => void;
-  filters: Rating;
-  resetRating: number; // 초기화된 평점 값
+  resetRating?: number; // 초기화된 평점 값
 }
 
 export default function RatingFliter({
   onChange,
-  filters,
-  resetRating,
-}: RatingApp): JSX.Element {
-  const [selectedRating, setSelectedRating] = useState<number | null>(null);
+  resetRating = 0, // 초기값 설정
+}: RatingApp) {
+  const [selectedRating, setSelectedRating] = useState<number | null>(
+    resetRating,
+  );
 
   const ratings: { id: string; label: string; value: number }[] = [
     { id: "all", label: "전체", value: 0 },
@@ -24,13 +23,10 @@ export default function RatingFliter({
     { id: "littleHigher", label: "3.0 - 3.5", value: 3.5 },
   ];
 
+  // resetRating이 변경되면 selectedRating을 업데이트
   useEffect(() => {
-    setSelectedRating(resetRating); // 초기화된 평점으로 설정
+    setSelectedRating(resetRating);
   }, [resetRating]);
-
-  useEffect(() => {
-    setSelectedRating(filters.rating); // filters로 받은 rating 값을 기반으로 초기화
-  }, [filters]);
 
   const handleSelection = (rating: number) => {
     setSelectedRating(rating);
