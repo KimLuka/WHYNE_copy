@@ -41,7 +41,7 @@ export default function Nav() {
               className="rounded-full overflow-hidden tablet:w-[4.5rem] tablet:h-[4.5rem] mobile:w-[2rem] mobile:h-[2rem]"
             >
               <Image
-                src={profile}
+                src={user.image || profile}
                 alt="프로필 이미지"
                 objectFit="contain"
                 width={45}
