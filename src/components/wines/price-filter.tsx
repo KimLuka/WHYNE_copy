@@ -64,7 +64,7 @@ export default function PriceFilter({
           </span>
         </label>
       </div>
-      <div className="relative h-[0.6rem] bg-gray-300 rounded-full">
+      <div className="relative h-[0.6rem] bg-gray-100 rounded-full">
         <div
           className="absolute h-[0.6rem] bg-primary rounded-full"
           style={{
@@ -72,24 +72,26 @@ export default function PriceFilter({
             right: `${100 - (maxPrice / 500000) * 100}%`,
           }}
         />
-        <input
-          type="range"
-          min={0}
-          max={500000}
-          step={1000}
-          value={minPrice}
-          onChange={handleMinChange}
-          className="absolute price-range pointer-events-auto"
-        />
-        <input
-          type="range"
-          min={0}
-          max={500000}
-          step={1000}
-          value={maxPrice}
-          onChange={handleMaxChange}
-          className="absolute price-range pointer-events-auto"
-        />
+<input
+  type="range"
+  min={0}
+  max={500000}
+  step={1000}
+  value={minPrice}
+  onChange={handleMinChange}
+  className="absolute w-full h-0 top-1/2 -translate-y-1/2 appearance-none bg-transparent pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:border-4 [&::-webkit-slider-thumb]:border-primary [&::-webkit-slider-thumb]:ring-1 [&::-webkit-slider-thumb]:ring-gray-300 [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:pointer-events-auto [&::-moz-range-thumb]:w-5 [&::-moz-range-thumb]:h-5 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-white [&::-moz-range-thumb]:border-[0.1rem] [&::-moz-range-thumb]:border-primary [&::-moz-range-thumb]:ring-1 [&::-moz-range-thumb]:ring-white [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:pointer-events-auto"
+/>
+<input
+  type="range"
+  min={0}
+  max={500000}
+  step={1000}
+  value={maxPrice}
+  onChange={handleMaxChange}
+  className="absolute w-full h-0 top-1/2 -translate-y-1/2 appearance-none bg-transparent pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:border-4 [&::-webkit-slider-thumb]:border-primary [&::-webkit-slider-thumb]:ring-1 [&::-webkit-slider-thumb]:ring-gray-300 [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:pointer-events-auto [&::-moz-range-thumb]:w-5 [&::-moz-range-thumb]:h-5 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-white [&::-moz-range-thumb]:border-[0.1rem] [&::-moz-range-thumb]:border-primary [&::-moz-range-thumb]:ring-1 [&::-moz-range-thumb]:ring-white [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:pointer-events-auto"
+/>
+
+
       </div>
     </div>
   );

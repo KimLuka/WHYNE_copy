@@ -3,7 +3,7 @@
 import Button from "@/components/common/Button";
 import Image from "next/image";
 import defaultStar from "../../../../public/icons/star.svg";
-import purpleStar from "../../../../public/icons/purple_star.svg";
+import purpleStar from "../../../../public/icons/star_fill.svg";
 import instance from "@/api/api";
 import { AxiosError } from "axios";
 import { useEffect, useState } from "react";
@@ -63,23 +63,25 @@ export default function RatingDetails({ id }: WineID) {
           <h2 className="text-[5.4rem] font-extrabold">
             {ratingDetails.avgRating?.toFixed(1)}
           </h2>
-          <div className="flex flex-col gap-[1rem]">
-            <div className="flex gap-[0.5rem]">
-              {[...Array(5)].map((_, index) => (
-                <Image
-                  key={index}
-                  width={24}
-                  height={24}
-                  src={
-                    index < Math.round(ratingDetails.avgRating || 0)
-                      ? purpleStar
-                      : defaultStar
-                  }
-                  alt={`별 ${index + 1}`}
-                  className="w-[2.4rem] h-[2.4rem] object-cover"
-                />
-              ))}
-            </div>
+          <div className="flex flex-col gap-4">
+  <div className="flex gap-2">
+    {[...Array(5)].map((_, index) => (
+      <div key={index} className="w-12 h-12"> {/* 48x48 크기로 컨테이너 설정 */}
+        <Image
+          width={24}
+          height={24}
+          src={
+            index < ratingDetails.avgRating
+              ? purpleStar
+              : defaultStar
+          }
+          alt={`별 ${index + 1}`}
+          className="w-full h-full object-contain"
+        />
+      </div>
+    ))}
+  </div>
+
             <p className="text-gray-500 text-[1.4rem]">
               {ratingDetails.reviewCount}개의 후기
             </p>
@@ -95,9 +97,9 @@ export default function RatingDetails({ id }: WineID) {
           ].map((ratings, index) => (
             <div
               key={index}
-              className="flex items-center justify-center gap-[1.5rem]"
+              className="w-[33rem] flex items-center justify-center"
             >
-              <p className="text-center text-[1.6rem] text-gray-500 leading-[2.4rem]">
+              <p className="text-center text-[1.6rem] text-gray-500 leading-[2.4rem] mr-[1.5rem]">
                 {ratings.label}
               </p>
               <div className="flex flex-shrink-0 h-[1.9rem] justify-center items-center">
