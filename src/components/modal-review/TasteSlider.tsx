@@ -10,8 +10,12 @@ const sliderData = [
   { label: "산미", descriptions: ["안셔요", "많이셔요"] },
 ];
 
-export default function TasteSlider() {
-  const { tasteValues, setTasteValues } = useReviewModalStore();
+interface TasteSliderProps {
+  tasteValues: number[]; // 슬라이더 값들
+}
+
+export default function TasteSlider({ tasteValues }: TasteSliderProps) {
+  const { setTasteValues } = useReviewModalStore();
 
   const handleSliderChange = (index: number, value: number) => {
     const newTasteValues = [...tasteValues];
@@ -24,12 +28,16 @@ export default function TasteSlider() {
       {sliderData.map((slider, index) => (
         <div key={slider.label} className="flex w-full">
           <div className="flex items-center w-full">
-            <p className="mr-[1.9rem] tablet:mr-[2.4rem] w-[4rem] tablet:w-[4.5rem] h-[3rem] flex-shrink-0 rounded-[0.8rem] bg-gray-100 
-              flex items-center justify-center text-[1.2rem] tablet:text-[1.4rem] font-medium text-gray-500">
+            <p
+              className="mr-[1.9rem] tablet:mr-[2.4rem] w-[4rem] tablet:w-[4.5rem] h-[3rem] flex-shrink-0 rounded-[0.8rem] bg-gray-100 
+              flex items-center justify-center text-[1.2rem] tablet:text-[1.4rem] font-medium text-gray-500"
+            >
               {slider.label}
             </p>
-            <p className="mr-[0.5rem] tablet:mr-[0.8rem] w-[4rem] tablet:w-[6rem] flex-shrink-0 
-              text-[1.2rem] tablet:text-[1.4rem] font-regular h-[3rem] flex items-center justify-center">
+            <p
+              className="mr-[0.5rem] tablet:mr-[0.8rem] w-[4rem] tablet:w-[6rem] flex-shrink-0 
+              text-[1.2rem] tablet:text-[1.4rem] font-regular h-[3rem] flex items-center justify-center"
+            >
               {slider.descriptions[0]}
             </p>
             <div className="mt-[0.5rem] flex-1 mx-[1.2rem] tablet:mx-[0.8rem]">
@@ -53,8 +61,10 @@ export default function TasteSlider() {
                 }}
               />
             </div>
-            <p className="w-[2.5rem] ml-[1.2rem] tablet:ml-[2.5rem] flex-shrink-0 
-              text-[1.2rem] tablet:text-[1.4rem] font-regular text-right h-[3rem] flex items-center justify-end">
+            <p
+              className="w-[2.5rem] ml-[1.2rem] tablet:ml-[2.5rem] flex-shrink-0 
+              text-[1.2rem] tablet:text-[1.4rem] font-regular text-right h-[3rem] flex items-center justify-end"
+            >
               {slider.descriptions[1]}
             </p>
           </div>

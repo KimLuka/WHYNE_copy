@@ -133,6 +133,7 @@ export default function RatingDetails({ id }: WineID) {
           <AddReviewModal
             isOpen={isOpenModal}
             onClick={() => setIsOpenModal(!isOpenModal)}
+            id={id}
           ></AddReviewModal>
         </ReviewProvider>
       )}

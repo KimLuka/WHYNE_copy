@@ -3,8 +3,12 @@
 import { useReviewModalStore } from "@/provider/usereviewmodals";
 import Chips from "@/components/common/Chips";
 
-export default function TagSelector() {
-  const { selectedTags, setSelectedTags } = useReviewModalStore();
+interface TagSelctorProps {
+  selectedTags: string[];
+}
+
+export default function TagSelector({ selectedTags }: TagSelctorProps) {
+  const { setSelectedTags } = useReviewModalStore();
 
   const handleTagClick = (tag: string) => {
     if (selectedTags.includes(tag)) {

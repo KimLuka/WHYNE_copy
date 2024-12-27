@@ -41,6 +41,12 @@ export const AromaMapping: { [key in Aroma]: string } = {
   LEATHER: "가죽",
 };
 
+export const mapTagToAroma = (tag: string): Aroma | undefined => {
+  return Object.keys(AromaMapping).find(
+    (key) => AromaMapping[key as Aroma] === tag,
+  ) as Aroma | undefined;
+};
+
 interface DetailReviewTagProps {
   aromas: Aroma[];
 }
