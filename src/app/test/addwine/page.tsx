@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import AddWine from "@/components/common/modal-add-wine";
+import AddWine from "@/components/modal-wine/modal-add-wine";
+import EditWine from "@/components/modal-wine/modal-eddit-wine";
 import DropDownMenu from "@/components/common/dropdown-menu";
 
 export default function TestPage() {
@@ -33,6 +34,17 @@ export default function TestPage() {
         </button>
 
         <AddWine isOpen={isModalOpen} onClick={handleCloseModal} />
+      </div>
+
+      <div>
+        <button
+          onClick={() => setIsModalOpen(true)}
+          className="rounded-[1.6rem] bg-primary px-[2.4rem] py-[1.2rem] text-[1.6rem] text-white hover:bg-[#7b52f1] transition-colors"
+        >
+          와인 수정하기
+        </button>
+
+        <EditWine isOpen={isModalOpen} onClick={handleCloseModal} />
       </div>
 
       <div className="flex items-center" style={{ gap: "1.6rem" }}>

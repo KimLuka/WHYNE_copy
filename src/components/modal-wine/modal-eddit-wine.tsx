@@ -3,16 +3,18 @@
 import { useState } from "react";
 import { NewWineData, WineType } from "@/types/tasting";
 import Button from "@/components/common/Button";
-import Input from "@/components/common/input";
-import ImageInput from "@/components/common/image-input";
-import WineTypeDropdown from "@/components/common/wine-type-drop-down";
+import Input from "@/components/modal-wine/input";
+import ImageInput from "@/components/modal-wine/image-input";
+import WineTypeDropdown from "@/components/modal-wine/wine-type-drop-down";
 import api from "@/api/api";
+import Modal from "@/components/common/modal-container";
 
 interface Props {
-  onClose: () => void;
+  isOpen: boolean;
+  onClick: () => void;
 }
 
-export default function AddWine({ onClose }: Props) {
+export default function EditWine({ isOpen, onClick }: Props) {
   const [values, setValues] = useState<NewWineData>({
     name: "",
     region: "",
@@ -247,7 +249,7 @@ export default function AddWine({ onClose }: Props) {
         );
 
         console.log("와인 등록 성공:", response);
-        onClose();
+        onClick();
       } catch (error) {
         console.error("에러 발생:", error);
         setErrors((prev) => ({
@@ -268,15 +270,50 @@ export default function AddWine({ onClose }: Props) {
     Object.keys(errors).length > 0;
 
   return (
-    <div className="flex flex-col h-full">
-      <article className="flex-1 px-[2.4rem]">
-        <h1 className="text-[2rem] tablet:text-[2.4rem] font-bold mt-[2.4rem] mb-[3.2rem] tablet:mb-[4rem]">
-          와인 등록
+    <Modal isOpen={isOpen} onClose={onClick} 
+    className="
+w-full
+tablet:max-w-[46rem]
+mt-0
+h-600:mt-0
+h-667:mt-[2rem] 
+h-740:mt-[7rem]
+h-800:mt-0
+h-820:mt-[12rem]  
+h-844:mt-[16rem]     
+h-896:mt-[20rem]  
+h-1024:mt-0
+max-h-[97vh] 
+overflow-y-auto
+rounded-t-[2rem] tablet:rounded-[2rem]
+flex flex-col
+py-[1.6rem] tablet:py-[5rem]
+pt-[1rem] 
+pt-800:pt-[1.2rem]
+pt-820:pt-[2rem]
+   ">
+    <div className="flex flex-col">
+      {/*xx */}
+      <article className="flex-1 px-[1.6rem] tablet:px-[2.4rem]
+">
+      <section className="flex justify-between items-center">
+      <h1 className="text-[2rem] tablet:text-[2.4rem] font-bold mb-[2rem] tablet:mb-[5rem]
+      ">
+          내가 등록한 와인
         </h1>
-
+        <Button
+            type="button"
+            color="secondary"
+            size="large"
+            onClick={onClick}
+            className="text-gray-500 text-2xl mb-[3rem] tablet:mb-[5rem]"
+          >
+            X
+          </Button>
+          </section>
         <form className="flex flex-col h-full" onSubmit={handleSubmit}>
-          <div className="flex-1 flex flex-col gap-[3.2rem] tablet:gap-[2.4rem]">
-            <div className="flex flex-col gap-[1.6rem]">
+          <div className=" flex flex-col gap-[1.6rem] tablet:gap-[2.4rem]">
+            <div className="flex flex-col gap-[1.6rem] tablet:gap-[2.4rem]">
               <label
                 htmlFor="name"
                 className="text-[1.4rem] tablet:text-[1.6rem] font-medium"
@@ -312,7 +349,7 @@ export default function AddWine({ onClose }: Props) {
               />
             </div>
 
-            <div className="flex flex-col gap-[1.6rem]">
+            <div className="flex flex-col gap-[1.6rem] tablet:gap-[2.4rem]">
               <label
                 htmlFor="region"
                 className="text-[1.4rem] tablet:text-[1.6rem] font-medium"
@@ -329,7 +366,7 @@ export default function AddWine({ onClose }: Props) {
               />
             </div>
 
-            <div className="flex flex-col gap-[1.6rem]">
+            <div className="flex flex-col gap-[1.6rem] tablet:gap-[2.4rem]">
               <label
                 htmlFor="type"
                 className="text-[1.4rem] tablet:text-[1.6rem] font-medium"
@@ -344,7 +381,7 @@ export default function AddWine({ onClose }: Props) {
               />
             </div>
 
-            <div className="flex flex-col gap-[1.6rem]">
+            <div className="flex flex-col gap-[1.6rem] tablet:gap-[2.4rem]">
               <label
                 htmlFor="image"
                 className="text-[1.4rem] tablet:text-[1.6rem] font-medium"
@@ -360,12 +397,15 @@ export default function AddWine({ onClose }: Props) {
             </div>
           </div>
 
-          <div className="flex gap-[1rem] mt-[2rem] tablet:mt-[2.4rem] sticky bottom-0 bg-white py-[1.6rem]">
+          <div className="flex gap-[1rem] sticky bg-white pt-default:pt-[1rem] 
+          pt-800:pt-[1.2rem]
+          pt-820:pt-[3rem]
+          ">
             <Button
               size="small"
               color="white"
               type="button"
-              onClick={onClose}
+              onClick={onClick}
               addClassName="flex-1 text-primary font-bold min-h-[4rem] text-base tablet:text-lg"
             >
               취소
@@ -377,11 +417,12 @@ export default function AddWine({ onClose }: Props) {
               disabled={isSubmitDisabled}
               addClassName="flex-[2.4] font-bold min-h-[4rem] text-base tablet:text-lg"
             >
-              와인 등록하기
+              수정하기
             </Button>
           </div>
         </form>
       </article>
     </div>
+  </Modal>
   );
 }

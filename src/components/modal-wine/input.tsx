@@ -28,7 +28,7 @@ export default function Input({
       focus:border-primary
       focus:outline-none
       placeholder:text-gray-500 
-      ${error || isErrored ? "border-red" : "border-gray-300"}
+      ${error || isErrored ? "border-primary" : "border-gray-300"}
       ${className || ""}
     `.trim();
 
@@ -36,7 +36,7 @@ export default function Input({
     <div>
       <input className={classCombined} {...props} />
       {error && (
-        <p className="text-red text-[0.875rem] tablet:text-[1rem] mt-[0.5rem]">
+        <p className="text-primary text-[0.875rem] tablet:text-[1rem] mt-[0.5rem]">
           {error}
         </p>
       )}

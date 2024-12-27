@@ -27,46 +27,6 @@ export default function ImageInput({
     return imageExtensions.includes(extension);
   };
 
-  // image file ratio checker
-  const imageRatioValidCheck = async (currentImgFile: File) => {
-    let isRatioValid = false;
-
-    const { width, height } = await new Promise<{
-      width: number;
-      height: number;
-    }>((resolve, reject) => {
-      const image = new Image();
-      const objectUrl = URL.createObjectURL(currentImgFile);
-      image.src = objectUrl;
-
-      image.onload = () => {
-        const imageSize = { width: image.width, height: image.height };
-        URL.revokeObjectURL(objectUrl);
-        resolve(imageSize);
-      };
-      image.onerror = () => {
-        URL.revokeObjectURL(objectUrl);
-        reject(new Error("image failed to load"));
-      };
-    });
-
-    // 119:390 비율은 약 0.305
-    const targetRatio = 119 / 390; // ≈ 0.305
-    const currentRatio = width / height;
-    const tolerance = 0.02; // 허용 오차 범위 2%
-
-    if (Math.abs(currentRatio - targetRatio) <= tolerance) {
-      isRatioValid = true;
-    }
-
-    console.log("width: ", width);
-    console.log("height: ", height);
-    console.log("isRatioValid", isRatioValid);
-    console.log("----------------------------");
-
-    return isRatioValid;
-  };
-
   // file input change handler
   const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
     if (!hasPreview) return;
@@ -89,20 +49,6 @@ export default function ImageInput({
       // 이미지 파일 확장자 검사
       if (!imageExtensionValidCheck(currentImgFile.name)) {
         alert("이미지 확장자는 jpg, jpeg, png, bmp, webp만 가능합니다!");
-        return;
-      }
-
-      // 이미지 파일 비율 검사
-      try {
-        const isRatioValid = await imageRatioValidCheck(currentImgFile);
-        if (!isRatioValid) {
-          alert(
-            "이미지 비율이 올바르지 않습니다. (권장 가로 : 세로 = 19 : 65)\n추천 사이즈 : 가로 119px, 세로 390px",
-          );
-          return;
-        }
-      } catch (error) {
-        console.error(error);
         return;
       }
 

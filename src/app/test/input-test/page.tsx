@@ -1,4 +1,4 @@
-import Input from '@/components/common/input';
+import Input from '@/components/modal-wine/input';
 
 export default function Home() {
   return (

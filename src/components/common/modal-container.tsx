@@ -55,7 +55,8 @@ function Modal({ isOpen, onClose, children, className = "" }: ModalProps) {
           flex flex-col
           relative z-20
           bg-white 
-          w-auto
+          w-full          
+          max-w-full             
           tablet:h-auto
           my-0
           mx-auto

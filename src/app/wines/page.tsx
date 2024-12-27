@@ -15,7 +15,7 @@ import RecommendCard from "@/components/wines/recommend-card";
 import EntireCard from "@/components/wines/entire-card";
 import FilterModal from "@/components/wines/modal/filter-modal";
 import Modal from "@/components/common/modal-container";
-import AddWine from "@/components/common/modal-add-wine";
+import AddWine from "@/components/modal-wine/modal-add-wine";
 import arrowRight from "../../../public/icons/right.svg";
 import "swiper/css";
 import "swiper/css/navigation";
