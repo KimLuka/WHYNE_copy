@@ -9,7 +9,7 @@ interface RatingApp {
 
 export default function RatingFliter({
   onChange,
-  resetRating = 0, // 초기값 설정
+  resetRating = 3, // 초기값 설정
 }: RatingApp) {
   const [selectedRating, setSelectedRating] = useState<number | null>(
     resetRating,
@@ -53,11 +53,9 @@ export default function RatingFliter({
                 className="appearance-none"
               />
               <span
-                className={`w-[1.8rem] h-[1.8rem] border-solid border-[0.1rem] rounded-[0.6rem] flex items-center justify-center border-gray-300 ${
-                  selectedRating === value
-                    ? "bg-gray-100 border-gray-300"
-                    : "bg-gray-100 border-gray-300"
-                }`}
+                className={
+                  "bg-gray-100 w-[1.8rem] h-[1.8rem] border-solid border-[0.1rem] rounded-[0.6rem] flex items-center justify-center border-gray-300"
+                }
               >
                 {selectedRating === value && (
                   <span className="w-[1rem] h-[1rem] rounded-[0.3rem] bg-primary" />

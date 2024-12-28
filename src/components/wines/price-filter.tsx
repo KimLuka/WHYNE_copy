@@ -16,16 +16,6 @@ export default function PriceFilter({ onChange, resetValues }: PriceApp) {
     onChange(minPrice, maxPrice);
   }, [minPrice, maxPrice, onChange]);
 
-  // // 초기화 값이 변경될 때마다 상태를 업데이트하고 부모로 전달
-  // if (
-  //   resetValues &&
-  //   (resetValues.minPrice !== minPrice || resetValues.maxPrice !== maxPrice)
-  // ) {
-  //   setMinPrice(resetValues?.minPrice || 0);
-  //   setMaxPrice(resetValues?.maxPrice || 500000);
-  //   handlePriceChange(); // 초기화된 상태를 부모에게 전달
-  // }
-
   const handleMinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = Math.min(Number(e.target.value), maxPrice - 1000);
     setMinPrice(value);

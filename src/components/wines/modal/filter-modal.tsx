@@ -29,6 +29,7 @@ export default function FilterModal({
   isOpen,
   onToggle,
   onFilterApply,
+  onFilterReset,
   onTypeChange,
   onPriceChange,
   onRatingChange,
@@ -45,6 +46,8 @@ export default function FilterModal({
   const handleReset = () => {
     setPrice(initialPrice);
     setRating(initialRating);
+    setType(""); // Type도 초기화
+    onFilterReset(); // 부모로 초기화된 값 알림
   };
 
   // 필터 적용
@@ -103,7 +106,7 @@ export default function FilterModal({
             size="large"
             color="primary"
             type="submit"
-            onClick={handleApply} // 필터 적용
+            onClick={handleApply}
             addClassName="w-[21rem] h-[5.4rem] py-[1rem] px-[1.6rem] font-bold text-bold text-lg"
           >
             필터 적용하기

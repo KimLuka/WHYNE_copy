@@ -16,28 +16,41 @@ export interface WineParam {
   cursor?: number;
 }
 
+interface User {
+  id: number;
+  nickname: string;
+  image: string | null;
+}
+
+interface Review {
+  id: number;
+  rating: number;
+  lightBold: number;
+  smoothTannic: number;
+  drySweet: number;
+  softAcidic: number;
+  aroma: string[];
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+  user: User;
+  likes: [
+    user: {
+      id: number;
+    },
+  ];
+}
+
 export interface WineType {
   id: number;
-  image: string;
   name: string;
   region: string;
+  image: string;
   price: number;
+  type: string;
   avgRating: number;
   reviewCount: number;
-  recentReview?: {
-    user: {
-      id: string;
-      nickname: string;
-      image: string;
-    };
-    updatedAt: string;
-    createdAt: string;
-    content: string;
-    aroma: string[];
-    rating: number;
-    id: number;
-  } | null;
-  userId: number;
+  recentReview: Review | null;
 }
 
 export interface WineListType {

@@ -21,7 +21,6 @@ import Search from "@/components/wines/search";
 import RecommendCard from "@/components/wines/recommend-card";
 import EntireCard from "@/components/wines/entire-card";
 import FilterModal from "@/components/wines/modal/filter-modal";
-import Modal from "@/components/common/modal-container";
 import AddWine from "@/components/modal-wine/modal-add-wine";
 import arrowRight from "../../../public/icons/right.svg";
 import "swiper/css";
@@ -32,14 +31,15 @@ const InitialFilters: Filters = {
   type: "",
   minPrice: 0,
   maxPrice: 500000,
-  rating: 0,
+  rating: 3,
 };
 
 // 와인 목록을 가져오는 함수 (공통화)
 const fetchData = async (
   url: string,
   { limit = 10, cursor, type, minPrice, maxPrice, rating, name }: WineParam,
-): Promise<WineListType | null> => {
+  /*eslint-disable*/
+): Promise<any> => {
   const param = removeEmptyField({
     limit,
     cursor,
@@ -63,7 +63,20 @@ const fetchData = async (
 };
 
 export default function Wines() {
-  const [recommendList, setRecommendList] = useState<WineType[]>([]);
+  const [recommendList, setRecommendList] = useState<WineType[]>([
+    {
+      id: 0,
+      name: "",
+      region: "",
+      image: "",
+      price: 0,
+      type: "",
+      avgRating: 0,
+      reviewCount: 0,
+      recentReview: null,
+    },
+  ]);
+
   const [entireList, setEntireList] = useState<WineListType>({
     list: [],
     nextCursor: 0,
@@ -77,7 +90,10 @@ export default function Wines() {
   // 추천 와인 목록 가져오기
   const fetchRecommendData = useCallback(async () => {
     const response = await fetchData("/wines/recommended", { limit: 10 });
-    if (response) setRecommendList(response);
+    if (response) {
+      setRecommendList(response);
+      console.log("추천 와인 목록", response);
+    }
   }, []);
 
   // 와인 목록 가져오기
@@ -102,11 +118,35 @@ export default function Wines() {
     if (response) setEntireList(response);
   };
 
-  const handleFilterChange = async (updatedValues: Partial<Filters>) => {
-    const updatedFilters = { ...InitialFilters, ...updatedValues };
-    const response = await fetchData("/wines", updatedFilters);
-    if (response) setEntireList(response);
-  };
+  const handleFilterChange = useCallback(
+    async (updatedValues: Partial<Filters>) => {
+      const updatedFilters = { ...InitialFilters, ...updatedValues };
+      const response = await fetchData("/wines", updatedFilters);
+      if (response) setEntireList(response);
+    },
+    [],
+  );
+
+  const handleTypeChange = useCallback(
+    (type: string) => {
+      handleFilterChange({ type });
+    },
+    [handleFilterChange],
+  );
+
+  const handlePriceChange = useCallback(
+    (minPrice: number, maxPrice: number) => {
+      handleFilterChange({ minPrice, maxPrice });
+    },
+    [handleFilterChange],
+  );
+
+  const handleRatingChange = useCallback(
+    (rating: number) => {
+      handleFilterChange({ rating });
+    },
+    [handleFilterChange],
+  );
 
   // 각각의 핸들러 함수도 분리
   const handleFilterModalOpen = () => {
@@ -116,11 +156,6 @@ export default function Wines() {
   const handleAddWineModalOpen = () => {
     setIsAddWineModalOpen(!isAddWineModalOpen);
   };
-
-  // const handleReset = async () => {
-  //   const response = await fetchData("/wines", InitialFilters); // 초기 필터값으로 API 호출
-  //   if (response) setEntireList(response); // 초기 상태로 데이터 설정
-  // };
 
   // 모달 상태를 토글하는 함수
   const handleModalToggle = () => {
@@ -147,14 +182,14 @@ export default function Wines() {
         <h2 className="font-bold text-gray-800 tablet:text-[2rem]/[2.4rem] mobile:text-[1.8rem]/[2.1rem]">
           이번 달 추천 와인
         </h2>
-        {recommendList.length > 0 ? (
+        {Array.isArray(recommendList) && recommendList.length > 0 ? (
           <div className="relative group w-full">
             <Swiper
               modules={[Navigation]}
               slidesPerView="auto" // 기본 슬라이드 수
               spaceBetween={20}
               centeredSlides={false}
-              loop={true}
+              loop={false}
               navigation={{
                 nextEl: ".swiper-button-next", // 커스텀 버튼 지정
               }} // 네비게이션 버튼 추가
@@ -206,12 +241,11 @@ export default function Wines() {
               }}
               onFilterReset={() => {
                 fetchFilteredData(InitialFilters); // 초기 필터로 API 호출
+                handleModalToggle(); // 모달 닫기
               }}
-              onTypeChange={(type) => console.log({ type })}
-              onPriceChange={(minPrice, maxPrice) =>
-                console.log({ minPrice, maxPrice })
-              }
-              onRatingChange={(rating) => console.log({ rating })}
+              onTypeChange={handleTypeChange}
+              onPriceChange={handlePriceChange}
+              onRatingChange={handleRatingChange}
             />
             <Search onChange={handleSearchChange} />
           </div>
@@ -225,9 +259,10 @@ export default function Wines() {
             >
               와인 등록하기
             </Button>
-            <Modal isOpen={isAddWineModalOpen} onClose={handleAddWineModalOpen}>
-              <AddWine onClose={handleAddWineModalOpen} />
-            </Modal>
+            <AddWine
+              isOpen={isAddWineModalOpen}
+              onClick={handleAddWineModalOpen}
+            />
           </div>
         </div>
         <div className="desktop:flex desktop:gap-[6rem]">
@@ -238,11 +273,9 @@ export default function Wines() {
                 onChange={(minPrice, maxPrice) =>
                   handleFilterChange({ minPrice, maxPrice })
                 }
-                resetValues={{ minPrice: 0, maxPrice: 500000 }}
               />
               <RatingFliter
                 onChange={(rating) => handleFilterChange({ rating })}
-                resetRating={0}
               />
             </div>
             <Button
@@ -254,9 +287,10 @@ export default function Wines() {
             >
               와인 등록하기
             </Button>
-            <Modal isOpen={isAddWineModalOpen} onClose={handleAddWineModalOpen}>
-              <AddWine onClose={handleAddWineModalOpen} />
-            </Modal>
+            <AddWine
+              isOpen={isAddWineModalOpen}
+              onClick={handleAddWineModalOpen}
+            />
           </div>
           {isLoading ? (
             <p className="text-gray-600">와인을 준비중입니다...</p> // 로딩 중 문구 표시
