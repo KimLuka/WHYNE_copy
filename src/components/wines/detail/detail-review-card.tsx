@@ -359,7 +359,7 @@ export default function DetailReviewCard({ wineid }: DetailReviewCardProps) {
           <RatingDetails id={wineid} />
         </div>
       ) : (
-        <DetailNoReview />
+        <DetailNoReview wineid={wineid}/>
       )}
       <DeleteModal
         isOpen={isDeleteModalOpen}
