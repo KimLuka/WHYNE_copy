@@ -10,6 +10,7 @@ export interface Wine {
   region: string;
   image: string;
   price: number;
+  createdAt: string;
 }
 
 export default function MyWineCard({ wine }: { wine: Wine }) {

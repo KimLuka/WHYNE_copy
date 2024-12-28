@@ -25,7 +25,12 @@ export default function ProfileTab() {
 
       const { list, totalCount } = response.data;
 
-      setReviews(list);
+      const sortedList = list.sort(
+        (a: Review, b: Review) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+      );
+
+      setReviews(sortedList);
       setTotalCount(totalCount);
     } catch (error) {
       console.error("리뷰 데이터 불러오기 실패", error);
@@ -44,7 +49,12 @@ export default function ProfileTab() {
 
       const { list, totalCount } = response.data;
 
-      setWines(list);
+      const sortedList = list.sort(
+        (a: Wine, b: Wine) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+      );
+
+      setWines(sortedList);
       setTotalCount(totalCount);
     } catch (error) {
       console.error("와인 데이터 불러오기 실패", error);

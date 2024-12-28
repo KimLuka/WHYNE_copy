@@ -55,6 +55,18 @@ export default function Profile() {
     }
   }
 
+  function handleNickNameChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const value = event.target.value;
+
+    if (value.includes(" ")) {
+      return;
+    }
+
+    if (value.length <= 20) {
+      setNewNickname(value);
+    }
+  }
+
   // 이미지 가져오기
   async function uploadImage(file: File) {
     const formData = new FormData();
@@ -179,11 +191,7 @@ export default function Profile() {
             border-[0.1rem] bg-white border-[#cfdbea] rounded-[1.6rem] font-regular focus:outline-none focus:border-primary p-[1.4rem_2rem]
             "
             value={newNickname}
-            onChange={(event) => {
-              if (event.target.value.length <= 20) {
-                setNewNickname(event.target.value);
-              }
-            }}
+            onChange={handleNickNameChange}
           ></input>
         </div>
         <div className="mobile:flex mobile:justify-self-end">

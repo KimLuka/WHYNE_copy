@@ -51,7 +51,7 @@ export default function DetailWineCard({ id }: DetailWineCardProps) {
   }
 
   return (
-    <div className="max-w-[114rem] w-full desktop:min-h-[30.2rem] desktop:mx-auto tablet:min-h-[30.2rem] tablet:mx-[2rem] mobile:min-h-[20.9rem] mobile:mx-[1.6rem]">
+    <div className="max-w-[114rem] w-full desktop:min-h-[30.2rem] desktop:mx-auto tablet:min-h-[30.2rem] mobile:min-h-[20.9rem] ">
       {wine ? (
         <div className="desktop:mt-[4rem] tablet:mt-[4rem] mobile:mt-[2rem]">
           <div
