@@ -5,12 +5,17 @@ import { useState } from "react";
 import AddReviewModal from "@/components/modal-review/AddReviewModal";
 import ReviewProvider from "@/provider/usereviewmodals";
 
-export default function DetailNoReview() {
+interface DetailReviewCardProps {
+  wineid: string;
+}
+
+export default function DetailNoReview({ wineid }: DetailReviewCardProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   function handleModalToggle() {
     setIsModalOpen((prev) => !prev);
   }
+
 
   return (
     <div className="flex flex-col w-[114rem]">
