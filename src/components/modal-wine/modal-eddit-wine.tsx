@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { NewWineData, WineType } from "@/types/tasting";
+import { WineType } from "@/types/tasting";
 import Button from "@/components/common/Button";
 import Input from "@/components/modal-wine/input";
 import ImageInput from "@/components/modal-wine/image-input";
@@ -12,6 +12,14 @@ import Modal from "@/components/common/modal-container";
 interface Props {
   isOpen: boolean;
   onClick: () => void;
+}
+
+interface NewWineData {
+  name: string;
+  region: string;
+  image: string;
+  price: number;
+  type: WineType;
 }
 
 export default function EditWine({ isOpen, onClick }: Props) {
