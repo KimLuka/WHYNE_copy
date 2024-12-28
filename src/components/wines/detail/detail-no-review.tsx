@@ -37,7 +37,7 @@ export default function DetailNoReview() {
         </Button>
       </div>
       <ReviewProvider>
-        <AddReviewModal isOpen={isModalOpen} onClick={handleModalToggle} />
+        <AddReviewModal id={wineid} isOpen={isModalOpen} onClick={handleModalToggle} />
       </ReviewProvider>
     </div>
   );
