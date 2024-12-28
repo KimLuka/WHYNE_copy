@@ -4,7 +4,7 @@ import { useReviewModalStore } from "@/provider/usereviewmodals";
 import { FormEvent,useEffect } from "react";
 import Button from "@/components/common/Button";
 import Modalv from "@/components/common/modal-container-review";
-import ReviewInput from "@/components/modal-review/ReviewInput";
+// import ReviewInput from "@/components/modal-review/ReviewInput";
 import TagSelector from "@/components/modal-review/TagSelector";
 import TasteSlider from "@/components/modal-review/TasteSlider";
 import { convertToAroma } from "@/utils/translate-aroma";
@@ -163,7 +163,7 @@ useEffect(() => {
           </button>
         </section>
       <form className="w-full" onSubmit={handleSubmit}>
-            <ReviewInput />
+{/*             <ReviewInput /> */}
             <div className="relative inline-block mb-[2rem]">
             <p className="text-gray-800 font-bold text-[1.6rem] tablet:text-[1.8rem] cursor-pointer 
 border-b-[0.4rem] border-dotted border-transparent 
