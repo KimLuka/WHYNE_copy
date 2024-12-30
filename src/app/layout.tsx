@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "@/styles/globals.css";
 import { AuthProvider } from "@/context/auth-provider";
 import ClientWrapper from "@/components/common/nav-wrapper";
+import ReviewProvider from "@/provider/usereviewmodals";
 
 export const metadata: Metadata = {
   title: "WHYNE",
@@ -17,8 +18,9 @@ export default function RootLayout({
     <html lang="ko">
       <body className="max-w-full">
         <AuthProvider>
-          {/* <LandingNav /> */}
-          <ClientWrapper>{children}</ClientWrapper>
+          <ReviewProvider>
+            <ClientWrapper>{children}</ClientWrapper>
+          </ReviewProvider>
         </AuthProvider>
       </body>
     </html>

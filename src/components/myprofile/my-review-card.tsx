@@ -5,6 +5,8 @@ import MenuIcon from "@/../public/icons/menu.svg";
 import DeleteModal from "../common/modal-delete";
 import { useEffect, useState } from "react";
 import instance from "@/api/api";
+import AddReviewModal from "../modal-review/AddReviewModal";
+import { Aroma, AromaMapping } from "../wines/detail/detail-wine-tag";
 // import ReviewModal from "../modal-review/modal-review-edit";
 
 function timeAgo(createdAt: string): string {
@@ -34,19 +36,36 @@ export interface Review {
   createdAt: string;
   name: string;
   content: string;
-  wineid: number;
+  wineId: number;
+  lightBold: number;
+  smoothTannic: number;
+  drySweet: number;
+  softAcidic: number;
+  aroma: Aroma[];
 }
 
 export default function MyReviewCard({ review }: { review: Review }) {
   const [wineName, setWineName] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  // const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [deleteReviewId, setDeleteReviewId] = useState<number | null>(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [reviewIdForModal, setReviewIdForModal] = useState<number | null>(null);
+  const [wineIdForModal, setWineIdForModal] = useState<number | null>(null);
+
+  const [initialData, setInitialData] = useState<{
+    rating: number;
+    content: string;
+    lightBold: number;
+    smoothTannic: number;
+    drySweet: number;
+    softAcidic: number;
+    aroma: Aroma[];
+  } | null>(null);
 
   async function fetchWineId(reviewId: number) {
     try {
       const response = await instance.get(`/reviews/${reviewId}`);
+      console.log("테스트", response.data.wineId);
       return response.data.wineId;
     } catch (error) {
       console.error("와인 ID 가져오기 실패", error);
@@ -72,6 +91,7 @@ export default function MyReviewCard({ review }: { review: Review }) {
         if (wineId) {
           const name = await fetchWineName(wineId);
           setWineName(name);
+          setWineIdForModal(wineId);
         } else {
           setWineName("알 수 없는 와인");
         }
@@ -86,22 +106,40 @@ export default function MyReviewCard({ review }: { review: Review }) {
   }, [review.id]);
 
   function openDeleteModal() {
-    setDeleteReviewId(review.id);
+    setReviewIdForModal(review.id);
     setIsDeleteModalOpen(true);
   }
 
   function closeDeleteModal() {
-    setDeleteReviewId(null);
+    setReviewIdForModal(null);
     setIsDeleteModalOpen(false);
   }
 
-  // function openEditModal() {
-  //   setIsEditModalOpen(true);
-  // }
+  function openEditModal() {
+    setReviewIdForModal(review.id);
+    setIsEditModalOpen(true);
+    console.log(review.wineId);
+    console.log(wineName);
 
-  // function closeEditModal() {
-  //   setIsEditModalOpen(false);
-  // }
+    const aromaTags = ((review.aroma as string[]) || []).filter(
+      (tag): tag is Aroma => Object.keys(AromaMapping).includes(tag),
+    );
+
+    setInitialData({
+      rating: review.rating,
+      content: review.content,
+      lightBold: review.lightBold,
+      smoothTannic: review.smoothTannic,
+      drySweet: review.drySweet,
+      softAcidic: review.softAcidic,
+      aroma: aromaTags,
+    });
+  }
+
+  function closeEditModal() {
+    setReviewIdForModal(null);
+    setIsEditModalOpen(false);
+  }
 
   return (
     <div className="desktop:w-[80rem] desktop:p-[2.4rem_4rem] tablet:w-full tablet:p-[2.4rem_4rem] mobile:w-full mobile:p-[1.6rem_2rem] min-h-[20.2rem] border-solid border-[0.1rem] bg-white rounded-[1.6rem] border-gray-300 ">
@@ -122,7 +160,7 @@ export default function MyReviewCard({ review }: { review: Review }) {
           </p>
         </div>
         {/* onEdit={openEditModal} */}
-        <DropDownMenu onDelete={openDeleteModal}>
+        <DropDownMenu onEdit={openEditModal} onDelete={openDeleteModal}>
           <Image
             src={MenuIcon}
             alt="메뉴 아이콘"
@@ -138,23 +176,20 @@ export default function MyReviewCard({ review }: { review: Review }) {
           {review.content}
         </div>
       </div>
+      <AddReviewModal
+        isOpen={isEditModalOpen}
+        onClick={closeEditModal}
+        wineId={wineIdForModal!}
+        id={reviewIdForModal!}
+        isEditing={isEditModalOpen}
+        initialData={initialData || undefined}
+      />
       <DeleteModal
         isOpen={isDeleteModalOpen}
         onCancel={closeDeleteModal}
-        id={deleteReviewId!}
+        id={reviewIdForModal!}
         type="review"
       />
-      {/* <ReviewModal
-        isOpen={isEditModalOpen}
-        onClick={closeEditModal}
-        mode="edit"
-        wineDetail={{ id: review.wineid, name: wineName || "알 수 없는 와인" }}
-        reviewId={review.id}
-        onUpdate={(updateReview) => {
-          console.log("리뷰 업데이트 완", updateReview);
-          closeEditModal();
-        }}
-      /> */}
     </div>
   );
 }

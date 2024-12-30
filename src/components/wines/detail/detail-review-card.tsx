@@ -13,10 +13,10 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import AddReviewModal from "@/components/modal-review/AddReviewModal";
 import instance from "@/api/api";
-import ReviewProvider from "@/provider/usereviewmodals";
 import RatingDetails from "./rating-details";
 import DetailNoReview from "./detail-no-review";
 import DeleteModal from "@/components/common/modal-delete";
+// import { useReviewModalStore } from "@/provider/usereviewmodals";
 
 interface Review {
   id: number;
@@ -77,8 +77,11 @@ export default function DetailReviewCard({ wineid }: DetailReviewCardProps) {
   const [initialData, setInitialData] = useState<{
     rating: number;
     content: string;
-    tasteValues: number[];
-    selectedTags: Aroma[]; // 여기서 Aroma[] 타입을 보장
+    lightBold: number;
+    smoothTannic: number;
+    drySweet: number;
+    softAcidic: number;
+    aroma: Aroma[];
   } | null>(null);
 
   async function handleEdit(reviewId: number) {
@@ -86,20 +89,32 @@ export default function DetailReviewCard({ wineid }: DetailReviewCardProps) {
     try {
       const response = await instance.get(`/reviews/${reviewId}`);
       if (response.status === 200) {
-        const { rating, content, tasteValues, selectedTags } = response.data;
+        const {
+          rating,
+          content,
+          lightBold,
+          smoothTannic,
+          drySweet,
+          softAcidic,
+          aroma,
+        } = response.data;
 
-        // selectedTags를 Aroma[]로 변환
-        const aromaTags = ((selectedTags as string[]) || []).filter(
+        // aroma를 Aroma[]로 변환
+        const aromaTags = ((aroma as string[]) || []).filter(
           (tag): tag is Aroma => Object.keys(AromaMapping).includes(tag),
         );
 
         setInitialData({
           rating,
           content,
-          tasteValues,
-          selectedTags: aromaTags, // 변환된 Aroma[]를 할당
+          lightBold,
+          smoothTannic,
+          drySweet,
+          softAcidic,
+          aroma: aromaTags, // 변환된 Aroma[]를 할당
         });
-        setIsModalOpen(true); // 모달 열기
+        setSelectedReviewId(reviewId);
+        setTimeout(() => setIsModalOpen(true), 0);
       }
     } catch (error) {
       console.error("리뷰 데이터를 불러오는 중 오류 발생:", error);
@@ -239,15 +254,14 @@ export default function DetailReviewCard({ wineid }: DetailReviewCardProps) {
                             </div>
                           </DropDownMenu>
                           {isModalOpen && (
-                            <ReviewProvider>
-                              <AddReviewModal
-                                isOpen={isModalOpen}
-                                onClick={() => setIsModalOpen(false)}
-                                id={wineid}
-                                isEditing={isEditing}
-                                initialData={initialData || undefined}
-                              />
-                            </ReviewProvider>
+                            <AddReviewModal
+                              isOpen={isModalOpen}
+                              onClick={() => setIsModalOpen(false)}
+                              wineId={wineid}
+                              id={selectedReviewId!}
+                              isEditing={isEditing}
+                              initialData={initialData || undefined}
+                            />
                           )}
                         </div>
                       </div>
@@ -359,7 +373,7 @@ export default function DetailReviewCard({ wineid }: DetailReviewCardProps) {
           <RatingDetails id={wineid} />
         </div>
       ) : (
-        <DetailNoReview wineid={wineid}/>
+        <DetailNoReview wineid={wineid} />
       )}
       <DeleteModal
         isOpen={isDeleteModalOpen}

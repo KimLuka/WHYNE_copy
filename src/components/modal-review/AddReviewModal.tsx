@@ -14,19 +14,24 @@ import { Aroma, mapTagToAroma } from "../wines/detail/detail-wine-tag";
 type ModalProps = {
   isOpen: boolean;
   onClick: () => void;
-  id: string;
+  wineId: string | number;
+  id: number; // review ID
   isEditing?: boolean;
   initialData?: {
     rating: number;
     content: string;
-    tasteValues: number[];
-    selectedTags: Aroma[];
+    lightBold: number;
+    smoothTannic: number;
+    drySweet: number;
+    softAcidic: number;
+    aroma: Aroma[];
   };
 };
 
 export default function AddReviewModal({
   isOpen,
   onClick,
+  wineId,
   id,
   isEditing = false,
   initialData,
@@ -34,8 +39,11 @@ export default function AddReviewModal({
   const {
     rating,
     content,
-    tasteValues,
-    selectedTags,
+    lightBold,
+    smoothTannic,
+    drySweet,
+    softAcidic,
+    aroma: aroma,
     resetReview,
     setReviewData,
   } = useReviewModalStore();
@@ -44,32 +52,47 @@ export default function AddReviewModal({
     if (isEditing && initialData) {
       setReviewData({
         content: initialData.content,
-        selectedTags: initialData.selectedTags,
-        tasteValues: initialData.tasteValues,
-        wineId: Number(id),
+        aroma: initialData.aroma,
+        lightBold: initialData.lightBold,
+        smoothTannic: initialData.smoothTannic,
+        drySweet: initialData.drySweet,
+        softAcidic: initialData.softAcidic,
+        wineId: Number(wineId),
         rating: initialData.rating,
       });
       console.log(initialData);
     }
-  }, [isEditing, initialData, id, setReviewData]);
+  }, [isEditing, initialData, wineId, setReviewData]);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const wineId = Number(id);
+    const wineIdToNumber = Number(wineId);
 
-    const formData = {
-      rating,
-      lightBold: tasteValues[0],
-      smoothTannic: tasteValues[1],
-      drySweet: tasteValues[2],
-      softAcidic: tasteValues[3],
-      aroma: selectedTags
-        .map(mapTagToAroma)
-        .filter((tag): tag is Aroma => tag !== undefined),
-      content,
-      wineId,
-    };
+    const formData = isEditing
+      ? {
+          rating,
+          lightBold,
+          smoothTannic,
+          drySweet,
+          softAcidic,
+          aroma: aroma
+            .map(mapTagToAroma)
+            .filter((tag): tag is Aroma => tag !== undefined),
+          content,
+        }
+      : {
+          rating,
+          lightBold,
+          smoothTannic,
+          drySweet,
+          softAcidic,
+          aroma: aroma
+            .map(mapTagToAroma)
+            .filter((tag): tag is Aroma => tag !== undefined),
+          content,
+          wineIdToNumber,
+        };
 
     try {
       const res: AxiosResponse = isEditing
@@ -109,7 +132,7 @@ export default function AddReviewModal({
           </button>
         </section>
         <form className="w-full" onSubmit={handleSubmit}>
-          <ReviewInput id={id} content={content} />
+          <ReviewInput id={wineId} content={content} />
           <div className="relative inline-block mb-[2rem]">
             <p
               className="text-gray-800 font-bold text-[1.6rem] tablet:text-[1.8rem] cursor-pointer 
@@ -120,7 +143,7 @@ export default function AddReviewModal({
               와인의 맛은 어땠나요?
             </p>
           </div>
-          <TasteSlider tasteValues={tasteValues} />
+          <TasteSlider />
           <div className="relative inline-block mt-[4rem] mb-[2rem]">
             <p
               className="text-gray-800 font-bold text-[1.6rem] tablet:text-[1.8rem] cursor-pointer 
@@ -132,7 +155,7 @@ export default function AddReviewModal({
               기억에 남는 향이 있나요?
             </p>
           </div>
-          <TagSelector selectedTags={selectedTags} />
+          <TagSelector aroma={aroma} />
           <div className="flex mt-[4rem]">
             <Button
               type="submit"

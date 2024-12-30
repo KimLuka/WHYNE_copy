@@ -64,23 +64,23 @@ export default function RatingDetails({ id }: WineID) {
             {ratingDetails.avgRating?.toFixed(1)}
           </h2>
           <div className="flex flex-col gap-4">
-  <div className="flex gap-2">
-    {[...Array(5)].map((_, index) => (
-      <div key={index} className="w-12 h-12"> {/* 48x48 크기로 컨테이너 설정 */}
-        <Image
-          width={24}
-          height={24}
-          src={
-            index < ratingDetails.avgRating
-              ? purpleStar
-              : defaultStar
-          }
-          alt={`별 ${index + 1}`}
-          className="w-full h-full object-contain"
-        />
-      </div>
-    ))}
-  </div>
+            <div className="flex gap-2">
+              {[...Array(5)].map((_, index) => (
+                <div key={index} className="w-12 h-12">
+                  {" "}
+                  {/* 48x48 크기로 컨테이너 설정 */}
+                  <Image
+                    width={24}
+                    height={24}
+                    src={
+                      index < ratingDetails.avgRating ? purpleStar : defaultStar
+                    }
+                    alt={`별 ${index + 1}`}
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+              ))}
+            </div>
 
             <p className="text-gray-500 text-[1.4rem]">
               {ratingDetails.reviewCount}개의 후기

@@ -3,7 +3,6 @@ import NoRievew from "@/../public/icons/no_review.svg";
 import Button from "@/components/common/Button";
 import { useState } from "react";
 import AddReviewModal from "@/components/modal-review/AddReviewModal";
-import ReviewProvider from "@/provider/usereviewmodals";
 
 interface DetailReviewCardProps {
   wineid: string;
@@ -15,7 +14,6 @@ export default function DetailNoReview({ wineid }: DetailReviewCardProps) {
   function handleModalToggle() {
     setIsModalOpen((prev) => !prev);
   }
-
 
   return (
     <div className="flex flex-col w-[114rem]">
@@ -41,9 +39,11 @@ export default function DetailNoReview({ wineid }: DetailReviewCardProps) {
           </p>
         </Button>
       </div>
-      <ReviewProvider>
-        <AddReviewModal id={wineid} isOpen={isModalOpen} onClick={handleModalToggle} />
-      </ReviewProvider>
+      <AddReviewModal
+        isOpen={isModalOpen}
+        onClick={() => setIsModalOpen(false)}
+        id={wineid}
+      />
     </div>
   );
 }

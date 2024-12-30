@@ -13,17 +13,18 @@ interface WineDetails {
 }
 
 interface WineIdProps {
-  id: string;
-  content: string;
+  id?: string | number;
+  content?: string;
 }
 
 export default function ReviewInput({ id, content }: WineIdProps) {
   const { setContent, setRating } = useReviewModalStore();
+
   const [wineName, setWineName] = useState<WineDetails | null>(null);
 
   useEffect(() => {
     if (id) {
-      async function GetWineName() {
+      async function getWineName() {
         try {
           const res = await instance.get(`/wines/${id}`);
           setWineName(res.data);
@@ -32,7 +33,7 @@ export default function ReviewInput({ id, content }: WineIdProps) {
         } finally {
         }
       }
-      GetWineName();
+      getWineName();
     }
   }, [id]);
 
