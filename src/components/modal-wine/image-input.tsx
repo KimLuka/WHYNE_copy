@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useState, useEffect } from "react";
 import NextImage from "next/image";
 
 interface ImageInputProps {
@@ -15,7 +15,14 @@ export default function ImageInput({
   hasPreview = false,
   onChangeImage,
 }: ImageInputProps) {
-  const [previewImg, setPreviewImg] = useState<string | null>(initialImage);
+  // 초기 이미지 URL을 state로 관리
+  const [previewImg, setPreviewImg] = useState<string | null>(null);
+  
+  // initialImage가 변경될 때 previewImg를 업데이트하는 useEffect 추가
+  useEffect(() => {
+    setPreviewImg(initialImage);
+  }, [initialImage]);
+
 
   // image file extension checker
   const imageExtensionValidCheck = (fileName: string) => {
@@ -84,6 +91,7 @@ export default function ImageInput({
               className="h-[15rem] w-[15rem] rounded-lg object-cover"
               src={previewImg}
               alt="프리뷰 이미지"
+              unoptimized={true}
             />
             <button
               type="button"

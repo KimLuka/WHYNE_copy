@@ -9,10 +9,19 @@ import WineTypeDropdown from "@/components/modal-wine/wine-type-drop-down";
 import Modal from "@/components/common/modal-container";
 import instance from "@/api/api";
 
+interface Wine {
+  id: number;
+  name: string;
+  region: string;
+  image: string;
+  price: number;
+  type: WineType;
+}
 interface Props {
   isOpen: boolean;
-  onClick: () => void;
-  onClose?: () => void;
+  wine: Wine;  // wine 정보 추가
+  onClose: () => void;
+  onUpdate: (updatedWine: Wine) => void;  // 성공 시 호출할 콜백 추가
 }
 
 interface NewWineData {
@@ -22,6 +31,7 @@ interface NewWineData {
   price: number;
   type: WineType;
 }
+
 
 const useResponsiveMargin = () => {
   const [marginClass, setMarginClass] = useState('');
@@ -76,16 +86,14 @@ const useResponsiveMargin = () => {
 
 
 
-
-
-export default function AddWine({ isOpen, onClick }: Props) {
+export default function AddWine({ isOpen, wine, onClose, onUpdate }: Props) {
   const { marginClass, buttonPaddingClass } = useResponsiveMargin();  
-  const [values, setValues] = useState<Partial<NewWineData>>({
-    name: "",
-    region: "",
-    image: "",
-    price: 0,
-    type: WineType.None,  // 여기서 type이 확실히 WineType임을 보장
+  const [values, setValues] = useState<NewWineData>({  // Partial 제거
+    name: wine.name,
+    region: wine.region,
+    image: wine.image,
+    price: wine.price,
+    type: wine.type,
   });
   
 
@@ -153,9 +161,6 @@ const validateField = (
         return value === WineType.None ? "와인 타입을 선택해주세요." : "";
 
       case "image":
-        if (value instanceof File) {
-          return imageFile ? "" : "이미지를 선택해주세요.";
-        }
         return "";
 
       default:
@@ -263,79 +268,66 @@ const validateField = (
     });
 
     // 이미지 파일 별도 검증
-    if (!imageFile) {
-      newErrors.image = "이미지를 선택해주세요.";
-    }
+    //if (!imageFile) {
+     // newErrors.image = "이미지를 선택해주세요.";
+    //}
 
     console.log("검증 결과:", newErrors);
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
-      console.log("검증 통과, API 호출 시도");
       try {
-        if (!imageFile) {
-          console.log("이미지 파일 누락");
-          throw new Error("이미지 파일이 등록되지 않았습니다.");
+        let imageUrl = values.image; // 기존 이미지 유지
+        if (imageFile) {
+          // 새 이미지가 있을 경우에만 업로드
+          imageUrl = await uploadImage(imageFile);
         }
-
-        const token = localStorage.getItem("accessToken");
-
-        if (!token) {
-          throw new Error("인증 토큰이 없습니다.");
-        }
-
-        // 이미지 업로드
-        console.log("이미지 업로드 시도");
-        const imageUrl = await uploadImage(imageFile);
-        console.log("이미지 업로드 결과:", imageUrl);
-
-        if (!imageUrl) {
-          throw new Error("이미지 업로드에 실패했습니다.");
-        }
-
-        // 와인 데이터 등록
-        console.log("와인 데이터 제출 시도", {
+  
+        const updatedWineData = {
           name: values.name,
           region: values.region,
           price: values.price,
           type: values.type,
           image: imageUrl,
+        };
+  
+        // PATCH 요청으로 변경
+        const response = await instance.patch(
+          `/wines/${wine.id}`,
+          updatedWineData
+        );
+  
+        console.log("와인 수정 성공:", response);
+        
+        // 성공 시 부모 컴포넌트에 알림
+        onUpdate({
+          ...wine,
+          ...updatedWineData
         });
-
-        const response = await instance.post("/wines", {
-          name: values.name,
-          region: values.region,
-          price: values.price,
-          type: values.type,
-          image: imageUrl,
-        });
-
-        console.log("와인 등록 성공:", response);
-        onClick();
+        
+        onClose();
       } catch (error) {
         console.error("에러 발생:", error);
         setErrors((prev) => ({
           ...prev,
-          global: "와인 등록 중 문제가 발생했습니다.",
+          global: "와인 수정 중 문제가 발생했습니다.",
         }));
       }
-    } else {
-      console.log("검증 실패로 API 호출 중단");
     }
   };
-  const isSubmitDisabled =
-    !values.name ||
-    !values.region ||
-    values.price === 0 ||
-    values.type === WineType.None ||
-    !imageFile ||
-    Object.keys(errors).length > 0;
 
+
+  const isSubmitDisabled =
+  !values.name ||
+  !values.region ||
+  values.price === 0 ||
+  values.type === WineType.None ||
+  Object.keys(errors).length > 0;
     
   return (
 <Modal 
   isOpen={isOpen} 
-  onClose={onClick} 
+  onClose={onClose} 
   className={
   `w-full tablet:max-w-[46rem] 
   h-full
@@ -354,7 +346,7 @@ const validateField = (
             type="button"
             color="secondary"
             size="large"
-            onClick={onClick}
+            onClick={onClose}
             className="text-gray-500 text-2xl mt-[1rem] tablet:mt-[2.4rem] mb-[3rem] tablet:mb-[4rem]"
           >
             X
@@ -441,11 +433,12 @@ const validateField = (
                 와인 사진
               </label>
               <ImageInput
-                id="image"
-                onChangeImage={handleChangeImage}
-                hasPreview
-                error={shouldShowError("image") ? errors.image : ""}
-              />
+  id="image"
+  onChangeImage={handleChangeImage}
+  hasPreview
+  error={shouldShowError("image") ? errors.image : ""}
+  initialImage={wine.image} 
+/>
             </div>
           </div>
 
@@ -453,15 +446,26 @@ const validateField = (
 
 
             
-            <Button
-              size="small"
-              color="white"
-              type="button"
-              onClick={onClick}
-              addClassName="flex-1 text-primary font-bold min-h-[4rem] tablet:text-lg"
-            >
-              취소
-            </Button>
+          <Button
+  size="small"
+  color="white"
+  type="button"
+  onClick={() => {
+    setValues({  // 초기값으로 리셋
+      name: wine.name,
+      region: wine.region,
+      image: wine.image,
+      price: wine.price,
+      type: wine.type,
+    });
+    onClose();
+  }}
+  addClassName="flex-1 text-primary font-bold min-h-[4rem] tablet:text-lg"
+>
+  취소
+</Button>
+
+
             <Button
               size="small"
               color="primary"

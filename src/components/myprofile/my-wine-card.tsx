@@ -3,6 +3,8 @@ import DropDownMenu from "../common/dropdown-menu";
 import MenuIcon from "@/../public/icons/menu.svg";
 import DeleteModal from "../common/modal-delete";
 import { useState } from "react";
+import EditWine from "@/components/modal-wine/modal-eddit-wine";
+import { WineType } from "@/types/tasting";  // WineType import 추가
 
 export interface Wine {
   id: number;
@@ -10,21 +12,44 @@ export interface Wine {
   region: string;
   image: string;
   price: number;
+  type: WineType;        // type 추가
   createdAt: string;
 }
 
-export default function MyWineCard({ wine }: { wine: Wine }) {
+interface MyWineCardProps {
+  wine: Wine;
+  onUpdate?: (updatedWine: Wine) => void;
+}
+
+export default function MyWineCard({ wine, onUpdate }: MyWineCardProps) {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [seletedWineId, setSeletedWineId] = useState<number | null>(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   function openDeleteModal() {
-    setSeletedWineId(wine.id);
     setIsDeleteModalOpen(true);
   }
 
   function closeDeleteModal() {
-    setSeletedWineId(null);
     setIsDeleteModalOpen(false);
+  }
+
+  function openEditModal() {
+    setIsEditModalOpen(true);
+  }
+
+  function closeEditModal() {
+    setIsEditModalOpen(false);
+  }
+
+  function handleWineUpdate(updatedWine: Omit<Wine, 'createdAt'>) {
+    if (onUpdate) {
+      // createdAt을 기존 wine에서 가져와서 합치기
+      onUpdate({
+        ...updatedWine,
+        createdAt: wine.createdAt
+      });
+    }
+    closeEditModal();
   }
 
   function formatPrice(price: number): string {
@@ -66,7 +91,8 @@ export default function MyWineCard({ wine }: { wine: Wine }) {
               </p>
             </div>
             <div className="desktop:m-[3rem_4rem] tablet:m-[3rem_4rem] mobile:m-[2rem]">
-              <DropDownMenu onDelete={openDeleteModal}>
+              <DropDownMenu onDelete={openDeleteModal}
+                      onEdit={openEditModal}>
                 <Image
                   src={MenuIcon}
                   alt="메뉴 아이콘"
@@ -77,10 +103,16 @@ export default function MyWineCard({ wine }: { wine: Wine }) {
           </div>
         </div>
       </div>
+      <EditWine 
+        isOpen={isEditModalOpen}
+        wine={wine}
+        onClose={closeEditModal}
+        onUpdate={handleWineUpdate}
+      />
       <DeleteModal
         isOpen={isDeleteModalOpen}
         onCancel={closeDeleteModal}
-        id={seletedWineId!}
+        id={wine.id} 
         type="wine"
       />
     </div>
