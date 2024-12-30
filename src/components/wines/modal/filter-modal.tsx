@@ -25,6 +25,54 @@ interface Filter {
   initialRating?: number;
 }
 
+const useResponsiveMargin = () => {
+  const [marginClass, setMarginClass] = useState('');
+ 
+  useEffect(() => {
+    const handleResize = () => {
+      const height = window.innerHeight;
+      const width = window.innerWidth;
+      console.log('Window size:', { width, height });
+      
+
+
+      // 태블릿 (744px 이상)
+      if (width >= 744) {
+        setMarginClass('h-screen flex items-center'); // 화면 중앙 정렬
+      }
+      // 모바일 (744px 미만)
+      else {
+        if (height >= 916) {
+          setMarginClass('mt-[25rem]'); 
+        } else if (height >= 900) {
+          setMarginClass('mt-[23rem]'); 
+        } else if (height >= 896) {
+          setMarginClass('mt-[22rem]');
+        } else if (height >= 844) {
+          setMarginClass('mt-[17rem]'); 
+        } else if (height >= 812) {
+          setMarginClass('mt-[13rem]'); 
+        } else if (height >= 740) {
+          setMarginClass('mt-[7rem]');
+        } else if (height >= 720) {
+          setMarginClass('mt-[3rem]');
+        } else if (height <= 667) {
+          setMarginClass('mt-0');
+        } else {
+          setMarginClass('mt-[9rem]'); 
+        }
+      }
+    };
+ 
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+ 
+  return { marginClass };
+};
+
+
 export default function FilterModal({
   isOpen,
   onToggle,
@@ -41,6 +89,9 @@ export default function FilterModal({
     initialPrice,
   );
   const [rating, setRating] = useState<number>(initialRating);
+
+  const { marginClass } = useResponsiveMargin();  
+
 
   // 필터 초기화
   const handleReset = () => {
@@ -71,9 +122,15 @@ export default function FilterModal({
     <Modal
       isOpen={isOpen}
       onClose={onToggle}
-      className="tablet:mt-0 mobile:mt-[8rem] mobile:mb-0 rounded-t-[1.6rem] tablet:rounded-[1.6rem] mobile:w-[37.5rem] mobile:p-[2.4rem]"
-    >
-      <div className="flex flex-col h-full mobile:gap-[4rem]">
+      className={
+        `w-full  tablet:w-[37.5rem]
+        h-full
+        rounded-t-[1.6rem] tablet:rounded-[1.6rem]
+        flex flex-col px-[2.4rem] tablet:px-0 py-[2.4rem]
+        ${marginClass}`}
+      
+      >
+      <div className="flex flex-col w-full tablet:w-[33rem] h-full mobile:gap-[4rem]">
         <div className="flex flex-col mobile:gap-[3.2rem]">
           <div className="flex justify-between">
             <h2 className="text-gray-800 text-bold text-xl">필터</h2>
@@ -98,7 +155,7 @@ export default function FilterModal({
             color="secondary"
             type="reset"
             onClick={handleReset}
-            addClassName="w-[10rem] h-[5.5rem] rounded-[1.2rem] font-bold text-lg text-center flex items-center justify-center"
+            addClassName="w-full min-w-[9.6rem] max-w-[20rem] h-[5.5rem] rounded-[1.2rem] font-bold text-lg"
           >
             초기화
           </Button>
@@ -107,7 +164,7 @@ export default function FilterModal({
             color="primary"
             type="submit"
             onClick={handleApply}
-            addClassName="w-[21rem] h-[5.4rem] py-[1rem] px-[1.6rem] font-bold text-bold text-lg"
+            addClassName="w-full min-w-[23rem] max-w-[30rem] h-[5.4rem] rounded-[1.2rem] font-bold text-bold text-lg "
           >
             필터 적용하기
           </Button>
@@ -116,3 +173,4 @@ export default function FilterModal({
     </Modal>
   );
 }
+
