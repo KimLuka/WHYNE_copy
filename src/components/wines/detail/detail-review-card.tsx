@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import AlertModal from "@/components/common/alert-modal"; // 추가
 import DefaultProfile from "@/../public/images/profile_default.svg";
 import MoreButton from "@/../public/icons/arrow_down.svg";
 import LikeEmptyButton from "@/../public/icons/empty_like.svg";
@@ -72,6 +73,7 @@ export default function DetailReviewCard({ wineid }: DetailReviewCardProps) {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   // const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedReviewId, setSelectedReviewId] = useState<number | null>(null);
+  const [alertText, setAlertText] = useState<string | null>(null); // 추가
 
   const { user } = useAuth();
 
@@ -140,7 +142,7 @@ export default function DetailReviewCard({ wineid }: DetailReviewCardProps) {
     } catch (error) {
       if (axios.isAxiosError(error)) {
         if (error.response && error.response.status === 403) {
-          alert("본인이 작성한 리뷰에는 좋아요를 할 수 없습니다.");
+          setAlertText("본인이 작성한 리뷰에는 좋아요를 할 수 없습니다.");
         } else {
           console.error("좋아요 실패", error);
         }
@@ -403,6 +405,13 @@ export default function DetailReviewCard({ wineid }: DetailReviewCardProps) {
         id={selectedReviewId!}
         type="review"
       />
+{alertText && (
+        <AlertModal
+          isOpen={!!alertText}
+          text={alertText}
+          onClose={() => setAlertText(null)}
+          />
+      )}
       {isModalOpen && (
         <AddReviewModal
           isOpen={isModalOpen}
