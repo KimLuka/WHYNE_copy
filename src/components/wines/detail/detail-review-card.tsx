@@ -405,12 +405,12 @@ export default function DetailReviewCard({ wineid }: DetailReviewCardProps) {
         id={selectedReviewId!}
         type="review"
       />
-{alertText && (
+      {alertText && (
         <AlertModal
           isOpen={!!alertText}
           text={alertText}
           onClose={() => setAlertText(null)}
-          />
+        />
       )}
       {isModalOpen && (
         <AddReviewModal

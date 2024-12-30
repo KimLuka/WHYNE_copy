@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState } from "react";
+import { useDebouncedCallback } from "use-debounce";
 
 interface PriceApp {
   onChange: (minPrice: number, maxPrice: number) => void; // 가격 범위 변경 시 부모로 전달하는 함수
@@ -11,21 +12,21 @@ export default function PriceFilter({ onChange, resetValues }: PriceApp) {
   const [minPrice, setMinPrice] = useState(resetValues?.minPrice || 0);
   const [maxPrice, setMaxPrice] = useState(resetValues?.maxPrice || 500000);
 
-  // 가격 범위가 변경될 때만 부모에게 전달하는 함수
-  const handlePriceChange = useCallback(() => {
-    onChange(minPrice, maxPrice);
-  }, [minPrice, maxPrice, onChange]);
+  // 가격 범위 변경 시 디바운스를 적용한 부모 함수 호출
+  const debouncedOnChange = useDebouncedCallback((min, max) => {
+    onChange(min, max);
+  }, 300); // 300ms 디바운스 적용
 
   const handleMinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = Math.min(Number(e.target.value), maxPrice - 1000);
     setMinPrice(value);
-    handlePriceChange();
+    debouncedOnChange(value, maxPrice); // 디바운스된 함수 호출
   };
 
   const handleMaxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = Math.max(Number(e.target.value), minPrice + 1000);
     setMaxPrice(value);
-    handlePriceChange();
+    debouncedOnChange(minPrice, value); // 디바운스된 함수 호출
   };
 
   return (
@@ -52,27 +53,25 @@ export default function PriceFilter({ onChange, resetValues }: PriceApp) {
           }}
         />
 
-<input
-  type="range"
-  min={0}
-  max={500000}
-  step={1000}
-  value={minPrice}
-  onChange={handleMinChange}
-  className="absolute w-full h-0 top-1/2 -translate-y-1/2 appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:border-4 [&::-webkit-slider-thumb]:border-primary [&::-webkit-slider-thumb]:ring-1 [&::-webkit-slider-thumb]:ring-gray-300 [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:pointer-events-auto [&::-moz-range-thumb]:w-5 [&::-moz-range-thumb]:h-5 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-white [&::-moz-range-thumb]:border-[0.1rem] [&::-moz-range-thumb]:border-primary [&::-moz-range-thumb]:ring-1 [&::-moz-range-thumb]:ring-white [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:pointer-events-auto"
-/>
+        <input
+          type="range"
+          min={0}
+          max={500000}
+          step={1000}
+          value={minPrice}
+          onChange={handleMinChange}
+          className="absolute w-full h-0 top-1/2 -translate-y-1/2 appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:border-4 [&::-webkit-slider-thumb]:border-primary [&::-webkit-slider-thumb]:ring-1 [&::-webkit-slider-thumb]:ring-gray-300 [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:pointer-events-auto [&::-moz-range-thumb]:w-5 [&::-moz-range-thumb]:h-5 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-white [&::-moz-range-thumb]:border-[0.1rem] [&::-moz-range-thumb]:border-primary [&::-moz-range-thumb]:ring-1 [&::-moz-range-thumb]:ring-white [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:pointer-events-auto"
+        />
 
-<input
-  type="range"
-  min={0}
-  max={500000}
-  step={1000}
-  value={maxPrice}
-  onChange={handleMaxChange}
-  className="absolute w-full h-0 top-1/2 -translate-y-1/2 appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:border-4 [&::-webkit-slider-thumb]:border-primary [&::-webkit-slider-thumb]:ring-1 [&::-webkit-slider-thumb]:ring-gray-300 [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:pointer-events-auto [&::-moz-range-thumb]:w-5 [&::-moz-range-thumb]:h-5 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-white [&::-moz-range-thumb]:border-[0.1rem] [&::-moz-range-thumb]:border-primary [&::-moz-range-thumb]:ring-1 [&::-moz-range-thumb]:ring-white [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:pointer-events-auto"
-/>
-
-
+        <input
+          type="range"
+          min={0}
+          max={500000}
+          step={1000}
+          value={maxPrice}
+          onChange={handleMaxChange}
+          className="absolute w-full h-0 top-1/2 -translate-y-1/2 appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:border-4 [&::-webkit-slider-thumb]:border-primary [&::-webkit-slider-thumb]:ring-1 [&::-webkit-slider-thumb]:ring-gray-300 [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:pointer-events-auto [&::-moz-range-thumb]:w-5 [&::-moz-range-thumb]:h-5 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-white [&::-moz-range-thumb]:border-[0.1rem] [&::-moz-range-thumb]:border-primary [&::-moz-range-thumb]:ring-1 [&::-moz-range-thumb]:ring-white [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:pointer-events-auto"
+        />
       </div>
     </div>
   );

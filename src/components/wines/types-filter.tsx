@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import Button from "../common/Button";
 
 interface WineSort {
@@ -10,6 +13,10 @@ interface TypesFilter {
 }
 
 export default function TypesFilter({ onChange }: TypesFilter) {
+  const [selectedType, setSelectedType] = useState<
+    "RED" | "WHITE" | "SPARKLING" | null
+  >(null); // 선택된 타입 상태 추가
+
   const wineTypes: WineSort[] = [
     { id: "RED", value: "RED" },
     { id: "WHITE", value: "WHITE" },
@@ -18,6 +25,7 @@ export default function TypesFilter({ onChange }: TypesFilter) {
 
   // 타입 클릭 핸들러
   const handleTypeClick = (type: "RED" | "WHITE" | "SPARKLING") => {
+    setSelectedType(type); // 선택된 타입 상태 업데이트
     onChange(type); // 부모 컴포넌트로 선택된 타입 전달
   };
 
@@ -32,10 +40,10 @@ export default function TypesFilter({ onChange }: TypesFilter) {
             key={wineSort.id}
             type="button"
             size="small"
-            color="white"
-            addClassName={
-              "rounded-[10rem] p-[1.4rem] text-center flex items-center font-medium text-lg focus:bg-primary focus:text-white"
-            }
+            color={selectedType === wineSort.id ? "primary" : "white"} // 선택된 타입에 따라 색상 변경
+            addClassName={`rounded-[10rem] p-[1.4rem] text-center flex items-center font-medium text-lg ${
+              selectedType === wineSort.id ? "text-white" : "text-gray-800"
+            }`}
             onClick={() => handleTypeClick(wineSort.id)}
           >
             {wineSort.value}
