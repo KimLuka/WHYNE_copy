@@ -29,7 +29,7 @@ export default function Nav() {
   };
 
   return (
-    <header className="nav-container flex-between tablet:py-[1.1rem] mobile:py-[1.5rem] tablet:px-[6rem] mobile:px-[2rem] tablet:h-[7rem] mobile:h-[5rem] tablet:mt-[2.4rem] mobile:mt-[1.6rem] desktop:mx-auto tablet:mx-[2rem] mobile:mx-[1.6rem]">
+    <header className="z-12 nav-container flex-between tablet:py-[1.1rem] mobile:py-[1.5rem] tablet:px-[6rem] mobile:px-[2rem] tablet:h-[7rem] mobile:h-[5rem] tablet:mt-[2.4rem] mobile:mt-[1.6rem] desktop:mx-auto tablet:mx-[2rem] mobile:mx-[1.6rem]">
       <nav className="w-full flex-between">
         <Link href="/" onClick={handleLogoClick}>
           <Image width={52} height={15} src={logo} alt="와인 로고" />

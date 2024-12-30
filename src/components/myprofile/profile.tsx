@@ -117,6 +117,11 @@ export default function Profile() {
 
   useEffect(() => {
     fetchProfile();
+
+    const getEmail = localStorage.getItem("email");
+    if (getEmail) {
+      setUser((prev) => ({ ...prev, email: getEmail }));
+    }
   }, []);
 
   return (
@@ -169,7 +174,7 @@ export default function Profile() {
             {user.nickname}
           </p>
           <p className="desktop:text-[1.6rem] desktop:mt-[1.6rem] desktop:leading-[2.6rem] tablet:text-[1.6rem] tablet:leading-[2.6rem] mobile:text-[1.4rem] mobile:leading-[2.6rem] text-[#9FACBD]  font-regular  tablet:mt-[0.8rem]">
-            {user.email || "good@gmail.com"}
+            {user.email}
           </p>
         </div>
       </div>

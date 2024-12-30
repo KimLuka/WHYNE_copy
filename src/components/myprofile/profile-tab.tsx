@@ -117,21 +117,32 @@ export default function ProfileTab() {
   return (
     <div className="desktop:w-[80rem] desktop:h-[3.2rem] tablet:w-full mobile:w-full">
       <div className="flex justify-between items-center ">
-        <div>
+        <div className="desktop:mb-[2.2rem] tablet:mb-0 mobile:mb-0">
           <button
-            className={`desktop:w-[9.6rem] desktop:h-[3.2rem] desktop:text-[2rem] desktop:leading-[3.2rem] tablet:w-[9.6rem] tablet:h-[3.2rem] tablet:text-[2rem] tablet:leading-[3.2rem] mobile:w-[8.7em] mobile:h-[2.6rem] mobile:text-[1.8rem] mobile:leading-[2.6rem] font-semibold ${activeTab === "reviews" ? "text-gray-800" : "text-gray-500"}`}
+            className={`
+              desktop:w-[9.6rem] desktop:h-[3.2rem] desktop:text-[2rem] desktop:leading-[3.2rem]
+              tablet:w-[9.6rem] tablet:h-[3.2rem] tablet:text-[2rem] tablet:leading-[3.2rem]
+              mobile:w-auto mobile:h-[2.6rem] mobile:text-[1.8rem] mobile:leading-[2.6rem] 
+              
+              font-semibold ${activeTab === "reviews" ? "text-gray-800" : "text-gray-500"}`}
             onClick={() => setActiveTab("reviews")}
           >
             내가 쓴 후기
           </button>
           <button
-            className={`ml-[3.2rem] w-[13.1rem] h-[3.2rem] text-[2rem] font-semibold leading-[3.2rem] ${activeTab === "wines" ? "text-gray-800" : "text-gray-500"}`}
+            className={`
+              desktop:w-[13.1rem] desktop:h-[3.2rem] desktop:text-[2rem] desktop:leading-[3.2rem]
+              tablet:w-[13.1rem] tablet:h-[3.2rem] tablet:text-[2rem] tablet:leading-[3.2rem]
+              mobile:w-auto mobile:h-[2.6rem] mobile:text-[1.8rem] mobile:leading-[2.6rem]
+              desktop:ml-[3.2rem] tablet:ml-[3.2rem] mobile:ml-[1.6rem]
+              
+              font-semibold ${activeTab === "wines" ? "text-gray-800" : "text-gray-500"}`}
             onClick={() => setActiveTab("wines")}
           >
             내가 등록한 와인
           </button>
         </div>
-        <p className="font-regular text-[1.4rem] leading-[2.4rem] text-right text-primary">
+        <p className="desktop:mb-[2.2rem] tablet:mb-0 mobile:mb-[1.5rem] font-regular desktop:text-[1.4rem] desktop:leading-[2.4rem] tablet:text-[1.4rem] tablet:leading-[2.4rem] mobile:text-[1.2rem] mobile:leading-[1.8rem] text-right text-primary">
           {`총 ${totalCount}개`}
         </p>
       </div>
@@ -153,7 +164,7 @@ export default function ProfileTab() {
             </div>
             {/* 더 이상 데이터가 없을 때 메시지 표시 */}
             {!hasMoreReviews && !isLoading && (
-              <div className="mt-2 text-center text-[1.8rem] text-[#CCCCCC]">
+              <div className="mt-[3rem] text-center text-[1.8rem] text-[#CCCCCC]">
                 더 이상 데이터가 없습니다.
               </div>
             )}
@@ -172,7 +183,7 @@ export default function ProfileTab() {
             </div>
             {/* 더 이상 데이터가 없을 때 메시지 표시 */}
             {!hasMoreWines && !isLoading && (
-              <div className="mt-2 text-center text-[1.8rem] text-[#CCCCCC]">
+              <div className="mt-[2rem] text-center text-[1.8rem] text-[#CCCCCC]">
                 더 이상 데이터가 없습니다.
               </div>
             )}

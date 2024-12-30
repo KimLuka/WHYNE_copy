@@ -53,13 +53,18 @@ interface DetailReviewTagProps {
 
 export default function DetailWineTag({ aromas }: DetailReviewTagProps) {
   return (
-    <div className="gap-[1rem] flex flex-wrap">
+    <div className="desktop:gap-[1rem] tablet:gap-[1rem] mobile:gap-[0.6rem] flex flex-wrap">
       {aromas.map((aroma) => (
         <div
           key={aroma}
-          className="min-w-[4.2rem] h-[4.2rem] p-[0.8rem_1.5rem] border-solid border-gray-300 rounded-[10rem] bg-white border-[0.1rem]"
+          className="
+          border-solid border-gray-300 rounded-[10rem] bg-white border-[0.1rem]
+          desktop:min-w-[4.2rem] desktop:h-[4.2rem] destkop:p-[0.8rem_1.5rem] 
+          tablet:min-w-[4.2rem] tablet:h-[4.2rem] tablet:p-[0.8rem_1.5rem] 
+          mobile:min-w-[3.6rem] mobile:h-[3.6rem] mobile:p-[0.6rem_1rem] 
+          "
         >
-          <p className="font-medium text-[1.6rem] leading-[2.6rem] text-gray-800">
+          <p className="font-medium text-gray-800 desktop:text-[1.6rem] desktop:leading-[2.6rem] tablet:text-[1.6rem] tablet:leading-[2.6rem] mobile:text-[1.4rem] mobile:leading-[2.4rem]">
             {AromaMapping[aroma]}
           </p>
         </div>

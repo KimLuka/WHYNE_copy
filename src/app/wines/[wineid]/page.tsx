@@ -11,12 +11,10 @@ export default async function WineDetailPage(props: WineDetailPageProps) {
   const params = await props.params;
   const { wineid } = await params;
   return (
-    <div>
-      <div className="flex flex-col mt-[2rem]">
-        <DetailWineCard id={wineid} />
-        <div className="mt-[6rem] mx-auto">
-          <DetailReviewCard wineid={wineid} />
-        </div>
+    <div className="flex flex-col desktop:mt-[2rem] tablet:mt-[2rem] mobile:mt-[1rem]">
+      <DetailWineCard id={wineid} />
+      <div className="mt-[6rem] flex justify-center w-full">
+        <DetailReviewCard wineid={wineid} />
       </div>
     </div>
   );

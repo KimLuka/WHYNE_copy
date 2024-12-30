@@ -193,35 +193,38 @@ export default function DetailReviewCard({ wineid }: DetailReviewCardProps) {
   // }
 
   return (
-    <div>
+    <div className="flex desktop:w-[114rem] tablet:w-full mobile:w-full desktop:flex-row-reverse desktop:gap-[4rem] tablet:flex-col tablet:gap-[3.6rem] mobile:flex-col mobile:gap-[2rem]">
+      <div className="">
+        <RatingDetails id={wineid} />
+      </div>
       {reviews.length > 0 ? (
-        <div className="flex flex-row gap-[6rem]">
-          <div>
-            <p className="font-semibold text-[2rem] text-gray-800 leading-[3.2rem]">
+        <div className="flex flex-row gap-[6rem] w-full">
+          <div className="w-full desktop:mx-[2rem] tablet:mx-[2rem] mobile:mx-[1.6rem]">
+            <p className="font-semibold text-[2rem] text-gray-800 leading-[3.2rem] desktop:block tablet:hidden mobile:hidden">
               리뷰 목록
             </p>
-            <div className="w-[80rem] min-h-[30.2rem]">
+            <div className="w-full">
               {reviews.map((review) => (
                 <div
                   key={review.id}
-                  className="border-solid border-[0.1rem] bg-white rounded-[1.6rem] border-gray-300 p-[3rem_4rem] mt-[2rem]"
+                  className="desktop:w-[80rem] tablet:w-[100%] mobile:w-[100%] border-solid border-[0.1rem] bg-white rounded-[1.6rem] border-gray-300 desktop:p-[3rem_4rem] tablet:p-[3rem_4rem] mobile:p-[2rem_1.6rem] mt-[2rem]"
                 >
                   <div>
                     <div className="flex justify-between">
                       <div className="flex flex-row gap-[1.6rem] items-center">
-                        <div className="relative w-[6.4rem] h-[6.4rem]">
+                        <div className="relative desktop:w-[6.4rem] desktop:h-[6.4rem] tablet:w-[6.4rem] tablet:h-[6.4rem] mobile:w-[4.2rem] mobile:h-[4.2rem]">
                           <Image
                             src={review.user.image || DefaultProfile}
                             alt="프로필 사진"
                             layout="fill"
-                            className="desktop:w-[6.4rem] desktop:h-[6.4rem] border-solid border-gray-300 border-[0.1rem]  rounded-full"
+                            className="border-solid border-gray-300 border-[0.1rem] rounded-full"
                           />
                         </div>
-                        <div className="flex flex-col gap-[0.4rem]">
-                          <p className="font-semibold text-[1.8rem] leading-[2.6rem] text-gray-800">
+                        <div className="flex flex-col desktop:gap-[0.4rem] tablet:gap-[0.4rem] mobile:gap-0">
+                          <p className="font-semibold desktop:text-[1.8rem] tablet:text-[1.8rem] mobile:text-[1.6rem] leading-[2.6rem] text-gray-800">
                             {review.user.nickname}
                           </p>
-                          <p className="font-regular text-[1.6rem] leading-[2.6rem] text-gray-500">
+                          <p className="font-regular desktop:text-[1.6rem] tablaet:text-[1.6rem] mobile:text-[1.4rem] leading-[2.6rem] text-gray-500">
                             {timeAgo(review.createdAt)}
                           </p>
                         </div>
@@ -242,7 +245,7 @@ export default function DetailReviewCard({ wineid }: DetailReviewCardProps) {
                           />
                         </button>
 
-                        <div className=" z-10">
+                        <div className="z-10">
                           <DropDownMenu
                             onDelete={() => openDeleteModal(review.id)}
                             onEdit={() => {
@@ -262,21 +265,11 @@ export default function DetailReviewCard({ wineid }: DetailReviewCardProps) {
                               />
                             </div>
                           </DropDownMenu>
-                          {isModalOpen && (
-                            <AddReviewModal
-                              isOpen={isModalOpen}
-                              onClick={() => setIsModalOpen(false)}
-                              wineId={wineid}
-                              id={selectedReviewId!}
-                              isEditing={isEditing}
-                              initialData={initialData || undefined}
-                            />
-                          )}
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div className="mt-[2rem] flex justify-between">
+                  <div className="desktop:mt-[2rem] tablet:mt-[2rem] mobile:mt-[1.6rem] flex justify-between">
                     <DetailWineTag
                       aromas={(review.aroma || []).filter(
                         (item): item is Aroma =>
@@ -298,13 +291,13 @@ export default function DetailReviewCard({ wineid }: DetailReviewCardProps) {
                     </div>
                   </div>
 
-                  <div className="flex justify-center items-center flex-col ">
+                  <div className="flex justify-center flex-col ">
                     {isExpand[review.id] && (
                       <div className="flex justify-center items-start flex-col ">
-                        <div className="mt-[2.4rem] font-regular text-[1.6rem] text-gray-800 leading-[2.6rem]">
+                        <div className="desktop:mt-[2.4rem] tablet:mt-[2.4rem] mobile:mt-[1.6rem] font-regular text-[1.6rem] text-gray-800 leading-[2.6rem]">
                           {review.content}
                         </div>
-                        <div className="mt-[2rem] flex flex-col gap-[1.8rem]">
+                        <div className="w-full whitespace-nowrap desktop:mt-[2rem] tablet:mt-[2rem] mobile:mt-[1.6rem] flex flex-col desktop:gap-[1.8rem] tablet:gap-[1.8rem] mobile:gap-[1.6rem]">
                           {[
                             {
                               label: "바디감",
@@ -333,27 +326,48 @@ export default function DetailReviewCard({ wineid }: DetailReviewCardProps) {
                           ].map((item, index) => (
                             <div
                               key={index}
-                              className="flex flex-row items-center"
+                              className="flex flex-row items-center w-full"
                             >
-                              <div className="w-[5.6rem] h-[2.8rem] bg-gray-100 rounded-[0.6rem] p-[0.4rem_0.8rem] items-center justify-center flex  mr-[1.6rem]">
-                                <p className="text-[1.4rem] text-gray-500 font-semibold leading-[2.4rem]">
+                              <div
+                                className="
+                                bg-gray-100 rounded-[0.6rem] items-center justify-center flex 
+                                desktop:w-[5.6rem] desktop:h-[2.8rem] desktop:p-[0.4rem_0.8rem] desktop:mr-[1.6rem] 
+                                tablet:w-[5.6rem] tablet:h-[2.8rem] tablet:p-[0.4rem_0.8rem] tablet:mr-[1.6rem] 
+                                mobile:w-[4.8rem] mobile:h-[3rem] mobile:p-[0.5rem_0.8rem] mobile:mr-[0.9rem] 
+                              "
+                              >
+                                <p className="destkop:text-[1.4rem] tablet:text-[1.4rem] mobile:[1.2rem] text-gray-500 font-semibold leading-[2.4rem]">
                                   {item.label}
                                 </p>
                               </div>
-                              <div className="flex flex-row flex-shrink-0 justify-center items-center">
-                                <p className="w-[7rem] h-[1.9rem] font-medium text-[1.6rem] text-gray-800 mr-[1.55rem]">
+                              <div className="flex flex-row justify-center items-center w-full">
+                                <p
+                                  className="
+                                font-medium text-gray-800 
+                                desktop:min-w-[7rem] desktop:text-[1.6rem] desktop:leading-[2.6rem] desktop:mr-[1.4rem]
+                                tablet:min-w-[7rem] tablet:text-[1.6rem] tablet:leading-[2.6rem] tablet:mr-[1.4rem]
+                                mobile:min-w-[6.2rem] mobile:text-[1.4rem] mobile:leading-[2.4rem] mobile:mr-[1.4rem]
+                                "
+                                >
                                   {item.min}
                                 </p>
-                                <div className="relative w-[49.1rem] h-[1.6rem] flex items-center">
+                                <div className="relative flex w-full items-center">
                                   <div className="absolute w-full h-[0.6rem] bg-gray-100 rounded-[5rem] border-solid border-gray-300 border-[0.1rem]" />
                                   <div
-                                    className="absolute w-[1.6rem] h-[1.6rem] bg-primary rounded-full"
+                                    className="absolute bg-primary rounded-full desktop:w-[1.6rem] desktop:h-[1.6rem] tablet:w-[1.6rem] tablet:h-[1.6rem] mobile:w-[1.2rem] mobile:h-[1.2rem]"
                                     style={{
                                       left: `${(Math.min(Math.max(item.value, 0), 10) / 10) * 100}%`,
                                     }}
                                   />
                                 </div>
-                                <p className="w-[5.6rem] h-[1.9rem] text-right font-medium text-[1.6rem] text-gray-800 ml-[2.5rem]">
+                                <p
+                                  className="
+                                text-right font-medium text-gray-800
+                                desktop:min-w-[5.6rem] desktop:text-[1.6rem] desktop:leading-[2.6rem] desktop:ml-[2.5rem]
+                                tablet:min-w-[5.6rem] tablet:text-[1.6rem] tablet:leading-[2.6rem] tablet:ml-[2.5rem]
+                                mobile:min-w-[5rem] mobile:text-[1.4rem] mobile:leading-[2.4rem] mobile:ml-[1.6rem]
+                                "
+                                >
                                   {item.max}
                                 </p>
                               </div>
@@ -364,7 +378,7 @@ export default function DetailReviewCard({ wineid }: DetailReviewCardProps) {
                     )}
 
                     <div
-                      className="cursor-pointer relative w-[3rem] h-[3rem]"
+                      className="cursor-pointer relative w-[3rem] h-[3rem] mx-auto"
                       onClick={() => toggleExpand(review.id)}
                     >
                       <Image
@@ -379,7 +393,6 @@ export default function DetailReviewCard({ wineid }: DetailReviewCardProps) {
               ))}
             </div>
           </div>
-          <RatingDetails id={wineid} />
         </div>
       ) : (
         <DetailNoReview wineid={wineid} />
@@ -390,6 +403,16 @@ export default function DetailReviewCard({ wineid }: DetailReviewCardProps) {
         id={selectedReviewId!}
         type="review"
       />
+      {isModalOpen && (
+        <AddReviewModal
+          isOpen={isModalOpen}
+          onClick={() => setIsModalOpen(false)}
+          wineId={wineid}
+          id={selectedReviewId!}
+          isEditing={isEditing}
+          initialData={initialData || undefined}
+        />
+      )}
     </div>
   );
 }

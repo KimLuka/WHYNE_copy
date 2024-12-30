@@ -46,7 +46,7 @@ function Modalv({ isOpen, onClose, children, className = "" }: ModalProps) {
   return (
     <div className="fixed inset-0 z-50 flex items-end tablet:items-center tablet:justify-center">
       <div
-        className="fixed inset-0 bg-black opacity-50 transition-opacity duration-300"
+        className="fixed inset-0 bg-black opacity-30 transition-opacity duration-300"
         onClick={onClose}
       />
 

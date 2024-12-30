@@ -64,6 +64,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     localStorage.setItem("accessToken", accessToken);
     localStorage.setItem("refreshToken", refreshToken);
+    localStorage.setItem("email", email);
 
     await getMe();
   }
