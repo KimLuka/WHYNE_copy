@@ -6,8 +6,18 @@ import { AddWineModalProvider } from "@/app/wines/AddWineModalProvider";
 import ReviewProvider from "@/provider/usereviewmodals";
 
 export const metadata: Metadata = {
-  title: "WHYNE",
-  description: "중급 프로젝트 TEAM 11-5",
+  title: {
+    default: "WHYNE",
+    template: "WHYNE | %s",
+  },
+  description: "한 곳에서 관리하는 나만의 와인창고",
+  keywords:
+    "wine, 와인, WHYNE, 이 달의 추천 와인, 와인 추천, 와인, 맞춤 와인 ,와인 타입, 와인 가격, 와인 평점, 와인 리뷰, 와인 한 잔",
+  metadataBase: new URL("https://whyne.vercel.app/"),
+  icons: {
+    icon: "/purple_logo.svg",
+    apple: "/purple_logo.svg",
+  },
 };
 
 export default function RootLayout({

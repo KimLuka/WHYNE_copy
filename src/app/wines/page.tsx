@@ -6,12 +6,7 @@ import { Navigation } from "swiper/modules";
 import Image from "next/image";
 import instance from "@/api/api";
 import { removeEmptyField } from "@/utils/parameter";
-import {
-  WineParam,
-  Filters,
-  WineListType,
-  WineType,
-} from "@/components/wines/wine";
+import { WineParam, Filters, WineListType, WineType } from "@/types/wine";
 import PriceFilter from "@/components/wines/price-filter";
 import RatingFliter from "@/components/wines/rating-filter";
 import TypesFilter from "@/components/wines/types-filter";

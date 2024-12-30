@@ -1,5 +1,14 @@
+import { Metadata } from "next";
+import { getMetadata } from "@/constants/meta-data";
 import Profile from "@/components/myprofile/profile";
 import ProfileTab from "@/components/myprofile/profile-tab";
+
+export const generateMetadata = async (): Promise<Metadata> => {
+  return getMetadata({
+    title: `내 와인창고`,
+    asPath: `/home/myprofile`,
+  });
+};
 
 export default function MyProfilePage() {
   return (

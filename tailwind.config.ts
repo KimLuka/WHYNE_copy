@@ -98,6 +98,15 @@ export default {
         mds: "0.4rem 0.4rem 1rem rgba(136, 136, 136, 0.2)",
         "2md": "0.4rem 0.4rem 2rem rgba(224,230,238, 0.2)",
       },
+      keyframes: {
+        fadeSlideUp: {
+          "0%": { opacity: "0", transform: "translateY(5rem)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+      },
+      animation: {
+        fadeSlideUp: "fadeSlideUp 1s ease-out forwards",
+      },
     },
   },
   plugins: [],
