@@ -8,14 +8,14 @@ import ReviewInput from "@/components/modal-review/ReviewInput";
 import TagSelector from "@/components/modal-review/TagSelector";
 import TasteSlider from "@/components/modal-review/TasteSlider";
 import instance from "@/api/api";
-import { AxiosResponse } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
 import { Aroma, mapTagToAroma } from "../wines/detail/detail-wine-tag";
 
 type ModalProps = {
   isOpen: boolean;
   onClick: () => void;
-  wineId: string | number;
-  id: number; // review ID
+  wineId?: string;
+  id?: number; // review ID
   isEditing?: boolean;
   initialData?: {
     rating: number;
@@ -61,13 +61,14 @@ export default function AddReviewModal({
         rating: initialData.rating,
       });
       console.log(initialData);
+      console.log("수정 모달 열리고 나서", wineId);
     }
   }, [isEditing, initialData, wineId, setReviewData]);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const wineIdToNumber = Number(wineId);
+    // const wineIdToNumber = Number(wineId);
 
     const formData = isEditing
       ? {
@@ -91,7 +92,7 @@ export default function AddReviewModal({
             .map(mapTagToAroma)
             .filter((tag): tag is Aroma => tag !== undefined),
           content,
-          wineIdToNumber,
+          wineId: Number(wineId),
         };
 
     try {
@@ -99,7 +100,7 @@ export default function AddReviewModal({
         ? await instance.patch(`/reviews/${id}`, formData)
         : await instance.post("/reviews", formData);
 
-      if (res.status === 200) {
+      if (res.status >= 200 && res.status < 300) {
         console.log(
           isEditing
             ? "리뷰가 성공적으로 수정되었습니다."
@@ -110,6 +111,9 @@ export default function AddReviewModal({
       }
     } catch (error) {
       console.error("리뷰 제출 중 오류 발생:", error);
+      console.log(" 모달 열리고 나서", wineId);
+      const axiosError = error as AxiosError;
+      console.error(axiosError.response?.data || axiosError.message);
     } finally {
       resetReview();
       onClick();

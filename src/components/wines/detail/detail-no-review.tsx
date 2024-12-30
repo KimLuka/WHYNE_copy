@@ -42,7 +42,7 @@ export default function DetailNoReview({ wineid }: DetailReviewCardProps) {
       <AddReviewModal
         isOpen={isModalOpen}
         onClick={() => setIsModalOpen(false)}
-        id={wineid}
+        wineId={wineid}
       />
     </div>
   );

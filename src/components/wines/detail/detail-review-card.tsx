@@ -16,6 +16,7 @@ import instance from "@/api/api";
 import RatingDetails from "./rating-details";
 import DetailNoReview from "./detail-no-review";
 import DeleteModal from "@/components/common/modal-delete";
+import { useAuth } from "@/context/auth-provider";
 // import { useReviewModalStore } from "@/provider/usereviewmodals";
 
 interface Review {
@@ -71,6 +72,8 @@ export default function DetailReviewCard({ wineid }: DetailReviewCardProps) {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   // const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedReviewId, setSelectedReviewId] = useState<number | null>(null);
+
+  const { user } = useAuth();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -242,7 +245,13 @@ export default function DetailReviewCard({ wineid }: DetailReviewCardProps) {
                         <div className=" z-10">
                           <DropDownMenu
                             onDelete={() => openDeleteModal(review.id)}
-                            onEdit={() => handleEdit(review.id)}
+                            onEdit={() => {
+                              if (review.user.id === user?.id) {
+                                handleEdit(review.id);
+                              } else {
+                                alert("다른 사람의 리뷰는 수정할 수 없습니다.");
+                              }
+                            }}
                             // onEdit={() => openEditModal(review)}
                           >
                             <div className="relative desktop:w-[3.8rem] desktop:h-[3.8rem] tablet:w-[3.8rem] tablet:h-[3.8rem] mobile:w-[3.2rem] mobile:h-[3.2rem]">
