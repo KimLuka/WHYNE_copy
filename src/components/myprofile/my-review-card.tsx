@@ -179,7 +179,7 @@ export default function MyReviewCard({ review }: { review: Review }) {
       <AddReviewModal
         isOpen={isEditModalOpen}
         onClick={closeEditModal}
-        wineId={wineIdForModal!}
+        wineId={String(wineIdForModal)!}
         id={reviewIdForModal!}
         isEditing={isEditModalOpen}
         initialData={initialData || undefined}
