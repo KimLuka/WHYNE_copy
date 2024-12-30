@@ -40,12 +40,12 @@ export default function TastesliderData() {
           >
             바디감
           </p>
-          <p
+          <span
             className="mr-[0.5rem] tablet:mr-[0.8rem] w-[4rem] tablet:w-[6rem] flex-shrink-0 
               text-[1.2rem] tablet:text-[1.4rem] font-regular h-[3rem] flex items-center justify-center"
           >
             가벼워요
-          </p>
+          </span>
           <div className="mt-[0.5rem] flex-1 mx-[1.2rem] tablet:mx-[0.8rem]">
             <Slider
               value={lightBold}
@@ -67,12 +67,12 @@ export default function TastesliderData() {
               }}
             />
           </div>
-          <p
+          <span
             className="w-[2.5rem] ml-[1.2rem] tablet:ml-[2.5rem] flex-shrink-0 
               text-[1.2rem] tablet:text-[1.4rem] font-regular text-right h-[3rem] flex items-center justify-end"
           >
             진해요
-          </p>
+          </span>
         </div>
       </div>
       <div key="타닌" className="flex w-full">
@@ -81,14 +81,14 @@ export default function TastesliderData() {
             className="mr-[1.9rem] tablet:mr-[2.4rem] w-[4rem] tablet:w-[4.5rem] h-[3rem] flex-shrink-0 rounded-[0.8rem] bg-gray-100 
               flex items-center justify-center text-[1.2rem] tablet:text-[1.4rem] font-medium text-gray-500"
           >
-            타인
+            타닌
           </p>
-          <p
+          <span
             className="mr-[0.5rem] tablet:mr-[0.8rem] w-[4rem] tablet:w-[6rem] flex-shrink-0 
               text-[1.2rem] tablet:text-[1.4rem] font-regular h-[3rem] flex items-center justify-center"
           >
             부드러워요
-          </p>
+          </span>
           <div className="mt-[0.5rem] flex-1 mx-[1.2rem] tablet:mx-[0.8rem]">
             <Slider
               value={smoothTannic}
@@ -112,12 +112,12 @@ export default function TastesliderData() {
               }}
             />
           </div>
-          <p
+          <span
             className="w-[2.5rem] ml-[1.2rem] tablet:ml-[2.5rem] flex-shrink-0 
               text-[1.2rem] tablet:text-[1.4rem] font-regular text-right h-[3rem] flex items-center justify-end"
           >
             떫어요
-          </p>
+          </span>
         </div>
       </div>
       <div key="당도" className="flex w-full">
@@ -128,12 +128,12 @@ export default function TastesliderData() {
           >
             당도
           </p>
-          <p
+          <span
             className="mr-[0.5rem] tablet:mr-[0.8rem] w-[4rem] tablet:w-[6rem] flex-shrink-0 
               text-[1.2rem] tablet:text-[1.4rem] font-regular h-[3rem] flex items-center justify-center"
           >
             드라이해요
-          </p>
+          </span>
           <div className="mt-[0.5rem] flex-1 mx-[1.2rem] tablet:mx-[0.8rem]">
             <Slider
               value={drySweet}
@@ -155,12 +155,12 @@ export default function TastesliderData() {
               }}
             />
           </div>
-          <p
+          <span
             className="w-[2.5rem] ml-[1.2rem] tablet:ml-[2.5rem] flex-shrink-0 
               text-[1.2rem] tablet:text-[1.4rem] font-regular text-right h-[3rem] flex items-center justify-end"
           >
             달아요
-          </p>
+          </span>
         </div>
       </div>
       <div key="산미" className="flex w-full">
@@ -171,12 +171,12 @@ export default function TastesliderData() {
           >
             산미
           </p>
-          <p
+          <span
             className="mr-[0.5rem] tablet:mr-[0.8rem] w-[4rem] tablet:w-[6rem] flex-shrink-0 
               text-[1.2rem] tablet:text-[1.4rem] font-regular h-[3rem] flex items-center justify-center"
           >
             안셔요
-          </p>
+          </span>
           <div className="mt-[0.5rem] flex-1 mx-[1.2rem] tablet:mx-[0.8rem]">
             <Slider
               value={softAcidic}
@@ -198,12 +198,12 @@ export default function TastesliderData() {
               }}
             />
           </div>
-          <p
+          <span
             className="w-[2.5rem] ml-[1.2rem] tablet:ml-[2.5rem] flex-shrink-0 
               text-[1.2rem] tablet:text-[1.4rem] font-regular text-right h-[3rem] flex items-center justify-end"
           >
             많이셔요
-          </p>
+          </span>
         </div>
       </div>
       {/* ))} */}
