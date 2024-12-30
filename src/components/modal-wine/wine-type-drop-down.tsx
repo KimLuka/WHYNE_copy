@@ -90,7 +90,7 @@ const WineTypeDropdown: React.FC<WineTypeDropdownProps> = ({
               placeholder="와인 종류 선택"
               readOnly
               error={displayError}
-              className="pr-[3.5rem]"
+              className="pr-[3.5rem] cursor-pointer"
             />
             <div className="absolute right-[1rem] top-[1.4rem] pointer-events-none">
               <ArrowIcon isUp={isOpen} />

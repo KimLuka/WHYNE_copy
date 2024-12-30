@@ -347,9 +347,9 @@ const validateField = (
   <div className="flex flex-col w-full h-full ">
       <article className="flex-1 px-[2rem] pt-[1rem] py-0 tablet:px-[2.4rem]">
       <section className="flex justify-between items-center">
-      <h1 className="text-[2rem] tablet:text-[2.4rem] font-bold mb-[3rem] tablet:mb-[4rem]">
+      <h2 className="text-[2rem] tablet:text-[2.4rem] font-bold mb-[3rem] tablet:mb-[4rem]">
           와인 등록
-        </h1>
+        </h2>
         <Button
             type="button"
             color="secondary"
@@ -369,7 +369,7 @@ const validateField = (
               >
                 와인 이름
               </label>
-              <Input
+              <Input 
                 id="name"
                 placeholder="와인 이름 입력"
                 onChange={handleWineValueChange}
@@ -386,7 +386,7 @@ const validateField = (
               >
                 가격
               </label>
-              <Input
+              <Input 
                 id="price"
                 placeholder="가격 입력"
                 type="number"
@@ -405,7 +405,7 @@ const validateField = (
               >
                 원산지
               </label>
-              <Input
+              <Input 
                 id="region"
                 placeholder="원산지 입력"
                 onChange={handleWineValueChange}
@@ -416,7 +416,7 @@ const validateField = (
             </div>
 
             <div className="flex flex-col gap-[1.4rem]">
-              <label
+              <label 
                 htmlFor="type"
                 className="text-[1.4rem] tablet:text-[1.6rem] font-medium"
               >
@@ -428,6 +428,7 @@ const validateField = (
   onChange={handleTypeChange}
   onBlur={() => handleBlur("type")}
   error={shouldShowError("type") ? errors.type : ""}
+  
 />
             </div>
 

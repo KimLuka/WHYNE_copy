@@ -28,6 +28,7 @@ export default function Input({
       focus:border-primary
       focus:outline-none
       placeholder:text-gray-500 
+      cursor-pointer
       ${error || isErrored ? "border-primary" : "border-gray-300"}
       ${className || ""}
     `.trim();
