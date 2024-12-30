@@ -50,7 +50,7 @@ export default function MyReviewCard({ review }: { review: Review }) {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [reviewIdForModal, setReviewIdForModal] = useState<number | null>(null);
-  const [wineIdForModal, setWineIdForModal] = useState<number | null>(null);
+  const [wineIdForModal, setWineIdForModal] = useState<number>(0);
 
   const [initialData, setInitialData] = useState<{
     rating: number;
@@ -179,7 +179,7 @@ export default function MyReviewCard({ review }: { review: Review }) {
       <AddReviewModal
         isOpen={isEditModalOpen}
         onClick={closeEditModal}
-        wineId={wineIdForModal!}
+        wineId={String(wineIdForModal)!}
         id={reviewIdForModal!}
         isEditing={isEditModalOpen}
         initialData={initialData || undefined}
