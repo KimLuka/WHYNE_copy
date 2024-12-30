@@ -34,7 +34,7 @@ export default function FilterModal({
   onPriceChange,
   onRatingChange,
   initialPrice = { minPrice: 0, maxPrice: 500000 },
-  initialRating = 0,
+  initialRating = 5,
 }: Filter) {
   const [type, setType] = useState<string>("");
   const [price, setPrice] = useState<{ minPrice: number; maxPrice: number }>(

@@ -9,18 +9,18 @@ interface RatingApp {
 
 export default function RatingFliter({
   onChange,
-  resetRating = 3, // 초기값 설정
+  resetRating = 5, // 초기값 설정
 }: RatingApp) {
   const [selectedRating, setSelectedRating] = useState<number | null>(
     resetRating,
   );
 
   const ratings: { id: string; label: string; value: number }[] = [
-    { id: "all", label: "전체", value: 0 },
-    { id: "highest", label: "4.5 - 5.0", value: 5 },
-    { id: "muchHigher", label: "4.0 - 4.5", value: 4.5 },
-    { id: "higher", label: "3.5 - 4.0", value: 4 },
-    { id: "littleHigher", label: "3.0 - 3.5", value: 3.5 },
+    { id: "all", label: "전체", value: 5 },
+    { id: "highest", label: "4.5 - 5.0", value: 4.5 },
+    { id: "muchHigher", label: "4.0 - 4.5", value: 4 },
+    { id: "higher", label: "3.5 - 4.0", value: 3.5 },
+    { id: "littleHigher", label: "3.0 - 3.5", value: 3 },
   ];
 
   // resetRating이 변경되면 selectedRating을 업데이트

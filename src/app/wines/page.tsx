@@ -31,7 +31,7 @@ const InitialFilters: Filters = {
   type: "",
   minPrice: 0,
   maxPrice: 500000,
-  rating: 3,
+  rating: 5,
 };
 
 // 와인 목록을 가져오는 함수 (공통화)
@@ -181,7 +181,7 @@ export default function Wines() {
               slidesPerView="auto"
               spaceBetween={20}
               centeredSlides={false}
-              loop={false}
+              loop={true}
               navigation={{
                 nextEl: ".swiper-button-next",
               }}
