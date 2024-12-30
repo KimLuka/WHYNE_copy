@@ -202,9 +202,9 @@ export default function DetailReviewCard({ wineid }: DetailReviewCardProps) {
       {reviews.length > 0 ? (
         <div className="flex flex-row gap-[6rem] w-full">
           <div className="w-full desktop:mx-[2rem] tablet:mx-[2rem] mobile:mx-[1.6rem]">
-            <p className="font-semibold text-[2rem] text-gray-800 leading-[3.2rem] desktop:block tablet:hidden mobile:hidden">
+            <span className="font-semibold text-[2rem] text-gray-800 leading-[3.2rem] desktop:block tablet:hidden mobile:hidden">
               리뷰 목록
-            </p>
+            </span>
             <div className="w-full">
               {reviews.map((review) => (
                 <div
@@ -223,12 +223,12 @@ export default function DetailReviewCard({ wineid }: DetailReviewCardProps) {
                           />
                         </div>
                         <div className="flex flex-col desktop:gap-[0.4rem] tablet:gap-[0.4rem] mobile:gap-0">
-                          <p className="font-semibold desktop:text-[1.8rem] tablet:text-[1.8rem] mobile:text-[1.6rem] leading-[2.6rem] text-gray-800">
+                          <span className="font-semibold desktop:text-[1.8rem] tablet:text-[1.8rem] mobile:text-[1.6rem] leading-[2.6rem] text-gray-800">
                             {review.user.nickname}
-                          </p>
-                          <p className="font-regular desktop:text-[1.6rem] tablaet:text-[1.6rem] mobile:text-[1.4rem] leading-[2.6rem] text-gray-500">
+                          </span>
+                          <time className="font-regular desktop:text-[1.6rem] tablaet:text-[1.6rem] mobile:text-[1.4rem] leading-[2.6rem] text-gray-500">
                             {timeAgo(review.createdAt)}
-                          </p>
+                          </time>
                         </div>
                       </div>
                       <div className="flex flex-row gap-[1.8rem]">
@@ -249,15 +249,26 @@ export default function DetailReviewCard({ wineid }: DetailReviewCardProps) {
 
                         <div className="z-10">
                           <DropDownMenu
-                            onDelete={() => openDeleteModal(review.id)}
+                            onDelete={() => {
+                              if (review.user.id === user?.id) {
+                                openDeleteModal(review.id);
+                              } else {
+                                setAlertText(
+                                  "본인이 작성한 리뷰만 삭제할 수 있습니다.",
+                                );
+                                return;
+                              }
+                            }}
                             onEdit={() => {
                               if (review.user.id === user?.id) {
                                 handleEdit(review.id);
                               } else {
-                                alert("다른 사람의 리뷰는 수정할 수 없습니다.");
+                                setAlertText(
+                                  "본인이 작성한 리뷰만 수정할 수 있습니다.",
+                                );
+                                return;
                               }
                             }}
-                            // onEdit={() => openEditModal(review)}
                           >
                             <div className="relative desktop:w-[3.8rem] desktop:h-[3.8rem] tablet:w-[3.8rem] tablet:h-[3.8rem] mobile:w-[3.2rem] mobile:h-[3.2rem]">
                               <Image
@@ -296,9 +307,9 @@ export default function DetailReviewCard({ wineid }: DetailReviewCardProps) {
                   <div className="flex justify-center flex-col ">
                     {isExpand[review.id] && (
                       <div className="flex justify-center items-start flex-col ">
-                        <div className="desktop:mt-[2.4rem] tablet:mt-[2.4rem] mobile:mt-[1.6rem] font-regular text-[1.6rem] text-gray-800 leading-[2.6rem]">
+                        <p className="desktop:mt-[2.4rem] tablet:mt-[2.4rem] mobile:mt-[1.6rem] font-regular text-[1.6rem] text-gray-800 leading-[2.6rem]">
                           {review.content}
-                        </div>
+                        </p>
                         <div className="w-full whitespace-nowrap desktop:mt-[2rem] tablet:mt-[2rem] mobile:mt-[1.6rem] flex flex-col desktop:gap-[1.8rem] tablet:gap-[1.8rem] mobile:gap-[1.6rem]">
                           {[
                             {
