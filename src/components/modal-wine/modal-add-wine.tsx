@@ -8,6 +8,7 @@ import ImageInput from "@/components/modal-wine/image-input";
 import WineTypeDropdown from "@/components/modal-wine/wine-type-drop-down";
 import Modal from "@/components/common/modal-container";
 import instance from "@/api/api";
+import { useRouter } from "next/navigation";
 
 interface Props {
   isOpen: boolean;
@@ -80,6 +81,7 @@ const useResponsiveMargin = () => {
 
 export default function AddWine({ isOpen, onClick }: Props) {
   const { marginClass, buttonPaddingClass } = useResponsiveMargin();  
+  const router = useRouter();
   const [values, setValues] = useState<Partial<NewWineData>>({
     name: "",
     region: "",
@@ -312,6 +314,8 @@ const validateField = (
 
         console.log("와인 등록 성공:", response);
         onClick();
+        router.push(`/wines/${response.data.id}`); // 이 줄 추가
+   
       } catch (error) {
         console.error("에러 발생:", error);
         setErrors((prev) => ({
@@ -322,7 +326,10 @@ const validateField = (
     } else {
       console.log("검증 실패로 API 호출 중단");
     }
-  };
+   };
+
+
+
   const isSubmitDisabled =
     !values.name ||
     !values.region ||
