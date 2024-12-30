@@ -19,7 +19,7 @@ export default function Signin() {
       // 카카오 로그인 후 인가 코드가 존재하면 토큰 요청
       setIsLoading(true);
       signInWithKakao({
-        redirectUri: "http://localhost:3000/signin",
+        redirectUri: "https://whyne.vercel.app/signin",
         token: kakaoCode,
       })
         .then((response) => {

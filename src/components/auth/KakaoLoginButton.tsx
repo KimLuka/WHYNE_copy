@@ -6,7 +6,7 @@ import { registerOAuthApp } from "../../api/api"; // OAuth 앱 등록 함수 임
 
 const KakaoLoginButton = () => {
   const clientId = process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID; // 카카오 앱 키
-  const redirectUri = "http://localhost:3000/signin"; // 카카오에 등록한 리디렉션 URI
+  const redirectUri = "https://whyne.vercel.app/signin"; // 카카오에 등록한 리디렉션 URI
 
   const kakaoLoginUrl = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}`;
 
