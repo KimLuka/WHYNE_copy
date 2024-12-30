@@ -348,7 +348,7 @@ const validateField = (
       <article className="flex-1 px-[2rem] pt-[1rem] py-0 tablet:px-[2.4rem]">
       <section className="flex justify-between items-center">
       <h1 className="text-[2rem] tablet:text-[2.4rem] font-bold mb-[3rem] tablet:mb-[4rem]">
-          와인 등록
+          내가 등록한 와인
         </h1>
         <Button
             type="button"
@@ -469,7 +469,7 @@ const validateField = (
               disabled={isSubmitDisabled}
               addClassName="flex-[2.4] font-bold min-h-[4rem] tablet:text-lg"
             >
-              와인 등록하기
+              와인 수정하기
             </Button>
           </div>
         </form>
