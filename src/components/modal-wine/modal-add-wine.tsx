@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { WineType } from "@/types/tasting";
+import { useState,useEffect } from "react";
+import { WineType} from "@/types/tasting";
 import Button from "@/components/common/Button";
 import Input from "@/components/modal-wine/input";
 import ImageInput from "@/components/modal-wine/image-input";
@@ -23,18 +23,76 @@ interface NewWineData {
   type: WineType;
 }
 
+const useResponsiveMargin = () => {
+  const [marginClass, setMarginClass] = useState('');
+  const [buttonPaddingClass, setButtonPaddingClass] = useState('pt-[2rem]');
+ 
+  useEffect(() => {
+    const handleResize = () => {
+      const height = window.innerHeight;
+      const width = window.innerWidth;
+      console.log('Window size:', { width, height });
+      
+      // Set button padding based on height
+      if (height >= 668) {
+        setButtonPaddingClass('pt-[3rem]');
+      } else {
+        setButtonPaddingClass('pt-[2rem]');
+      }
+
+      // 태블릿 (744px 이상)
+      if (width >= 744) {
+        setMarginClass('h-screen flex items-center'); // 화면 중앙 정렬
+      }
+      // 모바일 (744px 미만)
+      else {
+        if (height >= 915) {
+          setMarginClass('mt-[23rem]'); 
+        } else if (height >= 900) {
+          setMarginClass('mt-[25rem]'); 
+        } else if (height >= 896) {
+          setMarginClass('mt-[22rem]');
+        } else if (height >= 844) {
+          setMarginClass('mt-[17rem]'); 
+        } else if (height >= 740) {
+          setMarginClass('mt-[7rem]');
+        } else if (height >= 720) {
+          setMarginClass('mt-[3rem]');
+        } else if (height <= 667) {
+          setMarginClass('mt-[2rem]');
+        } else {
+          setMarginClass('mt-[9rem]'); 
+        }
+      }
+    };
+ 
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+ 
+  return { marginClass, buttonPaddingClass };
+};
+
+
+
+
+
 export default function AddWine({ isOpen, onClick }: Props) {
-  const [values, setValues] = useState<NewWineData>({
+  const { marginClass, buttonPaddingClass } = useResponsiveMargin();  
+  const [values, setValues] = useState<Partial<NewWineData>>({
     name: "",
     region: "",
     image: "",
     price: 0,
-    type: WineType.None,
+    type: WineType.None,  // 여기서 type이 확실히 WineType임을 보장
   });
+  
 
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [touched, setTouched] = useState<Record<string, boolean>>({});
+
 
   // 이미지 업로드 함수 추가
   const uploadImage = async (file: File) => {
@@ -66,18 +124,19 @@ export default function AddWine({ isOpen, onClick }: Props) {
     }
   };
 
-  // 유효성 검사 함수
-  const validateField = (
-    id: string,
-    value: string | number | WineType | null | File,
-  ): string => {
-    if (value === null) return "값을 입력해주세요.";
 
-    switch (id) {
-      case "name":
-        return !value || (typeof value === "string" && value.trim() === "")
-          ? "와인 이름을 입력해주세요."
-          : "";
+    // 유효성 검사 함수
+const validateField = (
+      id: string,
+      value: string | number | WineType | null | File | undefined
+    ): string => {
+      if (value === undefined || value === null) return "값을 입력해주세요.";
+    
+      switch (id) {
+        case "name":
+          return !value || (typeof value === "string" && value.trim() === "")
+            ? "와인 이름을 입력해주세요."
+            : "";
 
       case "price":
         if (!value || Number(value) === 0) return "가격을 입력해주세요.";
@@ -272,159 +331,150 @@ export default function AddWine({ isOpen, onClick }: Props) {
     !imageFile ||
     Object.keys(errors).length > 0;
 
+    
   return (
-    <Modal
-      isOpen={isOpen}
-      onClose={onClick}
-      className="
-w-full
-tablet:max-w-[46rem]
-mt-0
-h-600:mt-0
-h-667:mt-[2rem] 
-h-740:mt-[7rem]
-h-800:mt-0
-h-820:mt-[12rem]  
-h-844:mt-[16rem]     
-h-896:mt-[20rem]  
-h-1024:mt-0
-max-h-[97vh] 
-overflow-y-auto
-rounded-t-[2rem] tablet:rounded-[2rem]
-flex flex-col
-py-[2rem] tablet:py-[3rem] 
-   "
-    >
-      <div className="flex flex-col">
-        <article className="flex-1 px-[1.6rem] tablet:px-[2.4rem]">
-          <section className="flex justify-between items-center">
-            <h1 className="text-[2rem] tablet:text-[2.4rem] font-bold mt-[1rem] tablet:mt-[2.4rem] mb-[3rem] tablet:mb-[4rem]">
-              와인 등록
-            </h1>
-            <Button
-              type="button"
-              color="secondary"
-              size="large"
-              onClick={onClick}
-              className="text-gray-500 text-2xl mt-[1rem] tablet:mt-[2.4rem] mb-[3rem] tablet:mb-[4rem]"
-            >
-              X
-            </Button>
+<Modal 
+  isOpen={isOpen} 
+  onClose={onClick} 
+  className={
+  `w-full tablet:max-w-[46rem] 
+  h-full
+  rounded-t-[2rem] tablet:rounded-[2rem] 
+  flex flex-col
+  ${marginClass}`}>
+
+
+  <div className="flex flex-col w-full h-full ">
+      <article className="flex-1 px-[2rem] pt-[1rem] py-0 tablet:px-[2.4rem]">
+      <section className="flex justify-between items-center">
+      <h1 className="text-[2rem] tablet:text-[2.4rem] font-bold mb-[3rem] tablet:mb-[4rem]">
+          와인 등록
+        </h1>
+        <Button
+            type="button"
+            color="secondary"
+            size="large"
+            onClick={onClick}
+            className="text-gray-500 text-2xl mt-[1rem] tablet:mt-[2.4rem] mb-[3rem] tablet:mb-[4rem]"
+          >
+            X
+          </Button>
           </section>
-          <form className="flex flex-col h-full" onSubmit={handleSubmit}>
-            <div className=" flex flex-col gap-[1.6rem] tablet:gap-[2.4rem]">
-              <div className="flex flex-col gap-[1.6rem] tablet:gap-[2rem]">
-                <label
-                  htmlFor="name"
-                  className="text-[1.4rem] tablet:text-[1.6rem] font-medium"
-                >
-                  와인 이름
-                </label>
-                <Input
-                  id="name"
-                  placeholder="와인 이름 입력"
-                  onChange={handleWineValueChange}
-                  onBlur={() => handleBlur("name")}
-                  value={values.name}
-                  error={shouldShowError("name") ? errors.name : ""}
-                />
-              </div>
-
-              <div className="flex flex-col gap-[1.6rem]">
-                <label
-                  htmlFor="price"
-                  className="text-[1.4rem] tablet:text-[1.6rem] font-medium"
-                >
-                  가격
-                </label>
-                <Input
-                  id="price"
-                  placeholder="가격 입력"
-                  type="number"
-                  min="0"
-                  onChange={handleWineValueChange}
-                  onBlur={() => handleBlur("price")}
-                  value={values.price === 0 ? "" : String(values.price)}
-                  error={shouldShowError("price") ? errors.price : ""}
-                />
-              </div>
-
-              <div className="flex flex-col gap-[1.6rem]">
-                <label
-                  htmlFor="region"
-                  className="text-[1.4rem] tablet:text-[1.6rem] font-medium"
-                >
-                  원산지
-                </label>
-                <Input
-                  id="region"
-                  placeholder="원산지 입력"
-                  onChange={handleWineValueChange}
-                  onBlur={() => handleBlur("region")}
-                  value={values.region}
-                  error={shouldShowError("region") ? errors.region : ""}
-                />
-              </div>
-
-              <div className="flex flex-col gap-[1.6rem]">
-                <label
-                  htmlFor="type"
-                  className="text-[1.4rem] tablet:text-[1.6rem] font-medium"
-                >
-                  타입
-                </label>
-                <WineTypeDropdown
-                  value={values.type}
-                  onChange={handleTypeChange}
-                  onBlur={() => handleBlur("type")}
-                  error={shouldShowError("type") ? errors.type : ""}
-                />
-              </div>
-
-              <div className="flex flex-col gap-[1.6rem]">
-                <label
-                  htmlFor="image"
-                  className="text-[1.4rem] tablet:text-[1.6rem] font-medium"
-                >
-                  와인 사진
-                </label>
-                <ImageInput
-                  id="image"
-                  onChangeImage={handleChangeImage}
-                  hasPreview
-                  error={shouldShowError("image") ? errors.image : ""}
-                />
-              </div>
+        <form className="flex flex-col" onSubmit={handleSubmit}>
+          <div className=" flex flex-col gap-[1.7rem] tablet:gap-[2.4rem]">
+            <div className="flex flex-col gap-[1.4rem] tablet:gap-[2rem]">
+              <label
+                htmlFor="name"
+                className="text-[1.4rem] tablet:text-[1.6rem] font-medium"
+              >
+                와인 이름
+              </label>
+              <Input
+                id="name"
+                placeholder="와인 이름 입력"
+                onChange={handleWineValueChange}
+                onBlur={() => handleBlur("name")}
+                value={values.name}
+                error={shouldShowError("name") ? errors.name : ""}
+              />
             </div>
 
-            <div
-              className="flex gap-[1rem] sticky bg-white pt-default:pt-[1rem] 
-          pt-800:pt-[1.2rem]
-          pt-820:pt-[3rem]
-          "
+            <div className="flex flex-col gap-[1.4rem]">
+              <label
+                htmlFor="price"
+                className="text-[1.4rem] tablet:text-[1.6rem] font-medium"
+              >
+                가격
+              </label>
+              <Input
+                id="price"
+                placeholder="가격 입력"
+                type="number"
+                min="0"
+                onChange={handleWineValueChange}
+                onBlur={() => handleBlur("price")}
+                value={values.price === 0 ? "" : String(values.price)}
+                error={shouldShowError("price") ? errors.price : ""}
+              />
+            </div>
+
+            <div className="flex flex-col gap-[1.4rem]">
+              <label
+                htmlFor="region"
+                className="text-[1.4rem] tablet:text-[1.6rem] font-medium"
+              >
+                원산지
+              </label>
+              <Input
+                id="region"
+                placeholder="원산지 입력"
+                onChange={handleWineValueChange}
+                onBlur={() => handleBlur("region")}
+                value={values.region}
+                error={shouldShowError("region") ? errors.region : ""}
+              />
+            </div>
+
+            <div className="flex flex-col gap-[1.4rem]">
+              <label
+                htmlFor="type"
+                className="text-[1.4rem] tablet:text-[1.6rem] font-medium"
+              >
+                타입
+              </label>
+
+              <WineTypeDropdown
+  value={values.type as WineType}  // 타입 단언 사용
+  onChange={handleTypeChange}
+  onBlur={() => handleBlur("type")}
+  error={shouldShowError("type") ? errors.type : ""}
+/>
+            </div>
+
+
+
+            <div className="flex flex-col gap-[1.6rem]">
+              <label
+                htmlFor="image"
+                className="text-[1.4rem] tablet:text-[1.6rem] font-medium"
+              >
+                와인 사진
+              </label>
+              <ImageInput
+                id="image"
+                onChangeImage={handleChangeImage}
+                hasPreview
+                error={shouldShowError("image") ? errors.image : ""}
+              />
+            </div>
+          </div>
+
+          <div className={`flex bg-white ${buttonPaddingClass} tablet:pt-[3rem] pb-[2.4rem] tablet:pb-[3rem] gap-[1rem]`}>
+
+
+            
+            <Button
+              size="small"
+              color="white"
+              type="button"
+              onClick={onClick}
+              addClassName="flex-1 text-primary font-bold min-h-[4rem] tablet:text-lg"
             >
-              <Button
-                size="small"
-                color="white"
-                type="button"
-                onClick={onClick}
-                addClassName="flex-1 text-primary font-bold min-h-[4rem] text-base tablet:text-lg"
-              >
-                취소
-              </Button>
-              <Button
-                size="small"
-                color="primary"
-                type="submit"
-                disabled={isSubmitDisabled}
-                addClassName="flex-[2.4] font-bold min-h-[4rem] text-base tablet:text-lg"
-              >
-                와인 등록하기
-              </Button>
-            </div>
-          </form>
-        </article>
-      </div>
-    </Modal>
+              취소
+            </Button>
+            <Button
+              size="small"
+              color="primary"
+              type="submit"
+              disabled={isSubmitDisabled}
+              addClassName="flex-[2.4] font-bold min-h-[4rem] tablet:text-lg"
+            >
+              와인 등록하기
+            </Button>
+          </div>
+        </form>
+      </article>
+    </div>
+  </Modal>
   );
 }
