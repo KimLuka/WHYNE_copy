@@ -14,7 +14,7 @@ import { Aroma, mapTagToAroma } from "../wines/detail/detail-wine-tag";
 type ModalProps = {
   isOpen: boolean;
   onClick: () => void;
-  wineId?: string;
+  wineId?: string | number;
   id?: number; // review ID
   isEditing?: boolean;
   initialData?: {
