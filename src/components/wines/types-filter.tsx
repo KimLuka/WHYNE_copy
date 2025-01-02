@@ -31,7 +31,7 @@ export default function TypesFilter({ onChange }: TypesFilter) {
 
   return (
     <div className="flex flex-col desktop:gap-[1.2rem] mobile:gap-[1.8rem] desktop:border-none desktop:p-0 mobile:pb-[3.2rem] mobile:border-solid mobile:border-b-[0.1rem] mobile:border-b-gray-100">
-      <h3 className="text-gray-800 desktop:font-bold desktop:text-xl mobile:font-semiBold mobile:text-lg">
+      <h3 className="dark:text-[#EDEDED] text-gray-800 desktop:font-bold desktop:text-xl mobile:font-semiBold mobile:text-lg">
         WINE TYPES
       </h3>
       <div className="flex desktop:gap-[1.5rem] mobile:gap-[1rem]">

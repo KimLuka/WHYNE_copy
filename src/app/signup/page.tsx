@@ -15,7 +15,7 @@ export const generateMetadata = async (): Promise<Metadata> => {
 
 export default function SignUp() {
   return (
-    <div className="bg-gray-100 min-h-screen">
+    <div className="bg-gray-100 dark:bg-black min-h-screen">
       <Container
         color="white"
         addClassName="

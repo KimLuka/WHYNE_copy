@@ -61,7 +61,7 @@ export default function DeleteModal({
       {/* 삭제 확인 모달 */}
       {isOpen && !message && (
         <div
-          className="rounded-[1.6rem] border-[0.1rem] border-solid border-gray-300 fixed z-20 bg-white pt-[3.2rem] pr-[1.6rem] pb-[2.4rem] pl-[1.6rem]
+          className="rounded-[1.6rem] border-[0.1rem] border-solid border-gray-300 dark:border-none fixed z-20 dark:bg-dark-black bg-white pt-[3.2rem] pr-[1.6rem] pb-[2.4rem] pl-[1.6rem]
                       w-[35.3rem] h-[17.2rem] tablet:h-[18.2rem]"
         >
           <h1 className="text-[1.8rem] tablet:text-[2rem] m-0 mb-[4rem] text-center font-bold">
@@ -95,7 +95,7 @@ export default function DeleteModal({
       {/* 삭제 결과 메시지 모달 */}
       {message && (
         <div
-          className="rounded-[1.6rem] border-[0.1rem] border-solid border-gray-300 fixed z-20 bg-white p-[2rem]
+          className="rounded-[1.6rem] border-[0.1rem] border-solid border-gray-300 fixed z-20 dark:bg-dark-black bg-white p-[2rem]
                       w-[30rem] h-[15rem] flex flex-col justify-center items-center"
         >
           <p className="text-[1.6rem] text-center mb-[2rem]">{message}</p>

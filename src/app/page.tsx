@@ -36,14 +36,14 @@ export default function Home() {
     <div className="flex-column desktop:pb-[10.9rem] tablet:pb-[7.2rem] mobile:pb-[6.2rem]">
       <section
         ref={ref}
-        className="opacity-0 animate-fadeSlideUp delay-[200ms] bg-black overflow-hidden rounded-[1.6rem] desktop:w-[114rem] tablet:w-[70.4rem] mobile:w-[34.3rem] desktop:h-[53.5rem] tablet:h-[39.4rem] mobile:h-[40.4rem] desktop:mt-[8rem] mobile:mt-[2.4rem] "
+        className="opacity-0 animate-fadeSlideUp delay-[200ms] dark:bg-dark-black bg-black overflow-hidden rounded-[1.6rem] desktop:w-[114rem] tablet:w-[70.4rem] mobile:w-[34.3rem] desktop:h-[53.5rem] tablet:h-[39.4rem] mobile:h-[40.4rem] desktop:mt-[8rem] mobile:mt-[2.4rem] "
       >
         <div className="flex-column">
           <div className="flex-column gap-[3.2rem] desktop:mt-[11.2rem] desktop:mb-[5.8rem] tablet:mt-[8rem] tablet:mb-[3.4rem] mobile:mt-[5.6rem] mobile:mb-[10.5rem]">
             <div className="h-auto mobile:w-[8.1rem] tablet:w-[10.2rem]">
               <Image width={102} src={logo} alt="wine 로고" />
             </div>
-            <h2 className="text-gray-100 [text-shadow:_0.4rem_0.4rem_1rem_rgba(136_136_136_/_0.2)] font-bold desktop:text-[3.2rem]/[4.6rem] tablet:text-[2.8rem]/[4.6rem] mobile:text-[2rem]/[3rem] text-center">
+            <h2 className="dark:text-[#EDEDED] text-gray-100 [text-shadow:_0.4rem_0.4rem_1rem_rgba(136_136_136_/_0.2)] font-bold desktop:text-[3.2rem]/[4.6rem] tablet:text-[2.8rem]/[4.6rem] mobile:text-[2rem]/[3rem] text-center">
               한 곳에서 관리하는
               <br />
               나만의 와인창고
@@ -67,8 +67,8 @@ export default function Home() {
               매달 다양한 인기 와인을 만나보세요.
             </div>
           </div>
-          <div className="bg-gray-100 pl-[2rem] rounded-l-[1.6rem] tablet:mt-[4.2rem] mobile:mt-[5.9rem] tablet:ml-0 mobile:ml-[5.3rem] tablet:pb-0 mobile:pb-[2rem] flex mobile:flex-col tablet:justify-start mobile:justify-end mobile:items-start">
-            <h3 className="font-bold tablet:text-[#50545B] tablet:py-[2rem] mobile:pt-[2rem] mobile:pb-[2.2rem] tablet:text-[1.8rem]/[2.1rem] mobile:text-[#7E7E7E] mobile:text-[1.6rem]/[1.9rem]">
+          <div className="dark:bg-[#3E3E4F] bg-gray-100 pl-[2rem] rounded-l-[1.6rem] tablet:mt-[4.2rem] mobile:mt-[5.9rem] tablet:ml-0 mobile:ml-[5.3rem] tablet:pb-0 mobile:pb-[2rem] flex mobile:flex-col tablet:justify-start mobile:justify-end mobile:items-start">
+            <h3 className="font-bold dark:tablet:text-[#E0E6EE] tablet:text-[#50545B] tablet:py-[2rem] mobile:pt-[2rem] mobile:pb-[2.2rem] tablet:text-[1.8rem]/[2.1rem] mobile:text-[#7E7E7E] mobile:text-[1.6rem]/[1.9rem]">
               이번 달 추천 와인
             </h3>
             <SectionCard />

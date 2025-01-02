@@ -24,12 +24,13 @@ export default function Input({
       tablet:text-[1.2rem] 
       desktop:text-[1.4rem]
       font-regular
+      dark:text-gray-800
       text-gray-800 
       focus:border-primary
       focus:outline-none
       placeholder:text-gray-500 
       cursor-pointer
-      ${error || isErrored ? "border-primary" : "border-gray-300"}
+      ${error || isErrored ? "border-primary dark:border-dark-primary" : "border-gray-300 dark:border-dark-gray-300"}
       ${className || ""}
     `.trim();
 
@@ -37,7 +38,7 @@ export default function Input({
     <div>
       <input className={classCombined} {...props} />
       {error && (
-        <p className="text-primary text-[0.875rem] tablet:text-[1rem] mt-[0.5rem]">
+        <p className="dark:text-dark-primary text-primary text-[0.875rem] tablet:text-[1rem] mt-[0.5rem]">
           {error}
         </p>
       )}

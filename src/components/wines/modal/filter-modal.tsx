@@ -26,52 +26,49 @@ interface Filter {
 }
 
 const useResponsiveMargin = () => {
-  const [marginClass, setMarginClass] = useState('');
- 
+  const [marginClass, setMarginClass] = useState("");
+
   useEffect(() => {
     const handleResize = () => {
       const height = window.innerHeight;
       const width = window.innerWidth;
-      console.log('Window size:', { width, height });
-      
-
+      console.log("Window size:", { width, height });
 
       // 태블릿 (744px 이상)
       if (width >= 744) {
-        setMarginClass('h-screen flex items-center'); // 화면 중앙 정렬
+        setMarginClass("h-screen flex items-center"); // 화면 중앙 정렬
       }
       // 모바일 (744px 미만)
       else {
         if (height >= 916) {
-          setMarginClass('mt-[25rem]'); 
+          setMarginClass("mt-[25rem]");
         } else if (height >= 900) {
-          setMarginClass('mt-[23rem]'); 
+          setMarginClass("mt-[23rem]");
         } else if (height >= 896) {
-          setMarginClass('mt-[22rem]');
+          setMarginClass("mt-[22rem]");
         } else if (height >= 844) {
-          setMarginClass('mt-[17rem]'); 
+          setMarginClass("mt-[17rem]");
         } else if (height >= 812) {
-          setMarginClass('mt-[13rem]'); 
+          setMarginClass("mt-[13rem]");
         } else if (height >= 740) {
-          setMarginClass('mt-[7rem]');
+          setMarginClass("mt-[7rem]");
         } else if (height >= 720) {
-          setMarginClass('mt-[3rem]');
+          setMarginClass("mt-[3rem]");
         } else if (height <= 667) {
-          setMarginClass('mt-0');
+          setMarginClass("mt-0");
         } else {
-          setMarginClass('mt-[9rem]'); 
+          setMarginClass("mt-[9rem]");
         }
       }
     };
- 
+
     handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
- 
+
   return { marginClass };
 };
-
 
 export default function FilterModal({
   isOpen,
@@ -90,8 +87,7 @@ export default function FilterModal({
   );
   const [rating, setRating] = useState<number>(initialRating);
 
-  const { marginClass } = useResponsiveMargin();  
-
+  const { marginClass } = useResponsiveMargin();
 
   // 필터 초기화
   const handleReset = () => {
@@ -122,18 +118,18 @@ export default function FilterModal({
     <Modal
       isOpen={isOpen}
       onClose={onToggle}
-      className={
-        `w-full  tablet:w-[37.5rem]
+      className={`w-full  tablet:w-[37.5rem]
         h-full
         rounded-t-[1.6rem] tablet:rounded-[1.6rem]
         flex flex-col px-[2.4rem] tablet:px-0 py-[2.4rem]
         ${marginClass}`}
-      
-      >
+    >
       <div className="flex flex-col w-full tablet:w-[33rem] h-full mobile:gap-[4rem]">
         <div className="flex flex-col mobile:gap-[3.2rem]">
           <div className="flex justify-between">
-            <h2 className="text-gray-800 text-bold text-xl">필터</h2>
+            <h2 className="dark:text-[#E0E6EE] text-gray-800 text-bold text-xl">
+              필터
+            </h2>
             <button onClick={onToggle}>
               <Image src={XButton} width={24} height={24} alt="필터 닫기" />
             </button>
@@ -173,4 +169,3 @@ export default function FilterModal({
     </Modal>
   );
 }
-

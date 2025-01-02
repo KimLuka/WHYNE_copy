@@ -26,10 +26,12 @@ export default function Button({
   }[size];
 
   const colorClasses = {
-    primary: "bg-primary hover:bg-[#7b52f1] text-white",
+    primary:
+      "dark:bg-[#5C3DC9] dark:hover:bg-[#7255E3] bg-primary hover:bg-[#7b52f1] text-white",
     white:
-      "bg-white hover:bg-[#e1d7f4] text-gray-800 border-solid border-[0.1rem] border-gray-300",
-    secondary: "bg-secondary hover:bg-[#e1d7f4] text-primary",
+      "dark:bg-[#EDEDED] dark:hover-[#4A4266] bg-white hover:bg-[#e1d7f4] text-gray-800 border-solid border-[0.1rem] border-gray-300",
+    secondary:
+      "dark:hover-[#4A4266] bg-secondary hover:bg-[#e1d7f4] text-primary",
   }[color];
 
   const buttonClass = classNames(

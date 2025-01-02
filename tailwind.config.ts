@@ -1,6 +1,7 @@
 import type { Config } from "tailwindcss";
 
 export default {
+  darkMode: "class",
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -15,12 +16,18 @@ export default {
       white: "var(--white)",
       black: "var(--black)",
       red: "var(--red)",
-      gray: {
-        100: "#f2f4f8",
-        300: "#cfdbea",
-        500: "#9FACBD",
-        800: "#2d3034",
+      gray: { 100: "#f2f4f8", 300: "#cfdbea", 500: "#9FACBD", 800: "#2d3034" },
+      "dark-gray": {
+        "100": "#2e3238",
+        "300": "#50575e",
+        "500": "#6c757d",
+        "800": "#212529",
       },
+      "dark-primary": "#8c65e6",
+      "dark-secondary": "#343a40",
+      "dark-white": "#f8f9fa",
+      "dark-black": "#1E1E2C",
+      "dark-red": "#f86a6a",
     },
     screens: {
       desktop: "1024px",

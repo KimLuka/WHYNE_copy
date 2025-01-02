@@ -31,7 +31,9 @@ export default function PriceFilter({ onChange, resetValues }: PriceApp) {
 
   return (
     <div className="flex flex-col w-auto desktop:border-none desktop:p-0 mobile:pb-[3.2rem] mobile:border-solid mobile:border-b-[0.1rem] mobile:border-b-gray-100">
-      <h3 className="font-bold text-xl text-gray-800 mb-[2rem]">PRICE</h3>
+      <h3 className="font-bold text-xl dark:text-[#EDEDED] text-gray-800 mb-[2rem]">
+        PRICE
+      </h3>
       <div className="flex justify-between mb-[0.5rem]">
         <label htmlFor="minPrice">
           <span className="font-medium text-lg text-primary">

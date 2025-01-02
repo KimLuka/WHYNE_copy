@@ -489,12 +489,36 @@ template {
     font-family: "Pretendard";
   }
 
-  html[data-theme="gray"] {
+  html [data-theme="light"] {
+    /*color palette*/
+    --color-primary: #6a42db;
+    --color-secondary: #f1edfc;
+    --white: #ffffff;
+    --black: #101318;
+    --red: #f74747;
+    --primary-gradient: #d842db;
+  }
+
+  html[data-theme="light-gray"] {
     --color-100: #f2f4f8;
     --color-300: #cfdbea;
     --color-500: #9facbd;
     --color-800: #2d3034;
   }
+
+  html[data-theme="dark"] {
+    --color-primary: #8c65e6;
+    --color-secondary: #343a40;
+    --white: #f8f9fa;
+    --black: #1a1c1e;
+    --red: #f86a6a;
+    --primary-gradient: linear-gradient(90deg, #8c65e6, #c084fc);
+    --color-100: #2e3238;
+    --color-300: #50575e;
+    --color-500: #6c757d;
+    --color-800: #212529;
+  }
+
   html {
     /* 브라우저 폰트 사이즈 16px * 0.625 = 10px */
     font-size: 62.5%;
@@ -545,13 +569,13 @@ template {
     @apply desktop:w-[23.2rem] desktop:h-[18.5rem] desktop:pt-[2.4rem] desktop:px-[3rem] tablet:w-[13.9rem] tablet:h-[11.1rem] tablet:pt-[1.4rem] tablet:px-[1.8rem] mobile:w-[20.8rem] h-[16.6rem] mobile:pt-[2.1rem] mobile:px-[2.7rem];
   }
   .home-section-container {
-    @apply bg-gradient-to-b from-[#ebeef4] from-100% to-[#ebeef4] to-0% rounded-[1.6rem] overflow-hidden border-solid border-[0.1rem] border-[#e0e6ee] tablet:flex justify-between tablet:w-[64rem] tablet:h-[32rem] mobile:w-[34.4rem] mobile:h-[42.4rem];
+    @apply bg-gradient-to-b dark:from-dark-black dark:to-[#2A2A3D] dark:border-[#3E3E4F] from-[#ebeef4] from-100% to-[#ebeef4] to-0% rounded-[1.6rem] overflow-hidden border-solid border-[0.1rem] border-[#e0e6ee] tablet:flex justify-between tablet:w-[64rem] tablet:h-[32rem] mobile:w-[34.4rem] mobile:h-[42.4rem];
   }
   .home-section-h2 {
-    @apply text-gray-800 font-bold tablet:text-[2.2rem]/[3.2rem] mobile:text-[1.8rem]/[2.6rem];
+    @apply dark:text-[#EDEDED] text-gray-800 font-bold tablet:text-[2.2rem]/[3.2rem] mobile:text-[1.8rem]/[2.6rem];
   }
   .home-section-sub {
-    @apply text-gray-500 font-regular text-[1.2rem]/[1.6rem];
+    @apply dark:text-dark-gray-500 text-gray-500 font-regular text-[1.2rem]/[1.6rem];
   }
   .slider-range {
     @apply absolute w-full h-[0.6rem] rounded-[5rem] bg-primary cursor-pointer;

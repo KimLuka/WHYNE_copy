@@ -165,8 +165,8 @@ export default function Wines() {
 
   return (
     <div className="flex flex-column w-auto max-w-[114rem] my-0 mx-auto">
-      <section className="w-full max-w-[114rem] tablet:mt-[2rem] mobile:mt-[1.5rem] tablet:mb-[4rem] mobile:mb-[2.4rem] h-auto rounded-[1.6rem] tablet:p-[3rem] mobile:p-[2rem] bg-gray-100">
-        <h2 className="font-bold text-gray-800 tablet:text-[2rem]/[2.4rem] mobile:text-[1.8rem]/[2.1rem]">
+      <section className="w-full max-w-[114rem] tablet:mt-[2rem] mobile:mt-[1.5rem] tablet:mb-[4rem] mobile:mb-[2.4rem] h-auto rounded-[1.6rem] tablet:p-[3rem] mobile:p-[2rem] dark:bg-[#2A2A3D] bg-gray-100">
+        <h2 className="font-bold dark:text-[#E0E6EE] text-gray-800 tablet:text-[2rem]/[2.4rem] mobile:text-[1.8rem]/[2.1rem]">
           이번 달 추천 와인
         </h2>
         {Array.isArray(recommendList) && recommendList.length > 0 ? (

@@ -63,7 +63,7 @@ export default function Signin() {
   }, []);
 
   return (
-    <div className="bg-gray-100 min-h-screen">
+    <div className="bg-gray-100 min-h-screen dark:bg-black">
       <Container
         color="white"
         addClassName="w-full h-auto absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2

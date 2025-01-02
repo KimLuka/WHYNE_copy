@@ -35,7 +35,7 @@ export default function TastesliderData() {
       <div key="바디감" className="flex w-full">
         <div className="flex items-center w-full">
           <p
-            className="mr-[1.9rem] tablet:mr-[2.4rem] w-[4rem] tablet:w-[4.5rem] h-[3rem] flex-shrink-0 rounded-[0.8rem] bg-gray-100 
+            className="mr-[1.9rem] tablet:mr-[2.4rem] w-[4rem] tablet:w-[4.5rem] h-[3rem] flex-shrink-0 rounded-[0.8rem] bg-gray-100
               flex items-center justify-center text-[1.2rem] tablet:text-[1.4rem] font-medium text-gray-500"
           >
             바디감

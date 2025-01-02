@@ -15,8 +15,8 @@ export default function Container({
   ...rest
 }: ContainerProps) {
   const colorClasses = {
-    white: "bg-white",
-    gray: "bg-gray-100",
+    white: "bg-white dark:bg-dark-white",
+    gray: "bg-gray-100 dark:bg-dark-gray-100",
   };
 
   const divClass = classNames(

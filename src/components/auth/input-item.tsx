@@ -93,7 +93,7 @@ export default function InputItem({
     <div className="flex flex-col gap-[1rem]">
       <label
         htmlFor={id}
-        className="text-[1.6rem] font-medium mobile:text-[1.4rem]"
+        className="text-[1.6rem] font-medium mobile:text-[1.4rem] dark:text-dark-black"
       >
         {label}
       </label>
@@ -101,8 +101,8 @@ export default function InputItem({
         id={id}
         name={name}
         className={`placeholder-gray-500 text-[1.6rem] border border-gray-300 rounded-[1.6rem] pl-[2rem]
-          focus:border-primary focus:outline-none
-          desktop:w-[40rem] desktop:h-[4.8rem]
+          focus:border-primary focus:outline-none dark:focus:border-dark-primary
+          desktop:w-[40rem] desktop:h-[4.8rem]  
           tablet:w-[40rem] tablet:h-[4.8rem]
           mobile:w-[30.3rem] mobile:h-[4.2rem] mobile:text-[1.4rem]
         ${error ? "border-2" : "border-gray-300"}`}

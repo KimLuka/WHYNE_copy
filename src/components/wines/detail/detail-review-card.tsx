@@ -202,7 +202,7 @@ export default function DetailReviewCard({ wineid }: DetailReviewCardProps) {
       {reviews.length > 0 ? (
         <div className="flex flex-row gap-[6rem] w-full">
           <div className="w-full desktop:mx-[2rem] tablet:mx-[2rem] mobile:mx-[1.6rem]">
-            <span className="font-semibold text-[2rem] text-gray-800 leading-[3.2rem] desktop:block tablet:hidden mobile:hidden">
+            <span className="font-semibold text-[2rem] dark:text-[#EDEDED] text-gray-800 leading-[3.2rem] desktop:block tablet:hidden mobile:hidden">
               리뷰 목록
             </span>
             <div className="w-full">
@@ -349,7 +349,7 @@ export default function DetailReviewCard({ wineid }: DetailReviewCardProps) {
                                 mobile:w-[4.8rem] mobile:h-[3rem] mobile:p-[0.5rem_0.8rem] mobile:mr-[0.9rem] 
                               "
                               >
-                                <p className="destkop:text-[1.4rem] tablet:text-[1.4rem] mobile:[1.2rem] text-gray-500 font-semibold leading-[2.4rem]">
+                                <p className=" destkop:text-[1.4rem] tablet:text-[1.4rem] mobile:[1.2rem] text-gray-500 font-semibold leading-[2.4rem]">
                                   {item.label}
                                 </p>
                               </div>
@@ -357,7 +357,7 @@ export default function DetailReviewCard({ wineid }: DetailReviewCardProps) {
                                 <p
                                   className="
                                 font-medium text-gray-800 
-                                desktop:min-w-[7rem] desktop:text-[1.6rem] desktop:leading-[2.6rem] desktop:mr-[1.4rem]
+                                desktop:min-w-[7rem] desktop:text-[1.6rem] desktop:leading-[2.6rem] desktop:  1.4rem]
                                 tablet:min-w-[7rem] tablet:text-[1.6rem] tablet:leading-[2.6rem] tablet:mr-[1.4rem]
                                 mobile:min-w-[6.2rem] mobile:text-[1.4rem] mobile:leading-[2.4rem] mobile:mr-[1.4rem]
                                 "

@@ -35,7 +35,9 @@ export default function RatingFliter({
 
   return (
     <div className="flex flex-col desktop:gap-[1.6rem] mobile:gap-[1rem] w-auto">
-      <h3 className="font-bold text-xl text-gray-800">RATING</h3>
+      <h3 className="font-bold text-xl dark:text-[#EDEDED] text-gray-800">
+        RATING
+      </h3>
       <form>
         <fieldset className="flex flex-col desktop:gap-[1.2rem] mobile:gap-[1rem]">
           {ratings.map(({ id, label, value }) => (
@@ -63,7 +65,9 @@ export default function RatingFliter({
               </span>
               <span
                 className={`font-medium text-[1.6rem] desktop:ml-[1.2rem] mobile:ml-[1.5rem] ${
-                  selectedRating === value ? "text-primary" : "text-gray-800"
+                  selectedRating === value
+                    ? "text-primary"
+                    : "dark:text-[#4A4266] text-gray-800"
                 }`}
               >
                 {label}

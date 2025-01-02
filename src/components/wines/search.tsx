@@ -40,7 +40,7 @@ function SearchBar({ onChange }: { onChange: (search: string) => void }) {
           type="search"
           value={searchTerm}
           placeholder="와인명을 검색해 보세요"
-          className="w-full rounded-[5rem] text-gray-500 placeholder-gray-300 border focus:placeholder-primary desktop:w-[80rem] tablet:w-[39.6rem] mobile:w-[34.3rem] tablet:h-[4.8rem] mobile:h-[3.8rem] tablet:font-regular mobile:font-medium tablet:text-lg mobile:text-md tablet:pl-[5.5rem] mobile:pl-[4.5rem] py-[1.4rem] tablet:px-[2rem] mobile:px-[1.5rem]"
+          className="w-full rounded-[5rem] text-gray-500 placeholder-gray-300 border dark:focus:placeholder-dark-primary focus:placeholder-primary desktop:w-[80rem] tablet:w-[39.6rem] mobile:w-[34.3rem] tablet:h-[4.8rem] mobile:h-[3.8rem] tablet:font-regular mobile:font-medium tablet:text-lg mobile:text-md tablet:pl-[5.5rem] mobile:pl-[4.5rem] py-[1.4rem] tablet:px-[2rem] mobile:px-[1.5rem]"
           onChange={(e) => handleInputChange(e.target.value)}
         />
       </label>

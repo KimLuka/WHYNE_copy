@@ -130,7 +130,7 @@ export default function Profile() {
     desktop:w-[28rem] desktop:min-h-[53rem] desktop:left-[39rem] desktop:p-[3.9rem_2rem] 
     tablet:w-full tablet:min-h-[24.7rem] tablet:top-[11.7rem] tablet:p-[2.3rem_4rem] tablet:mx-auto
     mobile:w-full mobile:min-h-[24.1rem] mobile:p-[2rem] mobile:mx-auto
-    border-[0.1rem] border-solid bg-white border-[#cfdbea] rounded-[1.6rem] shadow-sm
+    border-[0.1rem] border-solid dark:bg-dark-black bg-white border-[#cfdbea] rounded-[1.6rem] shadow-sm
     "
     >
       {isLoading && <div></div>}
@@ -170,7 +170,7 @@ export default function Profile() {
           flex flex-col justify-center
           desktop:items-center  desktop:mt-[3.2rem] desktop:ml-0 tablet:mt-0 tablet:ml-[3.2rem] tablet:items-start mobile:ml-[1.6rem]"
         >
-          <p className="desktop:text-[2.4rem] desktop:text-center tablet:text-[2.4rem] mobile:text-[2rem] leading-[3.2rem] font-bold text-[#2d3034]">
+          <p className="desktop:text-[2.4rem] desktop:text-center tablet:text-[2.4rem] mobile:text-[2rem] leading-[3.2rem] font-bold dark:text-[#E0E6EE] text-[#2d3034]">
             {user.nickname}
           </p>
           <p className="desktop:text-[1.6rem] desktop:mt-[1.6rem] desktop:leading-[2.6rem] tablet:text-[1.6rem] tablet:leading-[2.6rem] mobile:text-[1.4rem] mobile:leading-[2.6rem] text-[#9FACBD]  font-regular  tablet:mt-[0.8rem]">
@@ -184,7 +184,7 @@ export default function Profile() {
       mobile:flex-col mobile:mt-[2rem]"
       >
         <div className="tablet:w-full tablet:mr-[2.4rem]">
-          <p className="desktop:text-[1.6rem] desktop:leading-[2.6rem] tablet:text-[1.6rem] tablet:leading-[2.6rem] mobile:text-[1.4rem] mobile:leading-[2.4rem] font-medium text-gray-800">
+          <p className="desktop:text-[1.6rem] desktop:leading-[2.6rem] tablet:text-[1.6rem] tablet:leading-[2.6rem] mobile:text-[1.4rem] mobile:leading-[2.4rem] font-medium dark:text-[#EDEDED] text-gray-800">
             닉네임
           </p>
           <input

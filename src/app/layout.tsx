@@ -4,6 +4,8 @@ import { AuthProvider } from "@/context/auth-provider";
 import ClientWrapper from "@/components/common/nav-wrapper";
 import { AddWineModalProvider } from "@/app/wines/AddWineModalProvider";
 import ReviewProvider from "@/provider/usereviewmodals";
+import DarkThemeProvider from "@/components/common/theme-provider";
+import DarkMode from "@/components/common/dark-mode-button";
 
 export const metadata: Metadata = {
   title: {
@@ -28,14 +30,17 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body className="max-w-full">
-        <AuthProvider>
-          <AddWineModalProvider>
-            <ReviewProvider>
-              {/* <LandingNav /> */}
-              <ClientWrapper>{children}</ClientWrapper>
-            </ReviewProvider>
-          </AddWineModalProvider>
-        </AuthProvider>
+        <DarkThemeProvider>
+          <DarkMode />
+          <AuthProvider>
+            <AddWineModalProvider>
+              <ReviewProvider>
+                {/* <LandingNav /> */}
+                <ClientWrapper>{children}</ClientWrapper>
+              </ReviewProvider>
+            </AddWineModalProvider>
+          </AuthProvider>
+        </DarkThemeProvider>
       </body>
     </html>
   );
