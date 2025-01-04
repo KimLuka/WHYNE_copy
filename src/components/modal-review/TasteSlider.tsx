@@ -1,7 +1,7 @@
 "use client";
 
 import { useReviewModalStore } from "@/provider/usereviewmodals";
-import Slider from "../common/Slider";
+import Slider from "../common/slider";
 
 // interface sliderDataType {
 //   label: string;

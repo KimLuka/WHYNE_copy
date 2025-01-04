@@ -1,7 +1,7 @@
 "use client";
 
 import { useReviewModalStore } from "@/provider/usereviewmodals";
-import Chips from "@/components/common/Chips";
+import Chips from "@/components/common/chips";
 import { useEffect } from "react";
 
 interface TagSelctorProps {
