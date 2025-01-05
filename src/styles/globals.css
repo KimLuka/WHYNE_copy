@@ -489,36 +489,6 @@ template {
     font-family: "Pretendard";
   }
 
-  html [data-theme="light"] {
-    /*color palette*/
-    --color-primary: #6a42db;
-    --color-secondary: #f1edfc;
-    --white: #ffffff;
-    --black: #101318;
-    --red: #f74747;
-    --primary-gradient: #d842db;
-  }
-
-  html[data-theme="light-gray"] {
-    --color-100: #f2f4f8;
-    --color-300: #cfdbea;
-    --color-500: #9facbd;
-    --color-800: #2d3034;
-  }
-
-  html[data-theme="dark"] {
-    --color-primary: #8c65e6;
-    --color-secondary: #343a40;
-    --white: #f8f9fa;
-    --black: #1a1c1e;
-    --red: #f86a6a;
-    --primary-gradient: linear-gradient(90deg, #8c65e6, #c084fc);
-    --color-100: #2e3238;
-    --color-300: #50575e;
-    --color-500: #6c757d;
-    --color-800: #212529;
-  }
-
   html {
     /* 브라우저 폰트 사이즈 16px * 0.625 = 10px */
     font-size: 62.5%;

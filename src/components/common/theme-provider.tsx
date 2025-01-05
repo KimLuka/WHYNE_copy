@@ -1,17 +1,26 @@
 "use client";
 
-import { ThemeProvider } from "next-themes";
+import * as React from "react";
+const NextThemesProvider = dynamic(
+  () => import("next-themes").then((e) => e.ThemeProvider),
+  {
+    ssr: false,
+  },
+);
 
-interface DarkThemeProviderProps {
-  children: React.ReactNode;
-}
+// import { type ThemeProviderProps } from 'next-themes/dist/types'
+import dynamic from "next/dynamic";
 
-export default function DarkThemeProvider({
-  children,
-}: DarkThemeProviderProps) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function ThemeProvider({ children, ...props }: any) {
   return (
-    <>
-      <ThemeProvider attribute="class">{children}</ThemeProvider>
-    </>
+    <NextThemesProvider
+      attribute="class"
+      defaultTheme="light"
+      enableSystem={false}
+      {...props}
+    >
+      {children}
+    </NextThemesProvider>
   );
 }
